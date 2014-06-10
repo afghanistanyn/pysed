@@ -38,8 +38,7 @@ Pysed Examples
 
 
 
-See changes before save::
-'Use -p --print options'
+See changes before save:
 
 .. code-block:: bash
 
@@ -53,7 +52,7 @@ See changes before save::
         scale.
 
 
-Replace text::
+Replace text:
 
 .. code-block:: bash
 
@@ -77,7 +76,7 @@ Replace text::
 	scale.
 
 
-Add text after the target::
+Add text after the target:
 
 .. code-block:: bash
 
@@ -92,7 +91,7 @@ Add text after the target::
 	scale.
 
 
-Add text before target::
+Add text before target:
 
 .. code-block:: bash
 
@@ -107,7 +106,7 @@ Add text before target::
 	scale.
 
 
-Replace special character::
+Replace special character:
 
 .. code-block:: bash
 
@@ -122,7 +121,7 @@ Replace special character::
 	scale.
 	
 
-Remove text::
+Remove text:
 
 .. code-block:: bash
 
