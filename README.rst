@@ -45,11 +45,11 @@ See changes before save:
 	$ pysed -s --print 'high-level' 'HIGH LEVEL' example.txt
 	$ pysed -p example.txt
 
-	Python is a widely used general-purpose, HIGH LEVEL programming language. Its
-        design philosophy emphasizes code readability, and its syntax allows programmers to express
-        concepts in fewer lines of code than would be possible in languages such as C. The
-        language provides constructs intended to enable clear programs on both a small and large
-        scale.
+	Python is a widely used general-purpose, HIGH LEVEL programming language. 
+	Its design philosophy emphasizes code readability, and its syntax allows 
+	programmers to express concepts in fewer lines of code than would be possible
+	in languages such as C. The language provides constructs intended to enable clear
+	programs on both a small and large scale.
 
 
 Replace text:
@@ -59,21 +59,24 @@ Replace text:
 
 	$ cat example.txt
 
-	Python is a widely used general-purpose, high-level programming language. Its 
-	design philosophy emphasizes code readability, and its syntax allows programmers to express 
-	concepts in fewer lines of code than would be possible in languages such as C. The 
-	language provides constructs intended to enable clear programs on both a small and large 
-	scale.
+        Python is a widely used general-purpose, high-level programming language. 
+        Its design philosophy emphasizes code readability, and its syntax allows 
+        programmers to express concepts in fewer lines of code than would be possible 
+        in languages such as C. The language provides constructs intended to enable clear 
+        programs on both a small and large scale.	
+
 
 
 	$ pysed -s 'high-level' 'HIGH LEVEL' example.txt
 	$ cat example.txt
 	
-	Python is a widely used general-purpose, HIGH LEVEL programming language. Its 
-	design philosophy emphasizes code readability, and its syntax allows programmers to express 
-	concepts in fewer lines of code than would be possible in languages such as C. The 
-	language provides constructs intended to enable clear programs on both a small and large 
-	scale.
+        Python is a widely used general-purpose, HIGH LEVEL programming language. 
+        Its design philosophy emphasizes code readability, and its syntax allows 
+        programmers to express concepts in fewer lines of code than would be possible 
+        in languages such as C. The language provides constructs intended to enable clear 
+        programs on both a small and large scale.
+
+
 
 
 Add text after the target:
@@ -84,11 +87,12 @@ Add text after the target:
 	$ pysed -n 'C' '++' example.txt
 	$ cat examples.txt
 
-	Python is a widely used general-purpose, HIGH LEVEL programming language. Its 
-	design philosophy emphasizes code readability, and its syntax allows programmers to express 
-	concepts in fewer lines of code than would be possible in languages such as C++. The 
-	language provides constructs intended to enable clear programs on both a small and large 
-	scale.
+        Python is a widely used general-purpose, HIGH LEVEL programming language. 
+        Its design philosophy emphasizes code readability, and its syntax allows 
+        programmers to express concepts in fewer lines of code than would be possible 
+        in languages such as C++. The language provides constructs intended to enable clear 
+        programs on both a small and large scale.
+
 
 
 Add text before target:
@@ -99,11 +103,12 @@ Add text before target:
 	$ pysed -b 'small' 'big, ' example.txt	
 	$ cat example.txt
 
-	Python is a widely used general-purpose, HIGH LEVEL programming language. Its 
-	design philosophy emphasizes code readability, and its syntax allows programmers to express 
-	concepts in fewer lines of code than would be possible in languages such as C++. The 
-	language provides constructs intended to enable clear programs on both a big, small and large 
-	scale.
+        Python is a widely used general-purpose, HIGH LEVEL programming language.
+        Its design philosophy emphasizes code readability, and its syntax allows
+        programmers to express concepts in fewer lines of code than would be possible
+        in languages such as C++. The language provides constructs intended to enable clear
+        programs on both a big, small and large scale.
+
 
 
 Replace special character:
@@ -114,11 +119,12 @@ Replace special character:
 	$ pysed -s '\+\+' '#' example.txt	
 	$ cat example.txt
 
-	Python is a widely used general-purpose, HIGH LEVEL programming language. Its 
-	design philosophy emphasizes code readability, and its syntax allows programmers to express 
-	concepts in fewer lines of code than would be possible in languages such as C#. The 
-	language provides constructs intended to enable clear programs on both a big, small and large 
-	scale.
+        Python is a widely used general-purpose, HIGH LEVEL programming language.
+        Its design philosophy emphasizes code readability, and its syntax allows
+        programmers to express concepts in fewer lines of code than would be possible
+        in languages such as C#. The language provides constructs intended to enable clear
+        programs on both a big, small and large scale.
+
 	
 
 Remove text:
@@ -129,12 +135,11 @@ Remove text:
 	$ pysed -s 'programming ' '' example.txt
         $ cat example.txt
 
-	Python is a widely used general-purpose, HIGH LEVEL language. Its 
-	design philosophy emphasizes code readability, and its syntax allows programmers to express 
-	concepts in fewer lines of code than would be possible in languages such as C++. The 
-	language provides constructs intended to enable clear programs on both a big, small and large 
-	scale.
-
+        Python is a widely used general-purpose, HIGH LEVEL language.
+        Its design philosophy emphasizes code readability, and its syntax allows
+        programmers to express concepts in fewer lines of code than would be possible
+        in languages such as C#. The language provides constructs intended to enable clear
+        programs on both a big, small and large scale.
 
 
 

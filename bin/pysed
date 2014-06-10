@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-
 '''usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]
 
 Utility that parses and transforms text
