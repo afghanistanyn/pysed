@@ -1,3 +1,13 @@
+.. image:: https://badge.fury.io/py/pysed.png
+    :target: http://badge.fury.io/py/pysed
+.. image:: https://pypip.in/d/pysed/badge.png
+    :target: https://pypi.python.org/pypi/pysed
+.. image:: https://pypip.in/license/pysed/badge.png
+    :target: https://pypi.python.org/pypi/pysed
+
+
+
+
 Cli utility that parses and transforms text written in Python.
 
 
