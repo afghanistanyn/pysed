@@ -58,8 +58,8 @@ See changes before save:
 	Python is a widely used general-purpose, HIGH LEVEL programming language. 
 	Its design philosophy emphasizes code readability, and its syntax allows 
 	programmers to express concepts in fewer lines of code than would be possible
-	in languages such as C. The language provides constructs intended to enable clear
-	programs on both a small and large scale.
+	in languages such as C. The language provides constructs intended to enable
+	clear programs on both a small and large scale.
 
 
 Replace text:
@@ -72,8 +72,8 @@ Replace text:
         Python is a widely used general-purpose, high-level programming language. 
         Its design philosophy emphasizes code readability, and its syntax allows 
         programmers to express concepts in fewer lines of code than would be possible 
-        in languages such as C. The language provides constructs intended to enable clear 
-        programs on both a small and large scale.	
+        in languages such as C. The language provides constructs intended to enable
+	clear programs on both a small and large scale.	
 
 
 
@@ -83,8 +83,8 @@ Replace text:
         Python is a widely used general-purpose, HIGH LEVEL programming language. 
         Its design philosophy emphasizes code readability, and its syntax allows 
         programmers to express concepts in fewer lines of code than would be possible 
-        in languages such as C. The language provides constructs intended to enable clear 
-        programs on both a small and large scale.
+        in languages such as C. The language provides constructs intended to enable
+	clear programs on both a small and large scale.
 
 
 
@@ -100,8 +100,8 @@ Add text after the target:
         Python is a widely used general-purpose, HIGH LEVEL programming language. 
         Its design philosophy emphasizes code readability, and its syntax allows 
         programmers to express concepts in fewer lines of code than would be possible 
-        in languages such as C++. The language provides constructs intended to enable clear 
-        programs on both a small and large scale.
+        in languages such as C++. The language provides constructs intended to enable
+	clear programs on both a small and large scale.
 
 
 
@@ -116,8 +116,8 @@ Add text before target:
         Python is a widely used general-purpose, HIGH LEVEL programming language.
         Its design philosophy emphasizes code readability, and its syntax allows
         programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C++. The language provides constructs intended to enable clear
-        programs on both a big, small and large scale.
+        in languages such as C++. The language provides constructs intended to enable
+	clear programs on both a big, small and large scale.
 
 
 
@@ -132,8 +132,8 @@ Replace special character:
         Python is a widely used general-purpose, HIGH LEVEL programming language.
         Its design philosophy emphasizes code readability, and its syntax allows
         programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C#. The language provides constructs intended to enable clear
-        programs on both a big, small and large scale.
+        in languages such as C#. The language provides constructs intended to enable
+	clear programs on both a big, small and large scale.
 
 	
 
@@ -148,8 +148,8 @@ Remove text:
         Python is a widely used general-purpose, HIGH LEVEL language.
         Its design philosophy emphasizes code readability, and its syntax allows
         programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C#. The language provides constructs intended to enable clear
-        programs on both a big, small and large scale.
+        in languages such as C#. The language provides constructs intended to enable
+	clear programs on both a big, small and large scale.
 
 
 
