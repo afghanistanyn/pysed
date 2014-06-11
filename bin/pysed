@@ -23,7 +23,7 @@ import subprocess
 
 
 __author__ = "dslackw"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -74,7 +74,7 @@ def PrintText(file, arg0, arg2, arg3):
         	        print result,	
 
 	except IOError:
-                print ('wrong file name')
+                print ("pysed: can't read %s: No such file or directory" % file)
 
 
 
@@ -105,7 +105,7 @@ def ReplaceText(file, arg1, arg2):
 		file.close()
 
 	except IOError:
-                print ('wrong file name')	
+		print ("pysed: can't read %s: No such file or directory" % file)
 
 
 
@@ -142,7 +142,45 @@ def AppendText(file, arg0, arg1, arg2):
 	        file.close()
 
 	except IOError:
-                print ('wrong file name')
+		print ("pysed: can't read %s: No such file or directory" % file)
+
+
+
+
+def Version():
+	print ('Version : '),  __version__	
+	print ('License : '),  __license__
+	print ('Email   : '),  __email__
+
+
+
+
+def ArgumentsView():
+	print ('usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]\n')
+        print ('Utility that parses and transforms text\n')
+        print ('optional arguments:')
+        print ('  -h, --help            show this help message and exit')
+        print ('  -v, --version         print version and exit')
+        print ('  -p, --print           print text')
+        print ('  -s,                   find and replace text')
+        print ('  -b,                   add text before target')
+        print ('  -n,                   add text after the target')
+
+
+
+def ArgumentsError(arg0, argx):
+	print ('usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]\n')
+
+	if arg0 == '':
+		print ('pysed: error: argument: expected one argument')
+
+
+	elif arg0 in ['-h', '-v', '-p', '-s', '-b', '-n']:
+		print ('pysed: argument %s: expected at least one argument' % arg0)
+
+	else:
+		print ('pysed: error: unrecognized arguments: %s %s' % (arg0, ' '.join(argx)))
+
 
 
 
@@ -162,22 +200,15 @@ def main():
 		file = arg[4]
 
 
+
 	if len(arg) == 0:
-                print ('Please give one arguments')
+		ArgumentsError('', '')
 
 	elif len(arg) == 1 and arg[0] == '-h' or len(arg) == 1 and arg[0] == '--help':
-		print ('usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]\n')
-		print ('Utility that parses and transforms text\n')
-		print ('optional arguments:')
-	        print ('  -h, --help		show this help message and exit')
-		print ('  -v, --version		print version and exit')
-        	print ('  -p, --print		print text')
-		print ('  -s,			find and replace text')
-		print ('  -b,			add text before target')
-		print ('  -n,			add text after the target')
+		ArgumentsView()
 
 	elif len(arg) == 1 and arg[0] == '-v' or len(arg) == 1 and arg[0] == '--version':
-		print ('Version : '),  __version__
+		Version()
 
 	elif len(arg) == 2 and arg[0] == '-p' or len(arg) == 2 and arg[0] == '--print':
 		PrintText(file, arg[0], '', '')
@@ -194,8 +225,14 @@ def main():
 	elif len(arg) == 4 and arg[0] == '-n':
 		AppendText(file, arg[0], arg[1], arg[2])
 
-	else:
-        	print ('pysed: error argument')
+	elif not any([len(arg) == 1 and arg[0] == '-h', len(arg) == 1 and arg[0] == '-v',
+		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '-s',
+		len(arg) == 1 and arg[0] == '-b', len(arg) == 1 and arg[0] == '-n']):
+		ArgumentsError(arg[0], arg[1:])
+
+	elif arg[0] in ['-h', '-v', '-p', '-s', '-b', '-n']:
+		ArgumentsError(arg[0], arg[1:])
+
 
 
 if __name__ == "__main__":
