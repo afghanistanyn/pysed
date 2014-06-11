@@ -7,7 +7,6 @@
 
 
 
-
 Cli utility that parses and transforms text written in Python.
 
 
@@ -49,8 +48,6 @@ Command Line Tool Usage
 Pysed Examples
 --------------
 
-
-
 See changes before save:
 
 .. code-block:: bash
@@ -73,6 +70,17 @@ See changes before save:
 	This is my fish,
 	whose name is George.
 	This is my goat, whose name is Adam.
+
+
+	$ pysed -s --print '\n ' ' ' text.txt > text2.txt
+	$ cat text2.txt
+
+	This is my cat, whose name is Betty.
+        This is my dog, whose name is Frank.
+        This is my fish,
+        whose name is George.
+        This is my goat, whose name is Adam.
+
 
 	$ pysed -p example.txt
 
@@ -106,7 +114,6 @@ Replace text:
 	clear programs on both a small and large scale.	
 
 
-
 	$ pysed -s 'high-level' 'HIGH LEVEL' example.txt
 	$ cat example.txt
 	
@@ -115,7 +122,6 @@ Replace text:
         programmers to express concepts in fewer lines of code than would be possible 
         in languages such as C. The language provides constructs intended to enable
 	clear programs on both a small and large scale.
-
 
 
 
