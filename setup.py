@@ -5,7 +5,7 @@ from distutils.core import setup
 
 setup(
     name = 'pysed',
-    version = "0.0.1",
+    version = "0.0.2",
     description = "Utility that parses and transforms text",
     keywords = ["python", "sed", "unix", "linux", "text", 
 		"stream", "editor"],
