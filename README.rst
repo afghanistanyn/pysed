@@ -66,13 +66,13 @@ See changes before save:
 	This is my goat,
 	 whose name is Adam.
 
-	$ pysed -s --print '\n ' '' text.txt
+	$ pysed -s --print '\n ' ' ' text.txt
 
-	This is my cat,whose name is Betty.
-	This is my dog,whose name is Frank.
+	This is my cat, whose name is Betty.
+	This is my dog, whose name is Frank.
 	This is my fish,
 	whose name is George.
-	This is my goat,whose name is Adam.
+	This is my goat, whose name is Adam.
 
 	$ pysed -p example.txt
 
