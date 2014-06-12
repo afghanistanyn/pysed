@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-'''usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]
+'''usage: pysed [-h] [-v] [-p] [-s] [-i]
 
 Utility that parses and transforms text
 
@@ -10,9 +10,8 @@ optional arguments:
   -h, --help		show this help message and exit
   -v, --version		print version and exit
   -p, --print		print text
-  -s,			find and replace text
-  -b,			add text before target
-  -n,			add text after the target'''
+  -s,			replace text
+  -i,			insert text'''
 
 
 
@@ -23,7 +22,7 @@ import subprocess
 
 
 __author__ = "dslackw"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -54,11 +53,7 @@ def PrintText(file, arg0, arg2, arg3):
 		        for char in find_text:
         		        result = read.replace(char, arg3)
 
-		elif arg0 == '-b':
-			for char in find_text:
-                	        result = read.replace(char, arg3 + char)
-
-		elif arg0 == '-n':
+		elif arg0 == '-i':
 			for char in find_text:
                 	        result = read.replace(char, char + arg3)
 
@@ -110,13 +105,9 @@ def AppendText(file, arg0, arg1, arg2):
         	        sys.exit()
 	
 
-		if arg0 == '-b':
-		        for char in find_text:
-        		        result = read.replace(char, arg2 + char)
+	        for char in find_text:
+       		        result = read.replace(char, char + arg2)
 
-		else:
-			for char in find_text:
-        		        result = read.replace(char, char + arg2)
 
 	        if result != []:
 			file.seek(0)
@@ -138,26 +129,25 @@ def Version():
 
 
 def ArgumentsView():
-	print ('usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]\n')
+	print ('usage: pysed [-h] [-v] [-p] [-s] [-i]\n')
         print ('Utility that parses and transforms text\n')
         print ('optional arguments:')
         print ('  -h, --help            show this help message and exit')
         print ('  -v, --version         print version and exit')
         print ('  -p, --print           print text')
-        print ('  -s,                   find and replace text')
-        print ('  -b,                   add text before target')
-        print ('  -n,                   add text after the target')
+        print ('  -s,                   replace text')
+        print ('  -i,                   insert text')
 
 
 
 def ArgumentsError(arg0, argx):
-	print ('usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]\n')
+	print ('usage: pysed [-h] [-v] [-p] [-s] [-i]\n')
 
 	if arg0 == '':
 		print ('pysed: error: argument: expected one argument')
 
 
-	elif arg0 in ['-h', '-v', '-p', '-s', '-b', '-n']:
+	elif arg0 in ['-h', '-v', '-p', '-s', '-i']:
 		print ('pysed: argument %s: expected at least one argument' % arg0)
 
 	else:
@@ -199,18 +189,15 @@ def main():
 	elif len(arg) == 4 and arg[0] == '-s':
 		ReplaceText(file, arg[1], arg[2])
 
-	elif len(arg) == 4 and arg[0] == '-b':
-		AppendText(file, arg[0], arg[1], arg[2])
-
-	elif len(arg) == 4 and arg[0] == '-n':
+	elif len(arg) == 4 and arg[0] == '-i':
 		AppendText(file, arg[0], arg[1], arg[2])
 
 	elif not any([len(arg) == 1 and arg[0] == '-h', len(arg) == 1 and arg[0] == '-v',
 		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '-s',
-		len(arg) == 1 and arg[0] == '-b', len(arg) == 1 and arg[0] == '-n']):
+		len(arg) == 1 and arg[0] == '-i']):
 		ArgumentsError(arg[0], arg[1:])
 
-	elif arg[0] in ['-h', '-v', '-p', '-s', '-b', '-n']:
+	elif arg[0] in ['-h', '-v', '-p', '-s', '-i']:
 		ArgumentsError(arg[0], arg[1:])
 
 

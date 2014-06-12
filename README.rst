@@ -32,7 +32,7 @@ Command Line Tool Usage
 .. code-block:: bash
 
 
-	usage: pysed [-h] [-v] [-p] [-s] [-b] [-n]
+	usage: pysed [-h] [-v] [-p] [-s] [-i]
 
 	Utility that parses and transforms text
 
@@ -40,9 +40,8 @@ Command Line Tool Usage
 	  -h, --help		show this help message and exit
 	  -v, --version		print version and exit
 	  -p, --print		print text
-	  -s,			find and replace text
-	  -b,			add text before target
-	  -n,			add text after the target
+	  -s,			replace text
+	  -i,			insert text
 
 
 Pysed Examples
@@ -125,12 +124,12 @@ Replace text:
 
 
 
-Add text after the target:
+Insert text:
 
 .. code-block:: bash
 
 
-	$ pysed -n 'C' '++' example.txt
+	$ pysed -i 'C' '++' example.txt
 	$ cat examples.txt
 
         Python is a widely used general-purpose, HIGH LEVEL programming language. 
@@ -138,22 +137,6 @@ Add text after the target:
         programmers to express concepts in fewer lines of code than would be possible 
         in languages such as C++. The language provides constructs intended to enable
 	clear programs on both a small and large scale.
-
-
-
-Add text before target:
-
-.. code-block:: bash
-
-
-	$ pysed -b 'small' 'big, ' example.txt	
-	$ cat example.txt
-
-        Python is a widely used general-purpose, HIGH LEVEL programming language.
-        Its design philosophy emphasizes code readability, and its syntax allows
-        programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C++. The language provides constructs intended to enable
-	clear programs on both a big, small and large scale.
 
 
 
