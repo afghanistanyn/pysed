@@ -22,7 +22,7 @@ import subprocess
 
 
 __author__ = "dslackw"
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -31,9 +31,42 @@ __email__ = "d.zlatanidis@gmail.com"
 path = subprocess.check_output(['pwd'], shell=True).replace('\n', '/')
 
 
-def PrintText(file, arg0, arg2, arg3):
+def get_from_arg(arg):
+	result = []
+	for char in arg:
+        	result.append(char)
+        	if char == '/':
+                	break
+
+	return ''.join(result).replace('/','')
+
+
+
+def get_nums(text):
+
+	nums = '0123456789'
+
+	result = []
+	for t in text:
+        	for n in nums:
+                	if n == t:
+                        	result.append(n)
+
+	return ''.join(result)
+
+
+
+def print_text(file, arg0, arg2, arg3):
 	result = []
 
+	extra_arg = get_from_arg(arg2)
+	arg2 = arg2.replace(extra_arg + '/', '')
+
+	nums = get_nums(extra_arg)
+	extra_arg = extra_arg.replace(nums, '')
+	if nums == '':
+		nums = 0
+	
 	try :
 		file = open(path + file, 'r')
 	       	read = file.read()
@@ -42,20 +75,27 @@ def PrintText(file, arg0, arg2, arg3):
 
 		try:
 		        find_text = re.findall(arg2, read)
+			if find_text == []:
+				sys.exit()
 		except re.error:
 			sys.exit()
-			
+
 		if arg0 == '-p' or arg0 == '--print':
 			print read,
 			sys.exit()
 
 		elif arg0 == '-s':
-		        for char in find_text:
-        		        result = read.replace(char, arg3)
+			if extra_arg == 'm':
+	               	        result = read.replace(find_text[0], arg3, int(nums))
+			else:
+				result = read.replace(find_text[0], arg3)
 
 		elif arg0 == '-i':
-			for char in find_text:
-                	        result = read.replace(char, char + arg3)
+			if extra_arg == 'm':
+	               	        result = read.replace(find_text[0], find_text[0] + arg3, int(nums))
+
+			else:
+				result = read.replace(find_text[0], find_text[0] + arg3)
 
 	        if result != []:
         	        print result,	
@@ -65,8 +105,17 @@ def PrintText(file, arg0, arg2, arg3):
 
 
 
-def ReplaceText(file, arg1, arg2):
+
+def replace_text(file, arg1, arg2):
 	result = []
+
+	extra_arg = get_from_arg(arg1)
+        arg1 = arg1.replace(extra_arg + '/', '')
+
+        nums = get_nums(extra_arg)
+        extra_arg = extra_arg.replace(nums, '')
+        if nums == '':
+                nums = 0
 
 	try:
 	        file =  open(path + file, 'r+')
@@ -74,11 +123,16 @@ def ReplaceText(file, arg1, arg2):
 	
 		try:
 			find_text = re.findall(arg1, read)
+			if find_text == []:
+                                sys.exit()
 		except re.error:
 			sys.exit()
 
-		for char in find_text:
-			result = read.replace(char, arg2)
+		if extra_arg == 'm':
+			result = read.replace(find_text[0], arg2, int(nums))
+		else:
+			result = read.replace(find_text[0], arg2)
+		
 
 	        if result != []:
 			file.seek(0)
@@ -92,8 +146,17 @@ def ReplaceText(file, arg1, arg2):
 
 
 
-def AppendText(file, arg0, arg1, arg2):
+def append_text(file, arg1, arg2):
 	result = []
+
+	extra_arg = get_from_arg(arg1)
+        arg1 = arg1.replace(extra_arg + '/', '')
+
+        nums = get_nums(extra_arg)
+        extra_arg = extra_arg.replace(nums, '')
+        if nums == '':
+                nums = 0
+
 
 	try:
 		file = open(path + file, 'r+')
@@ -101,12 +164,17 @@ def AppendText(file, arg0, arg1, arg2):
 	
 		try:
 		        find_text = re.findall(arg1, read)
+			if find_text == []:
+                                sys.exit()
 		except re.error:
         	        sys.exit()
 	
+		if extra_arg == 'm':
+			result = read.replace(find_text[0], find_text[0] + arg2, int(nums))
 
-	        for char in find_text:
-       		        result = read.replace(char, char + arg2)
+                else:
+   			result = read.replace(find_text[0], find_text[0] + arg2)
+
 
 
 	        if result != []:
@@ -121,26 +189,26 @@ def AppendText(file, arg0, arg1, arg2):
 
 
 
-def Version():
-	print ('Version : '),  __version__	
-	print ('License : '),  __license__
-	print ('Email   : '),  __email__
+def version():
+	print ('version :'),  __version__	
+	print ('License :'),  __license__
+	print ('Email   :'),  __email__
 
 
 
-def ArgumentsView():
+def arguments_view():
 	print ('usage: pysed [-h] [-v] [-p] [-s] [-i]\n')
         print ('Utility that parses and transforms text\n')
         print ('optional arguments:')
         print ('  -h, --help            show this help message and exit')
         print ('  -v, --version         print version and exit')
         print ('  -p, --print           print text')
-        print ('  -s,                   replace text')
-        print ('  -i,                   insert text')
+        print ('  -s, m /	        replace text')
+        print ('  -i, m /               insert text')
 
 
 
-def ArgumentsError(arg0, argx):
+def arguments_error(arg0, argx):
 	print ('usage: pysed [-h] [-v] [-p] [-s] [-i]\n')
 
 	if arg0 == '':
@@ -172,33 +240,33 @@ def main():
 
 
 	if len(arg) == 0:
-		ArgumentsError('', '')
+		arguments_error('', '')
 
 	elif len(arg) == 1 and arg[0] == '-h' or len(arg) == 1 and arg[0] == '--help':
-		ArgumentsView()
+		arguments_view()
 
 	elif len(arg) == 1 and arg[0] == '-v' or len(arg) == 1 and arg[0] == '--version':
-		Version()
+		version()
 
 	elif len(arg) == 2 and arg[0] == '-p' or len(arg) == 2 and arg[0] == '--print':
-		PrintText(file, arg[0], '', '')
+		print_text(file, arg[0], '', '')
 
 	elif len(arg) == 5 and arg[1] == '-p' or len(arg) == 5 and arg[1] == '--print':
-		PrintText(file, arg[0], arg[2], arg[3])
-	
+		print_text(file, arg[0], arg[2], arg[3])
+
 	elif len(arg) == 4 and arg[0] == '-s':
-		ReplaceText(file, arg[1], arg[2])
+		replace_text(file, arg[1], arg[2])
 
 	elif len(arg) == 4 and arg[0] == '-i':
-		AppendText(file, arg[0], arg[1], arg[2])
+		append_text(file, arg[1], arg[2])
 
 	elif not any([len(arg) == 1 and arg[0] == '-h', len(arg) == 1 and arg[0] == '-v',
 		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '-s',
 		len(arg) == 1 and arg[0] == '-i']):
-		ArgumentsError(arg[0], arg[1:])
+		arguments_error(arg[0], arg[1:])
 
 	elif arg[0] in ['-h', '-v', '-p', '-s', '-i']:
-		ArgumentsError(arg[0], arg[1:])
+		arguments_error(arg[0], arg[1:])
 
 
 

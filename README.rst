@@ -40,14 +40,17 @@ Command Line Tool Usage
 	  -h, --help		show this help message and exit
 	  -v, --version		print version and exit
 	  -p, --print		print text
-	  -s,			replace text
-	  -i,			insert text
+	  -s, m /		replace text
+	  -i, m /		insert text
 
 
 Pysed Examples
 --------------
 
-See changes before save:
+See changes before modification with options -p --print:
+
+
+Print text file:
 
 .. code-block:: bash
 
@@ -62,6 +65,10 @@ See changes before save:
 	This is my goat,
 	 whose name is Adam.
 
+Remove new lines:
+
+.. code-block:: bash
+
 	$ pysed -s --print '\n ' ' ' text.txt
 
 	This is my cat, whose name is Betty.
@@ -70,6 +77,9 @@ See changes before save:
 	whose name is George.
 	This is my goat, whose name is Adam.
 
+Redirect results to another file:
+
+.. code-block:: bash
 
 	$ pysed -s --print '\n ' ' ' text.txt > text2.txt
 	$ cat text2.txt
@@ -80,97 +90,65 @@ See changes before save:
         whose name is George.
         This is my goat, whose name is Adam.
 
-
-	$ pysed -p example.txt
-
-        Python is a widely used general-purpose, high-level programming language.
-        Its design philosophy emphasizes code readability, and its syntax allows
-        programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C. The language provides constructs intended to enable
-        clear programs on both a small and large scale.
-
-
-	$ pysed -s --print 'high-level' 'HIGH LEVEL' example.txt
-
-	Python is a widely used general-purpose, HIGH LEVEL programming language. 
-	Its design philosophy emphasizes code readability, and its syntax allows 
-	programmers to express concepts in fewer lines of code than would be possible
-	in languages such as C. The language provides constructs intended to enable
-	clear programs on both a small and large scale.
-
-
 Replace text:
 
 .. code-block:: bash
 
-
-	$ cat example.txt
-
-        Python is a widely used general-purpose, high-level programming language. 
-        Its design philosophy emphasizes code readability, and its syntax allows 
-        programmers to express concepts in fewer lines of code than would be possible 
-        in languages such as C. The language provides constructs intended to enable
-	clear programs on both a small and large scale.	
-
-
-	$ pysed -s 'high-level' 'HIGH LEVEL' example.txt
-	$ cat example.txt
+	$ pysed -s --print 'This' 'THIS' text.txt
 	
-        Python is a widely used general-purpose, HIGH LEVEL programming language. 
-        Its design philosophy emphasizes code readability, and its syntax allows 
-        programmers to express concepts in fewer lines of code than would be possible 
-        in languages such as C. The language provides constructs intended to enable
-	clear programs on both a small and large scale.
+	THIS is my cat,
+	 whose name is Betty.
+	THIS is my dog,
+	 whose name is Frank.
+	THIS is my fish,
+	whose name is George.
+	THIS is my goat,
+	 whose name is Adam.
 
+Replace max:
 
+.. code-block:: bash
+
+	$ pysed -s --print m2/'This' 'THIS' text.txt
+
+        THIS is my cat,
+         whose name is Betty.
+        THIS is my dog,
+         whose name is Frank.
+        This is my fish,
+        whose name is George.
+        This is my goat,
+         whose name is Adam.
 
 Insert text:
 
 .. code-block:: bash
 
+	$ pysed -i --print 'whose ' 'sur' text.txt
 
-	$ pysed -i 'C' '++' example.txt
-	$ cat examples.txt
+        THIS is my cat,
+         whose surname is Betty.
+        THIS is my dog,
+         whose surname is Frank.
+        This is my fish,
+        whose surname is George.
+        This is my goat,
+         whose surname is Adam.	
 
-        Python is a widely used general-purpose, HIGH LEVEL programming language. 
-        Its design philosophy emphasizes code readability, and its syntax allows 
-        programmers to express concepts in fewer lines of code than would be possible 
-        in languages such as C++. The language provides constructs intended to enable
-	clear programs on both a small and large scale.
-
-
-
-Replace special character:
-
-.. code-block:: bash
-
-	
-	$ pysed -s '\+\+' '#' example.txt	
-	$ cat example.txt
-
-        Python is a widely used general-purpose, HIGH LEVEL programming language.
-        Its design philosophy emphasizes code readability, and its syntax allows
-        programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C#. The language provides constructs intended to enable
-	clear programs on both a big, small and large scale.
-
-	
-
-Remove text:
+Insert max:
 
 .. code-block:: bash
 
+	$ pysed -i --print m2/'whose ' 'sur' text.txt
 
-	$ pysed -s 'programming ' '' example.txt
-        $ cat example.txt
-
-        Python is a widely used general-purpose, HIGH LEVEL language.
-        Its design philosophy emphasizes code readability, and its syntax allows
-        programmers to express concepts in fewer lines of code than would be possible
-        in languages such as C#. The language provides constructs intended to enable
-	clear programs on both a big, small and large scale.
-
-
+        THIS is my cat,
+         whose surname is Betty.
+        THIS is my dog,
+         whose surname is Frank.
+        This is my fish,
+        whose name is George.
+        This is my goat, 
+         whose name is Adam.	
 
 
 More features come....

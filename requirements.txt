@@ -1,2 +1,2 @@
 # Python 2.7.5
-# Linux
+# Linux OS
