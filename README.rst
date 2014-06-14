@@ -52,6 +52,9 @@ See changes before modification with options -p --print:
 
 Print text file:
 
+(NOTE: Windows users avoid using quotes '')
+
+
 .. code-block:: bash
 
 	$ pysed --print text.txt
