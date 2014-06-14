@@ -16,9 +16,9 @@ optional arguments:
 
 
 import re
+import os
 import sys
-import subprocess
-
+import platform
 
 
 __author__ = "dslackw"
@@ -28,7 +28,11 @@ __email__ = "d.zlatanidis@gmail.com"
 
 
 
-path = subprocess.check_output(['pwd'], shell=True).replace('\n', '/')
+if platform.system() == 'Linux':
+	path = os.getcwd() + '/'
+
+elif platform.system() == 'Windows':
+	path = os.getcwd() + '\/'
 
 
 def get_from_arg(arg):
