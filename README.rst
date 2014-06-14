@@ -182,9 +182,9 @@ Insert text:
 
 	$ pysed -i --print 'whose ' 'sur' text.txt
 
-        THIS is my cat,
+        This is my cat,
          whose surname is Betty.
-        THIS is my dog,
+        This is my dog,
          whose surname is Frank.
         This is my fish,
         whose surname is George.
@@ -197,9 +197,9 @@ Insert max:
 
 	$ pysed -i --print m2/'whose ' 'sur' text.txt
 
-        THIS is my cat,
+        This is my cat,
          whose surname is Betty.
-        THIS is my dog,
+        This is my dog,
          whose surname is Frank.
         This is my fish,
         whose name is George.
