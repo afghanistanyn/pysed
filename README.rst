@@ -40,8 +40,8 @@ Command Line Tool Usage
 	  -h, --help		show this help message and exit
 	  -v, --version		print version and exit
 	  -p, --print		print text
-	  -s, m /		replace text
-	  -i, m /		insert text
+	  -s, m(n), u, l /	replace text
+	  -i, m(n) /		insert text
 
 
 Pysed Examples
@@ -122,6 +122,59 @@ Replace max:
         whose name is George.
         This is my goat,
          whose name is Adam.
+
+
+convert text to uppercase:
+
+.. code-block:: bash
+
+	$ pysed -s --print u/'This' '^' text.txt
+
+	THIS is my cat,
+	 whose name is betty.
+	THIS is my dog,
+	 whose name is frank.
+	THIS is my fish,
+	whose name is george.
+	THIS is my goat,
+	 whose name is adam.
+
+	$ pysed -s --print u/'' '*' text.txt
+	
+	THIS IS MY CAT,
+	 WHOSE NAME IS BETTY.
+	THIS IS MY DOG,
+	 WHOSE NAME IS FRANK.
+	THIS IS MY FISH,
+	WHOSE NAME IS GEORGE.
+	THIS IS MY GOAT,
+	 WHOSE NAME IS ADAM.
+
+convert text to lowercase:
+
+.. code-block:: bash
+
+	$ pysed -s --print l/'T' ',' text.txt
+
+	this is my cat,
+	 whose name is betty.
+	this is my dog,
+	 whose name is frank.
+	this is my fish,
+	whose name is george.
+	this is my goat,
+	 whose name is adam.
+
+	$ pysed -s --print l/'' '*' text.txt
+
+        this is my cat,
+         whose name is betty.
+        this is my dog,
+         whose name is frank.
+        this is my fish,
+        whose name is george.
+        this is my goat,
+         whose name is adam	
 
 Insert text:
 

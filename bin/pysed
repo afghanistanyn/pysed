@@ -10,8 +10,8 @@ optional arguments:
   -h, --help		show this help message and exit
   -v, --version		print version and exit
   -p, --print		print text
-  -s,			replace text
-  -i,			insert text'''
+  -s, m(n), u, l /	replace text
+  -i, m(n) /		insert text'''
 
 
 
@@ -22,7 +22,7 @@ import platform
 
 
 __author__ = "dslackw"
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -91,13 +91,26 @@ def print_text(file, arg0, arg2, arg3):
 		elif arg0 == '-s':
 			if extra_arg == 'm':
 	               	        result = read.replace(find_text[0], arg3, int(nums))
+
+			elif extra_arg == 'u' and arg3 == '^':
+				result = read.replace(find_text[0], find_text[0].upper())
+
+			elif extra_arg == 'u' and arg3 == '*':
+				result = read.upper()
+
+			elif extra_arg == 'l' and arg3 == ',':
+				result = read.replace(find_text[0], find_text[0].lower())			
+
+			elif extra_arg == 'l' and arg3 == '*':
+				result = read.lower()
+
 			else:
 				result = read.replace(find_text[0], arg3)
 
 		elif arg0 == '-i':
 			if extra_arg == 'm':
 	               	        result = read.replace(find_text[0], find_text[0] + arg3, int(nums))
-
+			
 			else:
 				result = read.replace(find_text[0], find_text[0] + arg3)
 
@@ -134,6 +147,19 @@ def replace_text(file, arg1, arg2):
 
 		if extra_arg == 'm':
 			result = read.replace(find_text[0], arg2, int(nums))
+
+		elif extra_arg == 'u' and arg2 == '^':
+	                result = read.replace(find_text[0], find_text[0].upper())
+
+                elif extra_arg == 'u' and arg2 == '*':
+        	        result = read.upper()
+
+                elif extra_arg == 'l' and arg2 == ',':
+                	result = read.replace(find_text[0], find_text[0].lower())
+
+                elif extra_arg == 'l' and arg2 == '*':
+	                result = read.lower()
+
 		else:
 			result = read.replace(find_text[0], arg2)
 		
@@ -207,8 +233,8 @@ def arguments_view():
         print ('  -h, --help            show this help message and exit')
         print ('  -v, --version         print version and exit')
         print ('  -p, --print           print text')
-        print ('  -s, m /	        replace text')
-        print ('  -i, m /               insert text')
+        print ('  -s, m(n), u, l /	replace text')
+        print ('  -i, m(n) /		insert text')
 
 
 
