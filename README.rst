@@ -102,7 +102,7 @@ Redirect results to another file:
         This is my goat, whose name is Adam.
 
 	$ pysed --extract 'is' text.txt > text3.txt
-	# pysed -p text3.txt
+	$ pysed -p text3.txt
 
 	is is is is is is is is is is is is is
 
