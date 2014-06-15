@@ -31,17 +31,17 @@ Command Line Tool Usage
 
 .. code-block:: bash
 
-
-	usage: pysed [-h] [-v] [-p] [-s] [-i]
+	usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]
 
 	Utility that parses and transforms text
 
 	optional arguments:
-	  -h, --help		show this help message and exit
-	  -v, --version		print version and exit
-	  -p, --print		print text
-	  -s, m(n), u, l /	replace text
-	  -i, m(n) /		insert text
+	  -h, --help            	show this help message and exit
+	  -v, --version         	print version and exit
+	  -p, --print           	print text
+	  -e, --extract			extract text
+	  -r, --replace, m(n), u, l /	replace text
+	  -i, --insert,  m(n) /		insert text
 
 
 Pysed Examples
@@ -68,6 +68,14 @@ Print text file:
 	This is my goat,
 	 whose name is Adam.
 
+Extract text:
+
+.. code-block:: bash
+
+	$ pysed pysed --extract 'is' text.txt
+
+	is is is is is is is is is is is is is
+
 Remove new lines:
 
 .. code-block:: bash
@@ -92,6 +100,11 @@ Redirect results to another file:
         This is my fish,
         whose name is George.
         This is my goat, whose name is Adam.
+
+	$ pysed --extract 'is' text.txt > text3.txt
+	# pysed -p text3.txt
+
+	is is is is is is is is is is is is is
 
 Replace text:
 
@@ -124,20 +137,20 @@ Replace max:
          whose name is Adam.
 
 
-convert text to uppercase:
+Convert text to uppercase:
 
 .. code-block:: bash
 
 	$ pysed -s --print u/'This' '^' text.txt
 
 	THIS is my cat,
-	 whose name is betty.
+	 whose name is Betty.
 	THIS is my dog,
-	 whose name is frank.
+	 whose name is Frank.
 	THIS is my fish,
-	whose name is george.
+	whose name is George.
 	THIS is my goat,
-	 whose name is adam.
+	 whose name is Adam.
 
 	$ pysed -s --print u/'' '*' text.txt
 	
@@ -150,20 +163,20 @@ convert text to uppercase:
 	THIS IS MY GOAT,
 	 WHOSE NAME IS ADAM.
 
-convert text to lowercase:
+Convert text to lowercase:
 
 .. code-block:: bash
 
 	$ pysed -s --print l/'T' ',' text.txt
 
 	this is my cat,
-	 whose name is betty.
+	 whose name is Betty.
 	this is my dog,
-	 whose name is frank.
+	 whose name is Frank.
 	this is my fish,
-	whose name is george.
+	whose name is George.
 	this is my goat,
-	 whose name is adam.
+	 whose name is Adam.
 
 	$ pysed -s --print l/'' '*' text.txt
 

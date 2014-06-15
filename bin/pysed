@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 
 
-'''usage: pysed [-h] [-v] [-p] [-s] [-i]
+'''usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]
 
 Utility that parses and transforms text
 
 optional arguments:
-  -h, --help		show this help message and exit
-  -v, --version		print version and exit
-  -p, --print		print text
-  -s, m(n), u, l /	replace text
-  -i, m(n) /		insert text'''
+  -h, --help			show this help message and exit
+  -v, --version			print version and exit
+  -p, --print			print text
+  -e, --extract			extract text
+  -r, --replace, m(n), u, l /   replace text
+  -i, --insert,  m(n) /		insert text'''
 
 
 
@@ -22,7 +23,7 @@ import platform
 
 
 __author__ = "dslackw"
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -60,7 +61,7 @@ def get_nums(text):
 
 
 
-def print_text(file, arg0, arg2, arg3):
+def print_text(file, arg0, arg1, arg2, arg3):
 	result = []
 
 	extra_arg = get_from_arg(arg2)
@@ -88,7 +89,15 @@ def print_text(file, arg0, arg2, arg3):
 			print read,
 			sys.exit()
 
-		elif arg0 == '-s':
+		elif arg0 == '-e' or arg0 == '--extract':
+			try:
+				find_text = re.findall(arg1, read)
+				print ' '.join(find_text)
+			except re.error:
+                        	sys.exit()
+
+
+		elif arg0 == '-r' or arg0 == '--replace':
 			if extra_arg == 'm':
 	               	        result = read.replace(find_text[0], arg3, int(nums))
 
@@ -107,7 +116,7 @@ def print_text(file, arg0, arg2, arg3):
 			else:
 				result = read.replace(find_text[0], arg3)
 
-		elif arg0 == '-i':
+		elif arg0 == '-i' or arg0 == '--insert':
 			if extra_arg == 'm':
 	               	        result = read.replace(find_text[0], find_text[0] + arg3, int(nums))
 			
@@ -227,25 +236,31 @@ def version():
 
 
 def arguments_view():
-	print ('usage: pysed [-h] [-v] [-p] [-s] [-i]\n')
+	print ('usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]\n')
         print ('Utility that parses and transforms text\n')
         print ('optional arguments:')
-        print ('  -h, --help            show this help message and exit')
-        print ('  -v, --version         print version and exit')
-        print ('  -p, --print           print text')
-        print ('  -s, m(n), u, l /	replace text')
-        print ('  -i, m(n) /		insert text')
+        print ('  -h, --help            	show this help message and exit')
+        print ('  -v, --version         	print version and exit')
+        print ('  -p, --print           	print text')
+	print ('  -e, --extract			extract text')
+        print ('  -r, --replace, m(n), u, l /	replace text')
+        print ('  -i, --insert,  m(n) /		insert text')
 
 
 
 def arguments_error(arg0, argx):
-	print ('usage: pysed [-h] [-v] [-p] [-s] [-i]\n')
+	print ('usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]\n')
 
 	if arg0 == '':
 		print ('pysed: error: argument: expected one argument')
 
 
-	elif arg0 in ['-h', '-v', '-p', '-s', '-i']:
+	elif arg0 in ['-h', '--help',
+		      '-v', '--version',
+		      '-p', '--print',
+		      '-e', '--extract',
+		      '-r', '--replace',
+		      '-i', '--insert']:
 		print ('pysed: argument %s: expected at least one argument' % arg0)
 
 	else:
@@ -261,6 +276,9 @@ def main():
 
 	if len(arg) == 2:
 		file = arg[1]
+
+        elif len(arg) == 3:
+                file = arg[2]
 
 	elif len(arg) == 4:
 		file = arg[3]
@@ -279,23 +297,34 @@ def main():
 		version()
 
 	elif len(arg) == 2 and arg[0] == '-p' or len(arg) == 2 and arg[0] == '--print':
-		print_text(file, arg[0], '', '')
+		print_text(file, arg[0], arg[1], '', '')
 
 	elif len(arg) == 5 and arg[1] == '-p' or len(arg) == 5 and arg[1] == '--print':
-		print_text(file, arg[0], arg[2], arg[3])
+		print_text(file, arg[0], arg[1], arg[2], arg[3])
 
-	elif len(arg) == 4 and arg[0] == '-s':
+	elif len(arg) == 3 and arg[0] == '-e' or len(arg) == 3 and arg[0] == '--extract':
+                print_text(file, arg[0], arg[1], '', '')
+
+	elif len(arg) == 4 and arg[0] == '-r' or len(arg) == 4 and arg[0] == '--replace':
 		replace_text(file, arg[1], arg[2])
 
-	elif len(arg) == 4 and arg[0] == '-i':
+	elif len(arg) == 4 and arg[0] == '-i' or len(arg) == 4 and arg[0] == '--insert':
 		append_text(file, arg[1], arg[2])
 
-	elif not any([len(arg) == 1 and arg[0] == '-h', len(arg) == 1 and arg[0] == '-v',
-		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '-s',
-		len(arg) == 1 and arg[0] == '-i']):
+	elif not any([len(arg) == 1 and arg[0] == '-h', len(arg) == 1 and arg[0] == '--help',
+		len(arg) == 1 and arg[0] == '-v', len(arg) == 1 and arg[0] == '--version',
+		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '--print',
+		len(arg) == 1 and arg[0] == '-e', len(arg) == 1 and arg[0] == '--extract',
+		len(arg) == 1 and arg[0] == '-r', len(arg) == 1 and arg[0] == '--replace',
+		len(arg) == 1 and arg[0] == '-i', len(arg) == 1 and arg[0] == '--insert']):
 		arguments_error(arg[0], arg[1:])
 
-	elif arg[0] in ['-h', '-v', '-p', '-s', '-i']:
+	elif arg[0] in ['-h', '--help',
+		        '-v', '--version',
+			'-p', '--print',
+			'-e', '--extract',
+			'-r', '--replace',
+		        '-i', '--insert']:
 		arguments_error(arg[0], arg[1:])
 
 
