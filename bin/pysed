@@ -21,9 +21,9 @@ import os
 import sys
 import platform
 
-
+__prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -122,12 +122,17 @@ def print_text(file, arg0, arg1, arg2, arg3):
 			
 			else:
 				result = read.replace(find_text[0], find_text[0] + arg3)
+		else:
+
+			arguments_error(arg0, '')			
+
+
 
 	        if result != []:
         	        print result,	
 
 	except IOError:
-                print ("pysed: can't read %s: No such file or directory" % file)
+                print ("%s: can't read %s: No such file or directory" % (__prog__, file))
 
 
 
@@ -172,7 +177,7 @@ def replace_text(file, arg1, arg2):
 		else:
 			result = read.replace(find_text[0], arg2)
 		
-
+	
 	        if result != []:
 			file.seek(0)
 			file.truncate()
@@ -181,7 +186,7 @@ def replace_text(file, arg1, arg2):
 		file.close()
 
 	except IOError:
-		print ("pysed: can't read %s: No such file or directory" % file)
+		print ("%s: can't read %s: No such file or directory" % (__prog__, file))
 
 
 
@@ -224,7 +229,7 @@ def append_text(file, arg1, arg2):
 	        file.close()
 
 	except IOError:
-		print ("pysed: can't read %s: No such file or directory" % file)
+		print ("%s: can't read %s: No such file or directory" % (__prog__, file))
 
 
 
@@ -249,22 +254,20 @@ def arguments_view():
 
 
 def arguments_error(arg0, argx):
-	print ('usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]\n')
+	print ('usage: %s [-h] [-v] [-p] [-e] [-r] [-i]\n' % __prog__)
 
 	if arg0 == '':
-		print ('pysed: error: argument: expected one argument')
+		print ('%s: error: argument: expected one argument' % __prog__)
 
 
-	elif arg0 in ['-h', '--help',
-		      '-v', '--version',
-		      '-p', '--print',
+	elif arg0 in ['-p', '--print',
 		      '-e', '--extract',
 		      '-r', '--replace',
 		      '-i', '--insert']:
-		print ('pysed: argument %s: expected at least one argument' % arg0)
+		print ('%s: argument %s: expected at least one argument' % (__prog__, arg0))
 
 	else:
-		print ('pysed: error: unrecognized arguments: %s %s' % (arg0, ' '.join(argx)))
+		print ('%s: error: unrecognized arguments: %s %s' % (__prog__, arg0, ' '.join(argx)))
 
 
 
@@ -311,17 +314,15 @@ def main():
 	elif len(arg) == 4 and arg[0] == '-i' or len(arg) == 4 and arg[0] == '--insert':
 		append_text(file, arg[1], arg[2])
 
-	elif not any([len(arg) == 1 and arg[0] == '-h', len(arg) == 1 and arg[0] == '--help',
-		len(arg) == 1 and arg[0] == '-v', len(arg) == 1 and arg[0] == '--version',
+	elif not any([
 		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '--print',
 		len(arg) == 1 and arg[0] == '-e', len(arg) == 1 and arg[0] == '--extract',
 		len(arg) == 1 and arg[0] == '-r', len(arg) == 1 and arg[0] == '--replace',
-		len(arg) == 1 and arg[0] == '-i', len(arg) == 1 and arg[0] == '--insert']):
+		len(arg) == 1 and arg[0] == '-i', len(arg) == 1 and arg[0] == '--insert',
+		]):
 		arguments_error(arg[0], arg[1:])
 
-	elif arg[0] in ['-h', '--help',
-		        '-v', '--version',
-			'-p', '--print',
+	elif arg[0] in ['-p', '--print',
 			'-e', '--extract',
 			'-r', '--replace',
 		        '-i', '--insert']:
