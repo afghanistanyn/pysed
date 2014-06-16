@@ -46,7 +46,7 @@ Command Line Tool Usage
 	  -r, --replace  replace text
 			 m max(num)/, u upper/, l lower/ ['^', ',', '*']
 	  -i, --insert	 insert text
-        	         m max(num)/, u upper/, l lower/ ['^', ',', '*']
+        	         m max(num)/
 
 
 Pysed Examples
@@ -193,7 +193,7 @@ Convert text to uppercase:
 
 .. code-block:: bash
 
-	$ pysed -r --print u/'This' '^' text.txt
+	$ pysed -r --print u^/'This' '' text.txt
 
 	THIS is my cat,
 	 whose name is Betty.

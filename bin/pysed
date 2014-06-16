@@ -18,7 +18,7 @@ optional arguments:
   -r, --replace  replace text
 		 m max(num)/, u upper/, l lower/ ['^', ',', '*']
   -i, --insert	 insert text
-                 m max(num)/, u upper/, l lower/ ['^', ',', '*']'''
+                 m max(num)/'''
 
 
 
@@ -31,7 +31,7 @@ import platform
 
 __prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -294,7 +294,9 @@ def arguments_view():
         print ('  -r, --replace  replace text')
 	print ('		 m max(num)/, u upper/, l lower/ [\'^\', \',\', \'*\']')
         print ('  -i, --insert	 insert text')
-	print ('                 m max(num)/, u upper/, l lower/ [\'^\', \',\', \'*\']')
+	print ('                 m max(num)/')
+
+
 
 def arguments_error(arg0, argx):
 	print ('usage: %s [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n' % __prog__)
