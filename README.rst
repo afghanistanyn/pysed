@@ -31,17 +31,22 @@ Command Line Tool Usage
 
 .. code-block:: bash
 
-	usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]
+	usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]
 
 	Utility that parses and transforms text
 
 	optional arguments:
-	  -h, --help            	show this help message and exit
-	  -v, --version         	print version and exit
-	  -p, --print           	print text
-	  -e, --extract			extract text
-	  -r, --replace, m(n), u, l /	replace text
-	  -i, --insert,  m(n) /		insert text
+	  -h, --help     show this help message and exit
+	  -v, --version  print version and exit
+	  -p, --print    print text
+	  -l, --lines	 print lines
+			 'num' ['>', '<', '*']
+	  -e, --extract	 extract text
+			 'text'
+	  -r, --replace  replace text
+			 m max(num)/, u upper/, l lower/ ['^', ',', '*']
+	  -i, --insert	 insert text
+        	         m max(num)/, u upper/, l lower/ ['^', ',', '*']
 
 
 Pysed Examples
