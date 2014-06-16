@@ -2,17 +2,24 @@
 # -*- coding: utf-8 -*-
 
 
-'''usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]
+
+'''usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]
 
 Utility that parses and transforms text
 
 optional arguments:
-  -h, --help			show this help message and exit
-  -v, --version			print version and exit
-  -p, --print			print text
-  -e, --extract			extract text
-  -r, --replace, m(n), u, l /   replace text
-  -i, --insert,  m(n) /		insert text'''
+  -h, --help     show this help message and exit
+  -v, --version  print version and exit
+  -p, --print    print text
+  -l, --lines	 print lines
+		 'num' ['>', '<', '*']
+  -e, --extract	 extract text
+		 'text'
+  -r, --replace  replace text
+		 m max(num)/, u upper/, l lower/ ['^', ',', '*']
+  -i, --insert	 insert text
+                 m max(num)/, u upper/, l lower/ ['^', ',', '*']'''
+
 
 
 
@@ -21,9 +28,10 @@ import os
 import sys
 import platform
 
+
 __prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.0.9"
+__version__ = "0.1.0"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -88,6 +96,38 @@ def print_text(file, arg0, arg1, arg2, arg3):
 		if arg0 == '-p' or arg0 == '--print':
 			print read,
 			sys.exit()
+		
+		elif arg0 == '-l' or arg0 == '--lines':
+			for line in read.splitlines():
+			        result.append(line)
+
+			if arg1 == '*':
+				for num in result:
+					print num
+				sys.exit()
+
+			elif arg1 == '>':
+				print result[0]
+				sys.exit()
+
+			elif arg1 == '<':
+				print result[len(result) -1] 
+				sys.exit()
+
+			else:
+
+				try:
+					line_nums = arg1.replace(',', '\n').split()
+	
+					for num in line_nums:
+						if int(num) >= len(result):
+							pass
+						else:
+							print result[int(num)]
+					sys.exit()
+				except ValueError:
+					sys.exit()
+
 
 		elif arg0 == '-e' or arg0 == '--extract':
 			try:
@@ -241,26 +281,30 @@ def version():
 
 
 def arguments_view():
-	print ('usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]\n')
+	print ('usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n')
         print ('Utility that parses and transforms text\n')
         print ('optional arguments:')
-        print ('  -h, --help            	show this help message and exit')
-        print ('  -v, --version         	print version and exit')
-        print ('  -p, --print           	print text')
-	print ('  -e, --extract			extract text')
-        print ('  -r, --replace, m(n), u, l /	replace text')
-        print ('  -i, --insert,  m(n) /		insert text')
-
-
+        print ('  -h, --help     show this help message and exit')
+        print ('  -v, --version  print version and exit')
+        print ('  -p, --print    print text')
+	print ('  -l, --lines	 print lines')
+	print ('		 \'num\' [\'>\', \'<\', \'*\']')
+	print ('  -e, --extract	 extract text')
+	print ('		 \'text\'')
+        print ('  -r, --replace  replace text')
+	print ('		 m max(num)/, u upper/, l lower/ [\'^\', \',\', \'*\']')
+        print ('  -i, --insert	 insert text')
+	print ('                 m max(num)/, u upper/, l lower/ [\'^\', \',\', \'*\']')
 
 def arguments_error(arg0, argx):
-	print ('usage: %s [-h] [-v] [-p] [-e] [-r] [-i]\n' % __prog__)
+	print ('usage: %s [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n' % __prog__)
 
 	if arg0 == '':
 		print ('%s: error: argument: expected one argument' % __prog__)
 
 
 	elif arg0 in ['-p', '--print',
+		      '-l', '--lines',
 		      '-e', '--extract',
 		      '-r', '--replace',
 		      '-i', '--insert']:
@@ -305,6 +349,9 @@ def main():
 	elif len(arg) == 5 and arg[1] == '-p' or len(arg) == 5 and arg[1] == '--print':
 		print_text(file, arg[0], arg[1], arg[2], arg[3])
 
+	elif len(arg) == 3 and arg[0] == '-l' or len(arg) == 3 and arg[0] == '--lines':
+                print_text(file, arg[0], arg[1], '', '')
+
 	elif len(arg) == 3 and arg[0] == '-e' or len(arg) == 3 and arg[0] == '--extract':
                 print_text(file, arg[0], arg[1], '', '')
 
@@ -316,6 +363,7 @@ def main():
 
 	elif not any([
 		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '--print',
+		len(arg) == 1 and arg[0] == '-l', len(arg) == 1 and arg[0] == '--lines',
 		len(arg) == 1 and arg[0] == '-e', len(arg) == 1 and arg[0] == '--extract',
 		len(arg) == 1 and arg[0] == '-r', len(arg) == 1 and arg[0] == '--replace',
 		len(arg) == 1 and arg[0] == '-i', len(arg) == 1 and arg[0] == '--insert',
@@ -323,6 +371,7 @@ def main():
 		arguments_error(arg[0], arg[1:])
 
 	elif arg[0] in ['-p', '--print',
+			'-l', '--lines',
 			'-e', '--extract',
 			'-r', '--replace',
 		        '-i', '--insert']:

@@ -68,6 +68,41 @@ Print text file:
 	This is my goat,
 	 whose name is Adam.
 
+Print lines:
+
+.. code-block:: bash
+
+	$ pysed --lines '0,2,4,6' text.txt
+
+	This is my cat,
+	This is my dog,
+	This is my fish,
+	This is my goat,
+
+	$ pysed --lines '0,3' text.txt
+
+	This is my cat,
+	 whose name is frank.
+
+	$ pysed --lines '>' text.txt
+
+	This is my cat,
+
+	$ pysed --lines '<' text.txt
+
+	whose name is adam.
+
+	$ pysed --lines '*' text.txt
+
+	This is my cat,
+	 whose name is betty.
+	This is my dog,
+	 whose name is frank.
+	This is my fish,
+	whose name is george.
+	This is my goat,
+	 whose name is adam.
+
 Extract text:
 
 .. code-block:: bash
@@ -101,10 +136,18 @@ Redirect results to another file:
         whose name is George.
         This is my goat, whose name is Adam.
 
-	$ pysed --extract 'is' text.txt > text3.txt
-	$ pysed -p text3.txt
+	$ pysed --extract 'This' text.txt > text3.txt
+	$ pysed -print text3.txt
 
-	is is is is is is is is is is is is is
+	This This This This
+
+	$ pysed --lines '0,2,4,6' text.txt > text4.txt
+	$ pysed --print text4.txt
+
+	This is my cat,
+	This is my dog,
+	This is my fish,
+	This is my goat,
 
 Replace text:
 
