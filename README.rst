@@ -77,17 +77,21 @@ Print lines:
 
 .. code-block:: bash
 
-	$ pysed --lines '0,2,4,6' text.txt
-
-	This is my cat,
-	This is my dog,
-	This is my fish,
-	This is my goat,
-
-	$ pysed --lines '0,3' text.txt
+	$ pysed --lines '0,3,2,1,4,7,6,5' text.txt
 
 	This is my cat,
 	 whose name is frank.
+	This is my dog,
+	 whose name is betty.
+	This is my fish,
+	 whose name is adam.
+	This is my goat,
+	whose name is george.
+
+	$ pysed --lines '3,7' text.txt
+
+	This is my dog,
+	 whose name is adam.
 
 	$ pysed --lines '>' text.txt
 
