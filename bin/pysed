@@ -45,6 +45,9 @@ elif platform.system() == 'Windows':
 
 
 def get_from_arg(arg):
+
+	'''Get any string before char /'''
+
 	result = []
 	for char in arg:
         	result.append(char)
@@ -56,6 +59,9 @@ def get_from_arg(arg):
 
 
 def get_nums(text):
+
+	'''Grep numbers from a string'''
+
 
 	nums = '0123456789'
 
@@ -70,6 +76,10 @@ def get_nums(text):
 
 
 def print_text(file, arg0, arg1, arg2, arg3):
+
+	'''Print all results before 
+        any changes save in a file'''
+
 	result = []
 
 	extra_arg = get_from_arg(arg2)
@@ -178,6 +188,9 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
 
 def replace_text(file, arg1, arg2):
+
+	'''Replace the text data and save changes to the file'''
+
 	result = []
 
 	extra_arg = get_from_arg(arg1)
@@ -231,6 +244,9 @@ def replace_text(file, arg1, arg2):
 
 
 def append_text(file, arg1, arg2):
+
+	'''Insert text to a file'''
+
 	result = []
 
 	extra_arg = get_from_arg(arg1)
@@ -274,6 +290,9 @@ def append_text(file, arg1, arg2):
 
 
 def version():
+
+	'''Print version, license and email'''
+
 	print ('version :'),  __version__	
 	print ('License :'),  __license__
 	print ('Email   :'),  __email__
@@ -281,6 +300,9 @@ def version():
 
 
 def arguments_view():
+
+	'''Print arguments options'''
+
 	print ('usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n')
         print ('Utility that parses and transforms text\n')
         print ('optional arguments:')
@@ -299,6 +321,9 @@ def arguments_view():
 
 
 def arguments_error(arg0, argx):
+
+	'''Print errors arguments'''
+
 	print ('usage: %s [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n' % __prog__)
 
 	if arg0 == '':

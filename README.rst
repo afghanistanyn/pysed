@@ -193,7 +193,7 @@ Convert text to uppercase:
 
 .. code-block:: bash
 
-	$ pysed -r --print u^/'This' '' text.txt
+	$ pysed -r --print u/'This' '^' text.txt
 
 	THIS is my cat,
 	 whose name is Betty.
