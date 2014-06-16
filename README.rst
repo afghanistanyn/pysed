@@ -80,7 +80,7 @@ Remove new lines:
 
 .. code-block:: bash
 
-	$ pysed -s --print '\n ' ' ' text.txt
+	$ pysed -r --print '\n ' ' ' text.txt
 
 	This is my cat, whose name is Betty.
 	This is my dog, whose name is Frank.
@@ -92,7 +92,7 @@ Redirect results to another file:
 
 .. code-block:: bash
 
-	$ pysed -s --print '\n ' ' ' text.txt > text2.txt
+	$ pysed -r --print '\n ' ' ' text.txt > text2.txt
 	$ cat text2.txt
 
 	This is my cat, whose name is Betty.
@@ -110,7 +110,7 @@ Replace text:
 
 .. code-block:: bash
 
-	$ pysed -s --print 'This' 'THIS' text.txt
+	$ pysed -r --print 'This' 'THIS' text.txt
 	
 	THIS is my cat,
 	 whose name is Betty.
@@ -125,7 +125,7 @@ Replace max:
 
 .. code-block:: bash
 
-	$ pysed -s --print m2/'This' 'THIS' text.txt
+	$ pysed -r --print m2/'This' 'THIS' text.txt
 
         THIS is my cat,
          whose name is Betty.
@@ -141,7 +141,7 @@ Convert text to uppercase:
 
 .. code-block:: bash
 
-	$ pysed -s --print u/'This' '^' text.txt
+	$ pysed -r --print u/'This' '^' text.txt
 
 	THIS is my cat,
 	 whose name is Betty.
@@ -152,7 +152,7 @@ Convert text to uppercase:
 	THIS is my goat,
 	 whose name is Adam.
 
-	$ pysed -s --print u/'' '*' text.txt
+	$ pysed -r --print u/'' '*' text.txt
 	
 	THIS IS MY CAT,
 	 WHOSE NAME IS BETTY.
@@ -167,7 +167,7 @@ Convert text to lowercase:
 
 .. code-block:: bash
 
-	$ pysed -s --print l/'T' ',' text.txt
+	$ pysed -r --print l/'T' ',' text.txt
 
 	this is my cat,
 	 whose name is Betty.
@@ -178,7 +178,7 @@ Convert text to lowercase:
 	this is my goat,
 	 whose name is Adam.
 
-	$ pysed -s --print l/'' '*' text.txt
+	$ pysed -r --print l/'' '*' text.txt
 
         this is my cat,
          whose name is betty.
