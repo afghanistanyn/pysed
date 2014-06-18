@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: pysed
-Version: 0.1.1
+Version: 0.1.2
 Author: dslackw
 Author-email: d zlatanidis at gmail com
 Maintainer: dslackw
@@ -40,17 +40,28 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
         
         .. code-block:: bash
         
-        	usage: pysed [-h] [-v] [-p] [-e] [-r] [-i]
-        
-        	Utility that parses and transforms text
-        
-        	optional arguments:
-        	  -h, --help            	show this help message and exit
-        	  -v, --version         	print version and exit
-        	  -p, --print           	print text
-        	  -e, --extract			extract text
-        	  -r, --replace, m(n), u, l /	replace text
-        	  -i, --insert,  m(n) /		insert text
+	usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]
+
+	Utility that parses and transforms text
+
+	optional arguments:
+	  -h, --help     : show this help message and exit
+	  -v, --version  : print version and exit
+	  -p, --print    : print text
+			   c chars/, s sum/
+	  -l, --lines	 : print lines
+			   N,/, f first/, l last/, * all/
+	  -e, --extract	 : extract text
+			  'text'
+	  -r, --replace  : replace text
+			   m max(N)/, u upper/, l lower/ ['*']
+	  -i, --insert	 : insert text
+        	           m max(N)/
+
+	** N = Number, {Options}/
+
+
+
         
         
         Pysed Examples

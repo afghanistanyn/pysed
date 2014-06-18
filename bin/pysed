@@ -2,23 +2,25 @@
 # -*- coding: utf-8 -*-
 
 
-
 '''usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]
 
 Utility that parses and transforms text
 
 optional arguments:
-  -h, --help     show this help message and exit
-  -v, --version  print version and exit
-  -p, --print    print text
-  -l, --lines	 print lines
-		 'num' ['>', '<', '*']
-  -e, --extract	 extract text
-		 'text'
-  -r, --replace  replace text
-		 m max(num)/, u upper/, l lower/ ['^', ',', '*']
-  -i, --insert	 insert text
-                 m max(num)/'''
+  -h, --help     : show this help message and exit
+  -v, --version  : print version and exit
+  -p, --print    : print text
+		   c chars/, s sum/
+  -l, --lines	 : print lines
+		   N,/, f first/, l last/, * all/
+  -e, --extract	 : extract text
+		  'text'
+  -r, --replace  : replace text
+		   m max(N)/, u upper/, l lower/ ['*']
+  -i, --insert	 : insert text
+                   m max(N)/
+
+** N = Number, {Options}/'''
 
 
 
@@ -31,7 +33,7 @@ import platform
 
 __prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -42,6 +44,7 @@ if platform.system() == 'Linux':
 
 elif platform.system() == 'Windows':
 	path = os.getcwd() + '\/'
+
 
 
 def get_from_arg(arg):
@@ -82,45 +85,82 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
 	result = []
 
-	extra_arg = get_from_arg(arg2)
-	arg2 = arg2.replace(extra_arg + '/', '')
+	# get extra arguments
+	options = get_from_arg(arg2)
+	arg2 = arg2.replace(options + '/', '')
 
-	nums = get_nums(extra_arg)
-	extra_arg = extra_arg.replace(nums, '')
+	# get numbers from extra arguments
+	nums = get_nums(options)
+	options = options.replace(nums, '')
 	if nums == '':
 		nums = 0
 	
 	try :
+		# open file for read only
 		file = open(path + file, 'r')
 	       	read = file.read()
         	file.close()
 
 
 		try:
+			# find text
 		        find_text = re.findall(arg2, read)
 			if find_text == []:
 				sys.exit()
 		except re.error:
 			sys.exit()
 
+		# print text
 		if arg0 == '-p' or arg0 == '--print':
-			print read,
-			sys.exit()
+
+			options = get_from_arg(arg1)
+			arg1 = arg1.replace(options + '/', '')
+			try:
+                	        # find text
+	                        find_text = re.findall(arg1, read)
+        	                if find_text == []:
+                	                sys.exit()
+	                except re.error:
+        	                sys.exit()
+
+			if options == 's' or options == 'sum':
+
+				words = read.split()
+				chars = ''.join(words)
+				for lines in range(len(read.splitlines())):
+					pass
+				print '%d lines' % (lines + 1)
+				print '%d characters' % len(chars)
+				print '%d words' % len(words)
+				print '%d blanks' % (len(read) - len(chars))
+				sys.exit()
+			
+			if options == 'c' or options == 'chars':
+				
+                                print 'find %d --> \'%s\'' % (len(find_text), arg1)
+
+			else:
 		
+				print read,
+				sys.exit()
+		
+		# print lines
 		elif arg0 == '-l' or arg0 == '--lines':
+			options = get_from_arg(arg1)
+
 			for line in read.splitlines():
 			        result.append(line)
 
-			if arg1 == '*':
+			if options == '*' or options == 'all':
 				for num in result:
 					print num
 				sys.exit()
 
-			elif arg1 == '>':
+			elif options == 'f' or options == 'first':
 				print result[0]
 				sys.exit()
 
-			elif arg1 == '<':
+			elif options == 'l' or options == 'last':
 				print result[len(result) -1] 
 				sys.exit()
 
@@ -138,7 +178,7 @@ def print_text(file, arg0, arg1, arg2, arg3):
 				except ValueError:
 					sys.exit()
 
-
+		# print extract text
 		elif arg0 == '-e' or arg0 == '--extract':
 			try:
 				find_text = re.findall(arg1, read)
@@ -146,32 +186,39 @@ def print_text(file, arg0, arg1, arg2, arg3):
 			except re.error:
                         	sys.exit()
 
-
+		# print replace text
 		elif arg0 == '-r' or arg0 == '--replace':
-			if extra_arg == 'm':
-	               	        result = read.replace(find_text[0], arg3, int(nums))
 
-			elif extra_arg == 'u' and arg3 == '^':
-				result = read.replace(find_text[0], find_text[0].upper())
+			result = read
+			for text in set(find_text):
+				if options == 'm' or options == 'max':
+		               	        result = read.replace(text, arg3, int(nums))
 
-			elif extra_arg == 'u' and arg3 == '*':
-				result = read.upper()
+				elif options == 'u' or options == 'upper':
+					result = read.replace(text, arg3.upper())
 
-			elif extra_arg == 'l' and arg3 == ',':
-				result = read.replace(find_text[0], find_text[0].lower())			
+				elif options == 'u*' or options == 'upper*':
+					result = read.upper()
 
-			elif extra_arg == 'l' and arg3 == '*':
-				result = read.lower()
+				elif options == 'l' or options == 'lower':
+					result = read.replace(text, arg3.lower())			
 
-			else:
-				result = read.replace(find_text[0], arg3)
+				elif options == 'l*' or options == 'lower*':
+					result = read.lower()
 
+				else:
+					result = result.replace(text, arg3)
+
+		# print insert text
 		elif arg0 == '-i' or arg0 == '--insert':
-			if extra_arg == 'm':
-	               	        result = read.replace(find_text[0], find_text[0] + arg3, int(nums))
-			
-			else:
-				result = read.replace(find_text[0], find_text[0] + arg3)
+
+			result = read
+			for text in set(find_text):
+				if options == 'm' or options == 'max':
+		               	        result = read.replace(text, text + arg3, int(nums))
+				
+				else:
+					result = result.replace(text, text + arg3)
 		else:
 
 			arguments_error(arg0, '')			
@@ -193,44 +240,51 @@ def replace_text(file, arg1, arg2):
 
 	result = []
 
-	extra_arg = get_from_arg(arg1)
-        arg1 = arg1.replace(extra_arg + '/', '')
+	# get extra arguments
+	options = get_from_arg(arg1)
+        arg1 = arg1.replace(options + '/', '')
 
-        nums = get_nums(extra_arg)
-        extra_arg = extra_arg.replace(nums, '')
+	# get numbers from extra arguments
+        nums = get_nums(options)
+        options = options.replace(nums, '')
         if nums == '':
                 nums = 0
 
 	try:
+		# open file for read and write
 	        file =  open(path + file, 'r+')
 		read = file.read()
 	
 		try:
+			# find text
 			find_text = re.findall(arg1, read)
 			if find_text == []:
                                 sys.exit()
 		except re.error:
 			sys.exit()
 
-		if extra_arg == 'm':
-			result = read.replace(find_text[0], arg2, int(nums))
+		# replace text
+		result = read
+                for text in set(find_text):
+	                if options == 'm' or options == 'max':
+		                result = read.replace(text, arg2, int(nums))
 
-		elif extra_arg == 'u' and arg2 == '^':
-	                result = read.replace(find_text[0], find_text[0].upper())
+                	elif options == 'u' or options == 'upper':
+        	        	result = read.replace(text, arg2.upper())
 
-                elif extra_arg == 'u' and arg2 == '*':
-        	        result = read.upper()
+	                elif options == 'u*' or options == 'upper*':
+		                result = read.upper()
 
-                elif extra_arg == 'l' and arg2 == ',':
-                	result = read.replace(find_text[0], find_text[0].lower())
+                	elif options == 'l' or options == 'lower':
+                        	result = read.replace(text, arg2.lower())
 
-                elif extra_arg == 'l' and arg2 == '*':
-	                result = read.lower()
+	                elif options == 'l*' or options == 'lower*':
+        	                result = read.lower()
 
-		else:
-			result = read.replace(find_text[0], arg2)
+                	else:
+                        	result = result.replace(text, arg2)
 		
-	
+		# write changes to file
 	        if result != []:
 			file.seek(0)
 			file.truncate()
@@ -249,34 +303,41 @@ def append_text(file, arg1, arg2):
 
 	result = []
 
-	extra_arg = get_from_arg(arg1)
-        arg1 = arg1.replace(extra_arg + '/', '')
+	# get extra arguments
+	options = get_from_arg(arg1)
+        arg1 = arg1.replace(options + '/', '')
 
-        nums = get_nums(extra_arg)
-        extra_arg = extra_arg.replace(nums, '')
+	# get numbers from extra arguments
+        nums = get_nums(options)
+        options = options.replace(nums, '')
         if nums == '':
                 nums = 0
 
 
 	try:
+		# open file for read and write
 		file = open(path + file, 'r+')
         	read = file.read()
 	
 		try:
+			# find text
 		        find_text = re.findall(arg1, read)
 			if find_text == []:
                                 sys.exit()
 		except re.error:
         	        sys.exit()
 	
-		if extra_arg == 'm':
-			result = read.replace(find_text[0], find_text[0] + arg2, int(nums))
+		# append text
+		result = read
+		for text in set(find_text):
+			if options == 'm' or options == 'max':
+				result = read.replace(text, text + arg2, int(nums))
 
-                else:
-   			result = read.replace(find_text[0], find_text[0] + arg2)
+                	else:
+   				result = result.replace(text, text + arg2)
 
 
-
+		# write changes to file
 	        if result != []:
 			file.seek(0)
 			file.truncate()
@@ -306,18 +367,19 @@ def arguments_view():
 	print ('usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n')
         print ('Utility that parses and transforms text\n')
         print ('optional arguments:')
-        print ('  -h, --help     show this help message and exit')
-        print ('  -v, --version  print version and exit')
-        print ('  -p, --print    print text')
-	print ('  -l, --lines	 print lines')
-	print ('		 \'num\' [\'>\', \'<\', \'*\']')
-	print ('  -e, --extract	 extract text')
-	print ('		 \'text\'')
-        print ('  -r, --replace  replace text')
-	print ('		 m max(num)/, u upper/, l lower/ [\'^\', \',\', \'*\']')
-        print ('  -i, --insert	 insert text')
-	print ('                 m max(num)/')
-
+        print ('  -h, --help     : show this help message and exit')
+        print ('  -v, --version  : print version and exit')
+        print ('  -p, --print    : print text')
+	print ('		   c chars/, s sum/')
+	print ('  -l, --lines	 : print lines')
+	print ('		   N,/, f first/, l last/, * all/')
+	print ('  -e, --extract	 : extract text')
+	print ('		  \'text\'')
+        print ('  -r, --replace  : replace text')
+	print ('		   m max(N)/, u upper/, l lower/ [\'*\']')
+        print ('  -i, --insert	 : insert text')
+	print ('                   m max(N)/\n')
+	print ('** N = Number, {Options}/')
 
 
 def arguments_error(arg0, argx):
@@ -346,7 +408,7 @@ def main():
 
 	arg = sys.argv
 	arg.pop(0)
-
+	
 
 	if len(arg) == 2:
 		file = arg[1]
@@ -371,8 +433,11 @@ def main():
 		version()
 
 	elif len(arg) == 2 and arg[0] == '-p' or len(arg) == 2 and arg[0] == '--print':
-		print_text(file, arg[0], arg[1], '', '')
+		print_text(file, arg[0], '', '', '')
 
+	elif len(arg) == 3 and arg[0] == '-p' or len(arg) == 3 and arg[0] == '--print':
+		print_text(file, arg[0], arg[1], '', '')
+		
 	elif len(arg) == 5 and arg[1] == '-p' or len(arg) == 5 and arg[1] == '--print':
 		print_text(file, arg[0], arg[1], arg[2], arg[3])
 
