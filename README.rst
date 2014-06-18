@@ -77,11 +77,11 @@ Print text file:
 
 	$ pysed --print c/'a' text.txt
 
-	find 9: 'a'
+	find 9 --> 'a'
 
 	$ pysed --print c/'is' text.txt
 
-	find 13: 'is'
+	find 13 --> 'is'
 
 	$ pysed --print s/ text.txt
 
