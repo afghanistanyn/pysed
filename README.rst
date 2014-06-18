@@ -313,7 +313,7 @@ Delete text:
 
 .. code-block:: bash
 
-	# pysed -r --print 'my ' '' text.txt
+	$ pysed -r --print 'my ' '' text.txt
 
 	This is cat,
 	 whose name is Betty.
