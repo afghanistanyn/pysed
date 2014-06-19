@@ -131,7 +131,7 @@ Extract text:
 
 .. code-block:: bash
 
-	$ pysed pysed --extract 'is' text.txt
+	$ pysed pysed -p extract/'is' text.txt
 
 	is is is is is is is is is is is is is
 
@@ -160,7 +160,7 @@ Redirect results to another file:
         whose name is George.
         This is my goat, whose name is Adam.
 
-	$ pysed --extract 'This' text.txt > text3.txt
+	$ pysed -p extract/'This' text.txt > text3.txt
 	$ pysed -print text3.txt
 
 	This This This This
