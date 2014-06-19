@@ -10,11 +10,9 @@ optional arguments:
   -h, --help     : show this help message and exit
   -v, --version  : print version and exit
   -p, --print    : print text
-		   c chars/, s sum/
+		   e extract/, c chars/, s sum/
   -l, --lines	 : print lines
 		   N,/, f first/, l last/, * all/
-  -e, --extract	 : extract text
-		  'text'
   -r, --replace  : replace text
 		   m max(N)/, u upper/, l lower/ ['*']
   -i, --insert	 : insert text
@@ -24,18 +22,17 @@ optional arguments:
 
 
 
-
 import re
 import os
 import sys
 import platform
 
 
-__prog__ = 'pysed'
-__author__ = "dslackw"
-__version__ = "0.1.2"
+__prog__    = 'pysed'
+__author__  = "dslackw"
+__version__ = "0.1.3"
 __license__ = "GNU General Public License v3 (GPLv3)"
-__email__ = "d.zlatanidis@gmail.com"
+__email__   = "d.zlatanidis@gmail.com"
 
 
 
@@ -96,17 +93,18 @@ def print_text(file, arg0, arg1, arg2, arg3):
 		nums = 0
 	
 	try :
-		# open file for read only
 		file = open(path + file, 'r')
 	       	read = file.read()
         	file.close()
 
 
 		try:
-			# find text
+
 		        find_text = re.findall(arg2, read)
+
 			if find_text == []:
 				sys.exit()
+
 		except re.error:
 			sys.exit()
 
@@ -115,11 +113,13 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
 			options = get_from_arg(arg1)
 			arg1 = arg1.replace(options + '/', '')
+
 			try:
-                	        # find text
-	                        find_text = re.findall(arg1, read)
-        	                if find_text == []:
-                	                sys.exit()
+	                	find_text = re.findall(arg1, read)
+
+        	        	if find_text == []:
+                	        	sys.exit()
+
 	                except re.error:
         	                sys.exit()
 
@@ -138,6 +138,12 @@ def print_text(file, arg0, arg1, arg2, arg3):
 			if options == 'c' or options == 'chars':
 				
                                 print 'find %d --> \'%s\'' % (len(find_text), arg1)
+				sys.exit()
+
+			if options == 'e' or options == 'extract':
+
+		                print ' '.join(find_text)
+				sys.exit()
 
 			else:
 		
@@ -178,14 +184,6 @@ def print_text(file, arg0, arg1, arg2, arg3):
 				except ValueError:
 					sys.exit()
 
-		# print extract text
-		elif arg0 == '-e' or arg0 == '--extract':
-			try:
-				find_text = re.findall(arg1, read)
-				print ' '.join(find_text)
-			except re.error:
-                        	sys.exit()
-
 		# print replace text
 		elif arg0 == '-r' or arg0 == '--replace':
 
@@ -223,8 +221,6 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
 			arguments_error(arg0, '')			
 
-
-
 	        if result != []:
         	        print result,	
 
@@ -251,15 +247,17 @@ def replace_text(file, arg1, arg2):
                 nums = 0
 
 	try:
-		# open file for read and write
+
 	        file =  open(path + file, 'r+')
 		read = file.read()
 	
 		try:
-			# find text
+
 			find_text = re.findall(arg1, read)
+
 			if find_text == []:
                                 sys.exit()
+
 		except re.error:
 			sys.exit()
 
@@ -310,20 +308,22 @@ def append_text(file, arg1, arg2):
 	# get numbers from extra arguments
         nums = get_nums(options)
         options = options.replace(nums, '')
+
         if nums == '':
                 nums = 0
 
-
 	try:
-		# open file for read and write
+
 		file = open(path + file, 'r+')
         	read = file.read()
 	
 		try:
-			# find text
+
 		        find_text = re.findall(arg1, read)
+
 			if find_text == []:
                                 sys.exit()
+
 		except re.error:
         	        sys.exit()
 	
@@ -370,11 +370,9 @@ def arguments_view():
         print ('  -h, --help     : show this help message and exit')
         print ('  -v, --version  : print version and exit')
         print ('  -p, --print    : print text')
-	print ('		   c chars/, s sum/')
+	print ('		   e extract/, c chars/, s sum/')
 	print ('  -l, --lines	 : print lines')
 	print ('		   N,/, f first/, l last/, * all/')
-	print ('  -e, --extract	 : extract text')
-	print ('		  \'text\'')
         print ('  -r, --replace  : replace text')
 	print ('		   m max(N)/, u upper/, l lower/ [\'*\']')
         print ('  -i, --insert	 : insert text')
@@ -386,7 +384,7 @@ def arguments_error(arg0, argx):
 
 	'''Print errors arguments'''
 
-	print ('usage: %s [-h] [-v] [-p] [-l] [-e] [-r] [-i]\n' % __prog__)
+	print ('usage: %s [-h] [-v] [-p] [-l] [-r] [-i]\n' % __prog__)
 
 	if arg0 == '':
 		print ('%s: error: argument: expected one argument' % __prog__)
@@ -394,7 +392,6 @@ def arguments_error(arg0, argx):
 
 	elif arg0 in ['-p', '--print',
 		      '-l', '--lines',
-		      '-e', '--extract',
 		      '-r', '--replace',
 		      '-i', '--insert']:
 		print ('%s: argument %s: expected at least one argument' % (__prog__, arg0))
@@ -444,9 +441,6 @@ def main():
 	elif len(arg) == 3 and arg[0] == '-l' or len(arg) == 3 and arg[0] == '--lines':
                 print_text(file, arg[0], arg[1], '', '')
 
-	elif len(arg) == 3 and arg[0] == '-e' or len(arg) == 3 and arg[0] == '--extract':
-                print_text(file, arg[0], arg[1], '', '')
-
 	elif len(arg) == 4 and arg[0] == '-r' or len(arg) == 4 and arg[0] == '--replace':
 		replace_text(file, arg[1], arg[2])
 
@@ -456,7 +450,6 @@ def main():
 	elif not any([
 		len(arg) == 1 and arg[0] == '-p', len(arg) == 1 and arg[0] == '--print',
 		len(arg) == 1 and arg[0] == '-l', len(arg) == 1 and arg[0] == '--lines',
-		len(arg) == 1 and arg[0] == '-e', len(arg) == 1 and arg[0] == '--extract',
 		len(arg) == 1 and arg[0] == '-r', len(arg) == 1 and arg[0] == '--replace',
 		len(arg) == 1 and arg[0] == '-i', len(arg) == 1 and arg[0] == '--insert',
 		]):
@@ -464,7 +457,6 @@ def main():
 
 	elif arg[0] in ['-p', '--print',
 			'-l', '--lines',
-			'-e', '--extract',
 			'-r', '--replace',
 		        '-i', '--insert']:
 		arguments_error(arg[0], arg[1:])

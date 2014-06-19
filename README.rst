@@ -31,7 +31,7 @@ Command Line Tool Usage
 
 .. code-block:: bash
 
-	usage: pysed [-h] [-v] [-p] [-l] [-e] [-r] [-i]
+	usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
 
 	Utility that parses and transforms text
 
@@ -39,11 +39,9 @@ Command Line Tool Usage
 	  -h, --help     : show this help message and exit
 	  -v, --version  : print version and exit
 	  -p, --print    : print text
-			   c chars/, s sum/
+			   e extract/, c chars/, s sum/
 	  -l, --lines	 : print lines
 			   N,/, f first/, l last/, * all/
-	  -e, --extract	 : extract text
-			  'text'
 	  -r, --replace  : replace text
 			   m max(N)/, u upper/, l lower/ ['*']
 	  -i, --insert	 : insert text
