@@ -7,7 +7,7 @@
 
 
 
-Cli utility that parses and transforms text written in Python.
+CLI utility that parses and transforms text written in Python.
 
 
 [CHANGELOG] : https://github.com/dslackw/pysed/blob/master/CHANGELOG
@@ -39,15 +39,15 @@ Command Line Tool Usage
 	  -h, --help     : show this help message and exit
 	  -v, --version  : print version and exit
 	  -p, --print    : print text
-			   e extract/, c chars/, s sum/
-	  -l, --lines	 : print lines
-			   N,/, f first/, l last/, * all/
+	                   e extract/, c chars/, s sum/
+	  -l, --lines    : print lines
+	                   'N', '[N-N]', '*, all'
 	  -r, --replace  : replace text
-			   m max(N)/, u upper/, l lower/ ['*']
-	  -i, --insert	 : insert text
+	                   m max(N)/, u upper */, l lower */
+	  -i, --insert   : insert text
 	                   m max(N)/
 
-	** N = Number, {Options}/
+	** N = Number, {Options}/', 'Pattern'
 
 Pysed Examples
 --------------
@@ -73,17 +73,17 @@ Print text file:
 	This is my goat,
 	 whose name is Adam.
 
-	$ pysed --print c/'a' text.txt
+	$ pysed --print chars/'a' text.txt
 
 	find 9 --> 'a'
 
-	$ pysed --print c/'is' text.txt
+	$ pysed --print chars/'is' text.txt
 
 	find 13 --> 'is'
 
-	$ pysed --print s/ text.txt
+	$ pysed --print sum/'' text.txt
 
-	8 lines
+	7 lines
 	118 characters
 	32 words
 	35 blanks
@@ -92,40 +92,27 @@ Print lines:
 
 .. code-block:: bash
 
-	$ pysed --lines 0,3,2,1,4,7,6,5,/ text.txt
+	$ pysed --lines '0,3,2,1,4,7,6,5' text.txt
 
 	This is my cat,
-	 whose name is frank.
+	 whose name is Frank.
 	This is my dog,
-	 whose name is betty.
+	 whose name is Betty.
 	This is my fish,
-	 whose name is adam.
+	 whose name is Adam.
 	This is my goat,
-	whose name is george.
+	whose name is George.
 
-	$ pysed --lines 2,7,/ text.txt
+	$ pysed --lines '2,7' text.txt
 
 	This is my dog,
-	 whose name is adam.
+	 whose name is Adam.
 
-	$ pysed --lines f/ text.txt
+	$ pysed --lines '[3-5]' text.txt
 
-	This is my cat,
-
-	$ pysed --lines l/ text.txt
-
-	whose name is adam.
-
-	$ pysed --lines */ text.txt
-
-	This is my cat,
-	 whose name is betty.
-	This is my dog,
-	 whose name is frank.
+	 whose name is Frank.
 	This is my fish,
-	whose name is george.
-	This is my goat,
-	 whose name is adam.
+	whose name is George.
 
 Extract text:
 
@@ -161,11 +148,11 @@ Redirect results to another file:
         This is my goat, whose name is Adam.
 
 	$ pysed -p extract/'This' text.txt > text3.txt
-	$ pysed -print text3.txt
+	$ pysed --print text3.txt
 
 	This This This This
 
-	$ pysed --lines 0,2,4,6,/ text.txt > text4.txt
+	$ pysed --lines '0,2,4,6' text.txt > text4.txt
 	$ pysed --print text4.txt
 
 	This is my cat,
@@ -188,16 +175,16 @@ Replace text:
 	THIS is my goat,
 	 whose name is Adam.
 
-	$ pysed -r --print '[a-z]' '*' text.txt
+	$ pysed -r --print '[a-z]' '_' text.txt
 
-	T*** ** ** ***,
-	 ***** **** ** B****.
-	T*** ** ** ***,
-	 ***** **** ** *****.
-	T*** ** ** ****,
-	***** **** ** G*****.
-	T*** ** ** ****,
-	 ***** **** ** A***.
+	T___ __ __ ___,
+	 _____ ____ __ B____.
+	T___ __ __ ___,
+	 _____ ____ __ F____.
+	T___ __ __ ____,
+	_____ ____ __ G_____.
+	T___ __ __ ____,
+	 _____ ____ __ A___.
 
 	$ pysed -r --print '[a-k]' '' text.txt
 
@@ -214,7 +201,7 @@ Replace max:
 
 .. code-block:: bash
 
-	$ pysed -r --print m2/'This' 'THIS' text.txt
+	$ pysed -r --print max2/'This' 'THIS' text.txt
 
         THIS is my cat,
          whose name is Betty.
@@ -229,7 +216,7 @@ Convert text to uppercase:
 
 .. code-block:: bash
 
-	$ pysed -r --print u/'This' 'this' text.txt
+	$ pysed -r --print upper/'This' 'this' text.txt
 
 	THIS is my cat,
 	 whose name is Betty.
@@ -240,7 +227,7 @@ Convert text to uppercase:
 	THIS is my goat,
 	 whose name is Adam.
 
-	$ pysed -r --print u*/'' '' text.txt
+	$ pysed -r --print upper*/'' '' text.txt
 	
 	THIS IS MY CAT,
 	 WHOSE NAME IS BETTY.
@@ -255,7 +242,7 @@ Convert text to lowercase:
 
 .. code-block:: bash
 
-	$ pysed -r --print l/'T' 'T' text.txt
+	$ pysed -r --print lower/'T' 'T' text.txt
 
 	this is my cat,
 	 whose name is Betty.
@@ -266,7 +253,7 @@ Convert text to lowercase:
 	this is my goat,
 	 whose name is Adam.
 
-	$ pysed -r --print l*/'' '' text.txt
+	$ pysed -r --print lower*/'' '' text.txt
 
         this is my cat,
          whose name is betty.
