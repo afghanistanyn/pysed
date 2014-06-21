@@ -68,6 +68,8 @@ def get_nums(text):
 
 
 def findall(argX, read):
+    '''Find text from string'''
+
     try:
 
         find_text = re.findall(argX, read)
