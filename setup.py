@@ -6,24 +6,15 @@ from distutils.core import setup
 
 
 setup(
-<<<<<<< HEAD
     name="pysed",
     version="0.1.4",
-=======
-    name='pysed',
-    version="0.1.3",
->>>>>>> 9b109bedec11d5c269324412e59e40d07d6f065d
     description="Utility that parses and transforms text",
     keywords=["python", "sed", "unix", "linux", "text",
                 "stream", "editor"],
     author="dslackw",
     author_email="d.zlatanidis@gmail.com",
     url="https://github.com/dslackw/pysed",
-<<<<<<< HEAD
     scripts=["bin/pysed"],
-=======
-    scripts=['bin/pysed'],
->>>>>>> 9b109bedec11d5c269324412e59e40d07d6f065d
     package_data={"": ["LICENSE", "README.rst", "CHANGELOG"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
