@@ -75,7 +75,7 @@ Print text file:
 
 	$ pysed --print chars/'a' text.txt
 
-	find 9 --> 'a'
+	find 8 --> 'a'
 
 	$ pysed --print chars/'is' text.txt
 
