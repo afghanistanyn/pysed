@@ -215,14 +215,14 @@ Replace max:
 
 	$ pysed -r --print max2/'This' 'THIS' text.txt
 
-        THIS is my cat,
-         whose name is Betty.
-        THIS is my dog,
-         whose name is Frank.
-        This is my fish,
-        whose name is George.
-        This is my goat,
-         whose name is Adam.
+    THIS is my cat,
+     whose name is Betty.
+    THIS is my dog,
+     whose name is Frank.
+    This is my fish,
+     whose name is George.
+    This is my goat,
+     whose name is Adam.
 
 Convert text to uppercase:
 
@@ -267,14 +267,14 @@ Convert text to lowercase:
 
 	$ pysed -r --print lower*/'' '' text.txt
 
-        this is my cat,
-         whose name is betty.
-        this is my dog,
-         whose name is frank.
-        this is my fish,
-        whose name is george.
-        this is my goat,
-         whose name is adam	
+    this is my cat,
+     whose name is betty.
+    this is my dog,
+     whose name is frank.
+    this is my fish,
+     whose name is george.
+    this is my goat,
+     whose name is adam	
 
 Insert text:
 
@@ -282,14 +282,14 @@ Insert text:
 
 	$ pysed -i --print 'whose ' 'sur' text.txt
 
-        This is my cat,
-         whose surname is Betty.
-        This is my dog,
-         whose surname is Frank.
-        This is my fish,
-        whose surname is George.
-        This is my goat,
-         whose surname is Adam.	
+    This is my cat,
+     whose surname is Betty.
+    This is my dog,
+     whose surname is Frank.
+    This is my fish,
+     whose surname is George.
+    This is my goat,
+     whose surname is Adam.	
 
 Insert max:
 
@@ -297,14 +297,14 @@ Insert max:
 
 	$ pysed -i --print m2/'whose ' 'sur' text.txt
 
-        This is my cat,
-         whose surname is Betty.
-        This is my dog,
-         whose surname is Frank.
-        This is my fish,
-        whose name is George.
-        This is my goat, 
-         whose name is Adam.	
+    This is my cat,
+     whose surname is Betty.
+    This is my dog,
+     whose surname is Frank.
+    This is my fish,
+     whose name is George.
+    This is my goat, 
+     whose name is Adam.	
 
 Delete text:
 
