@@ -142,7 +142,7 @@ Redirect results to another file:
 	$ pysed -r --print '\n ' ' ' text.txt > text2.txt
 	$ cat text2.txt
 
-	This is my cat, whose name is Betty.
+    This is my cat, whose name is Betty.
     This is my dog, whose name is Frank.
     This is my fish,
     whose name is George.
