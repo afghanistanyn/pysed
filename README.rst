@@ -31,23 +31,24 @@ Command Line Tool Usage
 
 .. code-block:: bash
 
-	usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
+    usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
 
-	Utility that parses and transforms text
+    Utility that parses and transforms text
 
-	optional arguments:
-	  -h, --help     : show this help message and exit
-	  -v, --version  : print version and exit
-	  -p, --print    : print text
-	                   e extract/, c chars/, s sum/
-	  -l, --lines    : print lines
-	                   'N', '[N-N]', '*, all'
-	  -r, --replace  : replace text
-	                   m max(N)/, u upper */, l lower */
-	  -i, --insert   : insert text
-	                   m max(N)/
+    optional arguments:
+      -h, --help     : show this help message and exit
+      -v, --version  : print version and exit
+      -p, --print    : print text
+                       e extract/, c chars/, s sum/
+      -l, --lines    : print lines
+                       'N', '[N-N]', '*, all'
+      -r, --replace  : replace text
+                       m max(N)/, u upper */, l lower */, /color
+      -i, --insert   : insert text
+                       m max(N)/, /color
 
-	** N = Number, {Options}/', 'Pattern'
+    N = Number, {Options}/, 'Pattern'
+    color = red, green, blue, cyan, yellow, magenta
 
 Pysed Examples
 --------------
@@ -142,10 +143,10 @@ Redirect results to another file:
 	$ cat text2.txt
 
 	This is my cat, whose name is Betty.
-        This is my dog, whose name is Frank.
-        This is my fish,
-        whose name is George.
-        This is my goat, whose name is Adam.
+    This is my dog, whose name is Frank.
+    This is my fish,
+    whose name is George.
+    This is my goat, whose name is Adam.
 
 	$ pysed -p extract/'This' text.txt > text3.txt
 	$ pysed --print text3.txt
@@ -196,6 +197,17 @@ Replace text:
 	wos nm s Gor.
 	Ts s my ot,
 	 wos nm s Am.
+
+    $ pysed -r --print 'a' 'A'/green text.txt
+
+    This is my cAt,
+     whose nAme is Betty.
+    This is my dog,
+     whose nAme is FrAnk.
+    This is my fish,
+    whose nAme is George.
+    This is my goAt,
+     whose nAme is AdAm.
 
 Replace max:
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-'''usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
+''' usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
 
 Utility that parses and transforms text
 
@@ -14,12 +14,14 @@ optional arguments:
   -l, --lines    : print lines
                    'N', '[N-N]', '*, all'
   -r, --replace  : replace text
-                   m max(N)/, u upper */, l lower/ *
+                   m max(N)/, u upper */, l lower */, /color
   -i, --insert   : insert text
-                   m max(N)/
+                   m max(N)/, /color
 
-  ** N = Number, {Options}/', 'Pattern'''
+N = Number, {Options}/, 'Pattern'
+color = red, green, blue, cyan, yellow, magenta
 
+'''
 
 import re
 import os
@@ -28,10 +30,10 @@ import platform
 
 
 __prog__ = 'pysed'
-__author__ = "dslackw"
-__version__ = "0.1.4"
-__license__ = "GNU General Public License v3 (GPLv3)"
-__email__ = "d.zlatanidis@gmail.com"
+__author__ = 'dslackw'
+__version__ = '0.1.5'
+__license__ = 'GNU General Public License v3 (GPLv3)'
+__email__ = 'd.zlatanidis@gmail.com'
 
 
 if platform.system() == 'Linux':
@@ -39,6 +41,22 @@ if platform.system() == 'Linux':
 
 elif platform.system() == 'Windows':
     path = os.getcwd() + '\/'
+
+
+def colors(color):
+    '''Print colors'''
+
+    paint = {
+        'red': '\x1b[31m',
+        'green': '\x1b[32m',
+        'yellow': '\x1b[33m',
+        'blue': '\x1b[34m',
+        'magenta': '\x1b[35m',
+        'cyan': '\x1b[36m',
+        'default': '\x1b[0m'
+    }
+
+    return paint[color]
 
 
 def get_from_arg(arg):
@@ -51,6 +69,20 @@ def get_from_arg(arg):
             break
 
     return ''.join(result).replace('/', '')
+
+
+def get_from_arg_reverse(arg):
+    '''Get any string after char /'''
+
+    i = 0
+    results = []
+    for char in range(len(arg)):
+        i -= 1
+        results.append(arg[i])
+        if arg[i] == '/':
+            break
+
+    return ''.join(results[::-1]).replace('/', '')
 
 
 def get_nums(text):
@@ -108,48 +140,62 @@ def write_to_file(file, result):
     file.close()
 
 
-def replace(read, find_text, argX, nums, options):
+def replace(read, find_text, argX, nums, options, options_2):
     '''Replace text with new'''
+
+    if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
+        color = colors(options_2)
+        default = colors('default')
+    else:
+        color = ''
+        default = ''
 
     result = read
     for text in set(find_text):
         if options == 'm' or options == 'max':
-            result = read.replace(text, argX,
+            result = read.replace(text, color + argX + default,
                                   int(nums))
 
         elif options == 'u' or options == 'upper':
             result = read.replace(text,
-                                  argX.upper())
+                                  color + argX.upper() + default)
 
         elif options == 'u*' or options == 'upper*':
-            result = read.upper()
+            result = color + read.upper() + default
 
         elif options == 'l' or options == 'lower':
             result = read.replace(text,
-                                  argX.lower())
+                                  color + argX.lower() + default)
 
         elif options == 'l*' or options == 'lower*':
-            result = read.lower()
+            result = color + read.lower() + default
 
         else:
-            result = result.replace(text, argX)
+            result = result.replace(text, color + argX + default)
 
     return result
 
 
-def append(read, find_text, argX, nums, options):
+def append(read, find_text, argX, nums, options, options_2):
     '''Insert new text'''
+
+    if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
+        color = colors(options_2)
+        default = colors('default')
+    else:
+        color = ''
+        default = ''
 
     result = read
     for text in set(find_text):
         if options == 'm' or options == 'max':
             result = read.replace(text,
-                                  text + argX,
+                                  text + color + argX + default,
                                   int(nums))
 
         else:
             result = result.replace(text,
-                                    text + argX)
+                                    text + color + argX + default)
 
     return result
 
@@ -168,8 +214,8 @@ def linesx(read, argX):
         sys.exit()
 
     elif argX.startswith('[') and argX.endswith(']'):
-        argX = argX.replace('[', '')
-        argX = argX.replace(']', '')
+        argX = argX.replace('[', '', 1)
+        argX = argX.replace(']', '', 1)
 
         line_nums = argX.replace('-', '\n').split()
 
@@ -209,10 +255,12 @@ def print_text(file, arg0, arg1, arg2, arg3):
     result = []
 
     options = get_from_arg(arg2)
-    arg2 = arg2.replace(options + '/', '')
-
+    arg2 = arg2.replace(options + '/', '', 1)
     nums = get_nums(options)
     options = options.replace(nums, '')
+
+    options_2 = get_from_arg_reverse(arg3)
+    arg3 = arg3.replace('/' + options_2, '', 1)
 
     if nums == '':
         nums = 0
@@ -224,7 +272,7 @@ def print_text(file, arg0, arg1, arg2, arg3):
         if arg0 == '-p' or arg0 == '--print':
 
             options = get_from_arg(arg1)
-            arg1 = arg1.replace(options + '/', '')
+            arg1 = arg1.replace(options + '/', '', 1)
             find_text = findall(arg1, read)
 
             if options == 's' or options == 'sum':
@@ -259,10 +307,10 @@ def print_text(file, arg0, arg1, arg2, arg3):
             result = linesx(read, arg1)
 
         elif arg0 == '-r' or arg0 == '--replace':
-            result = replace(read, find_text, arg3, nums, options)
+            result = replace(read, find_text, arg3, nums, options, options_2)
 
         elif arg0 == '-i' or arg0 == '--insert':
-            result = append(read, find_text, arg3, nums, options)
+            result = append(read, find_text, arg3, nums, options, options_2)
 
         else:
 
@@ -282,7 +330,7 @@ def write_replace_text(file, arg1, arg2):
     result = []
 
     options = get_from_arg(arg1)
-    arg1 = arg1.replace(options + '/', '')
+    arg1 = arg1.replace(options + '/', '', 1)
 
     nums = get_nums(options)
     options = options.replace(nums, '')
@@ -293,7 +341,7 @@ def write_replace_text(file, arg1, arg2):
         file = open_file_for_read_and_write(file)
         read = file.read()
         find_text = findall(arg1, read)
-        result = replace(read, find_text, arg2, nums, options)
+        result = replace(read, find_text, arg2, nums, options, '')
 
         if result != []:
             write_to_file(file, result)
@@ -309,7 +357,7 @@ def write_append_text(file, arg1, arg2):
     result = []
 
     options = get_from_arg(arg1)
-    arg1 = arg1.replace(options + '/', '')
+    arg1 = arg1.replace(options + '/', '', 1)
 
     nums = get_nums(options)
     options = options.replace(nums, '')
@@ -322,7 +370,7 @@ def write_append_text(file, arg1, arg2):
         file = open_file_for_read_and_write(file)
         read = file.read()
         find_text = findall(arg1, read)
-        result = append(read, find_text, arg2, nums, options)
+        result = append(read, find_text, arg2, nums, options, '')
 
         if result != []:
             write_to_file(file, result)
@@ -353,10 +401,11 @@ def arguments_view():
     print ('  -l, --lines    : print lines')
     print ('                   \'N\', \'[N-N]\', \'*, all\'')
     print ('  -r, --replace  : replace text')
-    print ('                   m max(N)/, u upper */, l lower */')
+    print ('                   m max(N)/, u upper */, l lower */, /color')
     print ('  -i, --insert   : insert text')
-    print ('                   m max(N)/\n')
-    print ('** N = Number, {Options}/', 'Pattern')
+    print ('                   m max(N)/, /color\n')
+    print ('N = Number, {Options}/, \'Pattern\'')
+    print ('color = red, green, blue, cyan, yellow, magenta')
 
 
 def arguments_error(arg0, argx):
@@ -438,10 +487,7 @@ def main():
              len(arg) == 1 and arg[0] == '-i', len(arg) == 1 and arg[0] == '--insert', ]):
         arguments_error(arg[0], arg[1:])
 
-    elif arg[0] in ['-p', '--print',
-                    '-l', '--lines',
-                    '-r', '--replace',
-                    '-i', '--insert']:
+    else:
         arguments_error(arg[0], arg[1:])
 
 if __name__ == "__main__":
