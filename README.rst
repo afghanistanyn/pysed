@@ -41,7 +41,7 @@ Command Line Tool Usage
       -p, --print    : print text
                        e extract/, c chars/, s sum/
       -l, --lines    : print lines
-                       'N', '[N-N]', '*, all'
+                       'N', '[N-N]', 'step(N)/*, all'
       -r, --replace  : replace text
                        m max(N)/, u upper */, l lower */, /color
       -i, --insert   : insert text
@@ -114,6 +114,13 @@ Print lines:
      whose name is Frank.
     This is my fish,
     whose name is George.
+
+    $ pysed --lines step2/'*' text.txt
+
+    This is my cat,
+    This is my dog,
+    This is my fish,
+    This is my goat,
 
 Extract text:
 

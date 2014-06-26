@@ -12,7 +12,7 @@ optional arguments:
   -p, --print    : print text
                    e extract/, c chars/, s sum/
   -l, --lines    : print lines
-                   'N', '[N-N]', '*, all'
+                   'N', '[N-N]', 'step(N)/*, all'
   -r, --replace  : replace text
                    m max(N)/, u upper */, l lower */, /color
   -i, --insert   : insert text
@@ -30,10 +30,10 @@ import platform
 
 
 __prog__ = 'pysed'
-__author__ = 'dslackw'
-__version__ = '0.1.5'
-__license__ = 'GNU General Public License v3 (GPLv3)'
-__email__ = 'd.zlatanidis@gmail.com'
+__author__ = "dslackw"
+__version__ = "0.1.6"
+__license__ = "GNU General Public License v3 (GPLv3)"
+__email__ = "d.zlatanidis@gmail.com"
 
 
 if platform.system() == 'Linux':
@@ -75,14 +75,14 @@ def get_from_arg_reverse(arg):
     '''Get any string after char /'''
 
     i = 0
-    results = []
+    result = []
     for char in range(len(arg)):
         i -= 1
-        results.append(arg[i])
+        result.append(arg[i])
         if arg[i] == '/':
             break
 
-    return ''.join(results[::-1]).replace('/', '')
+    return ''.join(result[::-1]).replace('/', '')
 
 
 def get_nums(text):
@@ -204,14 +204,26 @@ def linesx(read, argX):
     '''Print lines'''
 
     result = []
+    options = get_from_arg(argX)
+    argX = argX.replace(options + '/', '', 1)
+    step = get_nums(options)
+    options = options.replace(step, '')
+
+    if step == '':
+        step = 1
 
     for line in read.splitlines():
         result.append(line)
 
     if argX == '*' or argX == 'all':
-        for line in result:
-            print line
-        sys.exit()
+        if options == 'step':
+            for line in range(0, len(result), int(step)):
+                print result[line]
+            sys.exit()
+        else:
+            for line in range(len(result)):
+                print result[line]
+            sys.exit()
 
     elif argX.startswith('[') and argX.endswith(']'):
         argX = argX.replace('[', '', 1)
@@ -399,7 +411,7 @@ def arguments_view():
     print ('  -p, --print    : print text')
     print ('                   e extract/, c chars/, s sum/')
     print ('  -l, --lines    : print lines')
-    print ('                   \'N\', \'[N-N]\', \'*, all\'')
+    print ('                   \'N\', \'[N-N]\', \'step(N)/*, all\'')
     print ('  -r, --replace  : replace text')
     print ('                   m max(N)/, u upper */, l lower */, /color')
     print ('  -i, --insert   : insert text')
