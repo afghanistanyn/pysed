@@ -41,11 +41,11 @@ Command Line Tool Usage
       -p, --print    : print text
                        e extract/, c chars/, s sum/
       -l, --lines    : print lines
-                       'N', '[N-N]', 'step(N)/*, all'
+                       'N', '[N-N]', 'step=N/*, all'
       -r, --replace  : replace text
-                       m max(N)/, u upper */, l lower */, /color
+                       m max=N/, u upper=*/, l lower=*/, /color
       -i, --insert   : insert text
-                       m max(N)/, /color
+                       m max=N/, /color
 
     N = Number, {Options}/, 'Pattern'
     color = red, green, blue, cyan, yellow, magenta
@@ -115,7 +115,7 @@ Print lines:
     This is my fish,
     whose name is George.
 
-    $ pysed --lines step2/'*' text.txt
+    $ pysed --lines step=2/'*' text.txt
 
     This is my cat,
     This is my dog,
@@ -220,7 +220,7 @@ Replace max:
 
 .. code-block:: bash
 
-    $ pysed -r --print max2/'This' 'THIS' text.txt
+    $ pysed -r --print max=2/'This' 'THIS' text.txt
 
     THIS is my cat,
      whose name is Betty.
@@ -246,7 +246,7 @@ Convert text to uppercase:
     THIS is my goat,
      whose name is Adam.
 
-    $ pysed -r --print upper*/'' '' text.txt
+    $ pysed -r --print upper=*/'' '' text.txt
     
     THIS IS MY CAT,
      WHOSE NAME IS BETTY.
@@ -272,7 +272,7 @@ Convert text to lowercase:
     this is my goat,
      whose name is Adam.
 
-    $ pysed -r --print lower*/'' '' text.txt
+    $ pysed -r --print lower=*/'' '' text.txt
 
     this is my cat,
      whose name is betty.
@@ -302,7 +302,7 @@ Insert max:
 
 .. code-block:: bash
 
-    $ pysed -i --print m2/'whose ' 'sur' text.txt
+    $ pysed -i --print m=2/'whose ' 'sur' text.txt
 
     This is my cat,
      whose surname is Betty.

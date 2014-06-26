@@ -1,4 +1,10 @@
 26-06-2014
+Version 0.1.7
+
+[Updated] - Fix step=0
+[Feature] - Added '=' in options
+
+26-06-2014
 Version 0.1.6
 
 [Feature] - Added step in print lines

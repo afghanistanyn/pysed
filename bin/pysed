@@ -12,7 +12,7 @@ optional arguments:
   -p, --print    : print text
                    e extract/, c chars/, s sum/
   -l, --lines    : print lines
-                   'N', '[N-N]', 'step(N)/*, all'
+                   'N', '[N-N]', '*, all'
   -r, --replace  : replace text
                    m max(N)/, u upper */, l lower */, /color
   -i, --insert   : insert text
@@ -31,7 +31,7 @@ import platform
 
 __prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -152,7 +152,7 @@ def replace(read, find_text, argX, nums, options, options_2):
 
     result = read
     for text in set(find_text):
-        if options == 'm' or options == 'max':
+        if options == 'm=' or options == 'max=':
             result = read.replace(text, color + argX + default,
                                   int(nums))
 
@@ -160,14 +160,14 @@ def replace(read, find_text, argX, nums, options, options_2):
             result = read.replace(text,
                                   color + argX.upper() + default)
 
-        elif options == 'u*' or options == 'upper*':
+        elif options == 'u=*' or options == 'upper=*':
             result = color + read.upper() + default
 
         elif options == 'l' or options == 'lower':
             result = read.replace(text,
                                   color + argX.lower() + default)
 
-        elif options == 'l*' or options == 'lower*':
+        elif options == 'l=*' or options == 'lower=*':
             result = color + read.lower() + default
 
         else:
@@ -188,7 +188,7 @@ def append(read, find_text, argX, nums, options, options_2):
 
     result = read
     for text in set(find_text):
-        if options == 'm' or options == 'max':
+        if options == 'm=' or options == 'max=':
             result = read.replace(text,
                                   text + color + argX + default,
                                   int(nums))
@@ -204,19 +204,20 @@ def linesx(read, argX):
     '''Print lines'''
 
     result = []
+
     options = get_from_arg(argX)
     argX = argX.replace(options + '/', '', 1)
     step = get_nums(options)
     options = options.replace(step, '')
 
-    if step == '':
+    if step == '' or step == '0':
         step = 1
 
     for line in read.splitlines():
         result.append(line)
 
     if argX == '*' or argX == 'all':
-        if options == 'step':
+        if options == 'step=':
             for line in range(0, len(result), int(step)):
                 print result[line]
             sys.exit()
@@ -411,11 +412,11 @@ def arguments_view():
     print ('  -p, --print    : print text')
     print ('                   e extract/, c chars/, s sum/')
     print ('  -l, --lines    : print lines')
-    print ('                   \'N\', \'[N-N]\', \'step(N)/*, all\'')
+    print ('                   \'N\', \'[N-N]\', \'step=N/*, all\'')
     print ('  -r, --replace  : replace text')
-    print ('                   m max(N)/, u upper */, l lower */, /color')
+    print ('                   m max=N/, u upper=*/, l lower=*/, /color')
     print ('  -i, --insert   : insert text')
-    print ('                   m max(N)/, /color\n')
+    print ('                   m max=N/, /color\n')
     print ('N = Number, {Options}/, \'Pattern\'')
     print ('color = red, green, blue, cyan, yellow, magenta')
 
