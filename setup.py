@@ -14,6 +14,7 @@ setup(
     author="dslackw",
     author_email="d.zlatanidis@gmail.com",
     url="https://github.com/dslackw/pysed",
+    packages=['pysed'],
     scripts=["bin/pysed"],
     package_data={"": ["LICENSE", "README.rst", "CHANGELOG"]},
     classifiers=[
