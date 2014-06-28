@@ -29,8 +29,7 @@ Usage Examples
 --------------
 
 How to use the module in your own python code:
-Modules : replace(), append(), colors(), get_nums(), findall(),
-          get_to(), get_upside()
+Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_upside()
 
 .. code-block:: bash
 
