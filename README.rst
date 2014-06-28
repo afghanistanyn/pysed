@@ -34,9 +34,7 @@ How to use the module in your own python code:
 .. code-block:: bash
 
     >>> import pysed
-
-.. code-block:: bash
-
+    >>>
     >>> text = '''This is my cat,
     ...      whose name is Betty.
     ...     This is my dog,
