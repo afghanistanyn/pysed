@@ -31,7 +31,7 @@ import platform
 
 __prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
 
@@ -107,10 +107,10 @@ def findall(argX, read):
         find_text = re.findall(argX, read)
 
         if find_text == []:
-            sys.exit()
+            find_text == ''
 
     except re.error:
-        sys.exit()
+        find_text = ''
 
     return find_text
 
@@ -140,8 +140,16 @@ def write_to_file(file, result):
     file.close()
 
 
-def replace(read, find_text, argX, nums, options, options_2):
+def replace(read, arg2, arg3, options_1, options_2):
     '''Replace text with new'''
+
+    nums = get_nums(options_1)
+    options_1 = options_1.replace(nums, '')
+
+    if nums == '':
+        nums = 0
+
+    find_text = findall(arg2, read)
 
     if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
         color = colors(options_2)
@@ -152,32 +160,40 @@ def replace(read, find_text, argX, nums, options, options_2):
 
     result = read
     for text in set(find_text):
-        if options == 'm=' or options == 'max=':
-            result = read.replace(text, color + argX + default,
+        if options_1 == 'm=' or options_1 == 'max=':
+            result = read.replace(text, color + arg3 + default,
                                   int(nums))
 
-        elif options == 'u' or options == 'upper':
+        elif options_1 == 'u' or options_1 == 'upper':
             result = read.replace(text,
-                                  color + argX.upper() + default)
+                                  color + arg3.upper() + default)
 
-        elif options == 'u=*' or options == 'upper=*':
+        elif options_1 == 'u=*' or options_1 == 'upper=*':
             result = color + read.upper() + default
 
-        elif options == 'l' or options == 'lower':
+        elif options_1 == 'l' or options_1 == 'lower':
             result = read.replace(text,
-                                  color + argX.lower() + default)
+                                  color + arg3.lower() + default)
 
-        elif options == 'l=*' or options == 'lower=*':
+        elif options_1 == 'l=*' or options_1 == 'lower=*':
             result = color + read.lower() + default
 
         else:
-            result = result.replace(text, color + argX + default)
+            result = result.replace(text, color + arg3 + default)
 
     return result
 
 
-def append(read, find_text, argX, nums, options, options_2):
+def append(read, arg2, arg3, options_1, options_2):
     '''Insert new text'''
+
+    nums = get_nums(options_1)
+    options_1 = options_1.replace(nums, '')
+
+    if nums == '':
+        nums = 0
+
+    find_text = findall(arg2, read)
 
     if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
         color = colors(options_2)
@@ -188,15 +204,14 @@ def append(read, find_text, argX, nums, options, options_2):
 
     result = read
     for text in set(find_text):
-        if options == 'm=' or options == 'max=':
+        if options_1 == 'm=' or options_1 == 'max=':
             result = read.replace(text,
-                                  text + color + argX + default,
+                                  text + color + arg3 + default,
                                   int(nums))
 
         else:
             result = result.replace(text,
-                                    text + color + argX + default)
-
+                                    text + color + arg3 + default)
     return result
 
 
@@ -205,10 +220,10 @@ def linesx(read, argX):
 
     result = []
 
-    options = get_from_arg(argX)
-    argX = argX.replace(options + '/', '', 1)
-    step = get_nums(options)
-    options = options.replace(step, '')
+    options_1 = get_from_arg(argX)
+    argX = argX.replace(options_1 + '/', '', 1)
+    step = get_nums(options_1)
+    options_1 = options_1.replace(step, '')
 
     if step == '' or step == '0':
         step = 1
@@ -217,7 +232,7 @@ def linesx(read, argX):
         result.append(line)
 
     if argX == '*' or argX == 'all':
-        if options == 'step=':
+        if options_1 == 'step=':
             for line in range(0, len(result), int(step)):
                 print result[line]
             sys.exit()
@@ -267,28 +282,21 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
     result = []
 
-    options = get_from_arg(arg2)
-    arg2 = arg2.replace(options + '/', '', 1)
-    nums = get_nums(options)
-    options = options.replace(nums, '')
+    options_1 = get_from_arg(arg2)
+    arg2 = arg2.replace(options_1 + '/', '', 1)
 
     options_2 = get_from_arg_reverse(arg3)
     arg3 = arg3.replace('/' + options_2, '', 1)
 
-    if nums == '':
-        nums = 0
-
     try:
         read = open_file_for_read(file)
-        find_text = findall(arg2, read)
-
         if arg0 == '-p' or arg0 == '--print':
 
-            options = get_from_arg(arg1)
-            arg1 = arg1.replace(options + '/', '', 1)
+            options_1 = get_from_arg(arg1)
+            arg1 = arg1.replace(options_1 + '/', '', 1)
             find_text = findall(arg1, read)
 
-            if options == 's' or options == 'sum':
+            if options_1 == 's' or options_1 == 'sum':
 
                 words = read.split()
                 chars = ''.join(words)
@@ -300,13 +308,13 @@ def print_text(file, arg0, arg1, arg2, arg3):
                 print '%d blanks' % (len(read) - len(chars))
                 sys.exit()
 
-            if options == 'c' or options == 'chars':
+            if options_1 == 'c' or options_1 == 'chars':
 
                 print 'find %d --> \'%s\'' % (
                     len(find_text), arg1)
                 sys.exit()
 
-            if options == 'e' or options == 'extract':
+            if options_1 == 'e' or options_1 == 'extract':
 
                 print ' '.join(find_text)
                 sys.exit()
@@ -320,10 +328,10 @@ def print_text(file, arg0, arg1, arg2, arg3):
             result = linesx(read, arg1)
 
         elif arg0 == '-r' or arg0 == '--replace':
-            result = replace(read, find_text, arg3, nums, options, options_2)
+            result = replace(read, arg2, arg3, options_1, options_2)
 
         elif arg0 == '-i' or arg0 == '--insert':
-            result = append(read, find_text, arg3, nums, options, options_2)
+            result = append(read, arg2, arg3, options_1, options_2)
 
         else:
 
@@ -342,19 +350,13 @@ def write_replace_text(file, arg1, arg2):
 
     result = []
 
-    options = get_from_arg(arg1)
-    arg1 = arg1.replace(options + '/', '', 1)
-
-    nums = get_nums(options)
-    options = options.replace(nums, '')
-    if nums == '':
-        nums = 0
+    options_1 = get_from_arg(arg1)
+    arg1 = arg1.replace(options_1 + '/', '', 1)
 
     try:
         file = open_file_for_read_and_write(file)
         read = file.read()
-        find_text = findall(arg1, read)
-        result = replace(read, find_text, arg2, nums, options, '')
+        result = replace(read, arg1, arg2, options_1, '')
 
         if result != []:
             write_to_file(file, result)
@@ -369,21 +371,14 @@ def write_append_text(file, arg1, arg2):
 
     result = []
 
-    options = get_from_arg(arg1)
-    arg1 = arg1.replace(options + '/', '', 1)
-
-    nums = get_nums(options)
-    options = options.replace(nums, '')
-
-    if nums == '':
-        nums = 0
+    options_1 = get_from_arg(arg1)
+    arg1 = arg1.replace(options_1 + '/', '', 1)
 
     try:
 
         file = open_file_for_read_and_write(file)
         read = file.read()
-        find_text = findall(arg1, read)
-        result = append(read, find_text, arg2, nums, options, '')
+        result = append(read, arg1, arg2, options_1, '')
 
         if result != []:
             write_to_file(file, result)

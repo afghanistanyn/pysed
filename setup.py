@@ -4,18 +4,21 @@
 
 from distutils.core import setup
 
+from pysed import __version__
+from pysed import __email__
+
 
 setup(
     name="pysed",
-    version="0.1.7",
+    packages=['pysed'],
+    scripts=["bin/pysed"],
+    version=__version__,
     description="Utility that parses and transforms text",
     keywords=["python", "sed", "unix", "linux", "text",
                 "stream", "editor"],
     author="dslackw",
-    author_email="d.zlatanidis@gmail.com",
+    author_email=__email__,
     url="https://github.com/dslackw/pysed",
-    packages=['pysed'],
-    scripts=["bin/pysed"],
     package_data={"": ["LICENSE", "README.rst", "CHANGELOG"]},
     classifiers=[
         "Development Status :: 3 - Alpha",

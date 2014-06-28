@@ -25,6 +25,67 @@ Installation
     $ pip uninstall pysed
     
 
+Usage Examples
+--------------
+
+How to use the module in your own python code:
+[ modules: replace(), append() ]
+
+.. code-block:: bash
+
+    >>> import pysed
+
+.. code-block:: bash
+
+    >>> text = '''This is my cat,
+    ...      whose name is Betty.
+    ...     This is my dog,
+    ...      whose name is Frank.
+    ...     This is my fish,
+    ...     whose name is George.
+    ...     This is my goat,
+    ...      whose name is Adam.'''
+    >>>
+    >>> result = pysed.replace(text, 'This', 'THIS', '', '')
+    >>>
+    >>> print result
+
+        THIS is my cat,
+         whose name is Betty.
+        THIS is my dog,
+         whose name is Frank.
+        THIS is my fish,
+        whose name is George.
+        THIS is my goat,
+         whose name is Adam.
+    >>>
+    >>> result = pysed.replace(text, 'This', 'THIS', 'max=2', 'red')
+    >>>
+    >>> print result
+
+        THIS is my cat,
+         whose name is Betty.
+        THIS is my dog,
+         whose name is Frank.
+        This is my fish,
+        whose name is George.
+        This is my goat,
+         whose name is Adam.
+    >>>
+    >>> result = pysed.append(text, 'This', '>', 'max=1', 'green')
+    >>>
+    >>> print result
+    
+        This> is my cat,
+         whose name is Betty.
+        This is my dog,
+         whose name is Frank.
+        This is my fish,
+        whose name is George.
+        This is my goat,
+         whose name is Adam.
+
+
 
 Command Line Tool Usage
 -----------------------
@@ -50,8 +111,6 @@ Command Line Tool Usage
     N = Number, {Options}/, 'Pattern'
     color = red, green, blue, cyan, yellow, magenta
 
-Pysed Examples
---------------
 
 See changes before modification with options -p --print:
 
