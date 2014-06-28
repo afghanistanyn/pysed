@@ -23,121 +23,18 @@ color = red, green, blue, cyan, yellow, magenta
 
 '''
 
-import re
-import os
 import sys
-import platform
+
+from paint import colors
+from args import *
+from files import *
 
 
 __prog__ = 'pysed'
 __author__ = "dslackw"
-__version__ = "0.1.8"
+__version__ = "0.1.9"
 __license__ = "GNU General Public License v3 (GPLv3)"
 __email__ = "d.zlatanidis@gmail.com"
-
-
-if platform.system() == 'Linux':
-    path = os.getcwd() + '/'
-
-elif platform.system() == 'Windows':
-    path = os.getcwd() + '\/'
-
-
-def colors(color):
-    '''Print colors'''
-
-    paint = {
-        'red': '\x1b[31m',
-        'green': '\x1b[32m',
-        'yellow': '\x1b[33m',
-        'blue': '\x1b[34m',
-        'magenta': '\x1b[35m',
-        'cyan': '\x1b[36m',
-        'default': '\x1b[0m'
-    }
-
-    return paint[color]
-
-
-def get_from_arg(arg):
-    '''Get any string before char /'''
-
-    result = []
-    for char in arg:
-        result.append(char)
-        if char == '/':
-            break
-
-    return ''.join(result).replace('/', '')
-
-
-def get_from_arg_reverse(arg):
-    '''Get any string after char /'''
-
-    i = 0
-    result = []
-    for char in range(len(arg)):
-        i -= 1
-        result.append(arg[i])
-        if arg[i] == '/':
-            break
-
-    return ''.join(result[::-1]).replace('/', '')
-
-
-def get_nums(text):
-    '''Grep numbers from a string'''
-
-    nums = '0123456789'
-
-    result = []
-    for t in text:
-        for n in nums:
-            if n == t:
-                result.append(n)
-
-    return ''.join(result)
-
-
-def findall(argX, read):
-    '''Find text from string'''
-
-    try:
-
-        find_text = re.findall(argX, read)
-
-        if find_text == []:
-            find_text == ''
-
-    except re.error:
-        find_text = ''
-
-    return find_text
-
-
-def open_file_for_read(file):
-    '''Open files for read only'''
-
-    file = open(path + file, 'r')
-    read = file.read()
-    file.close()
-
-    return read
-
-
-def open_file_for_read_and_write(file):
-    '''Open files for read and write'''
-
-    return open(path + file, 'r+')
-
-
-def write_to_file(file, result):
-    '''Write results to a file'''
-
-    file.seek(0)
-    file.truncate()
-    file.write(result)
-    file.close()
 
 
 def replace(read, arg2, arg3, options_1, options_2):
@@ -220,7 +117,7 @@ def linesx(read, argX):
 
     result = []
 
-    options_1 = get_from_arg(argX)
+    options_1 = get_to(argX, '/')
     argX = argX.replace(options_1 + '/', '', 1)
     step = get_nums(options_1)
     options_1 = options_1.replace(step, '')
@@ -282,17 +179,17 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
     result = []
 
-    options_1 = get_from_arg(arg2)
+    options_1 = get_to(arg2, '/')
     arg2 = arg2.replace(options_1 + '/', '', 1)
 
-    options_2 = get_from_arg_reverse(arg3)
+    options_2 = get_upside(arg3, '/')
     arg3 = arg3.replace('/' + options_2, '', 1)
 
     try:
         read = open_file_for_read(file)
         if arg0 == '-p' or arg0 == '--print':
 
-            options_1 = get_from_arg(arg1)
+            options_1 = get_to(arg1, '/')
             arg1 = arg1.replace(options_1 + '/', '', 1)
             find_text = findall(arg1, read)
 
@@ -350,7 +247,7 @@ def write_replace_text(file, arg1, arg2):
 
     result = []
 
-    options_1 = get_from_arg(arg1)
+    options_1 = get_to(arg1, '/')
     arg1 = arg1.replace(options_1 + '/', '', 1)
 
     try:
@@ -371,7 +268,7 @@ def write_append_text(file, arg1, arg2):
 
     result = []
 
-    options_1 = get_from_arg(arg1)
+    options_1 = get_to(arg1, '/')
     arg1 = arg1.replace(options_1 + '/', '', 1)
 
     try:

@@ -29,7 +29,8 @@ Usage Examples
 --------------
 
 How to use the module in your own python code:
-[ modules: replace(), append() ]
+Modules : replace(), append(), colors(), get_nums(), findall(),
+          get_to(), get_upside()
 
 .. code-block:: bash
 
@@ -47,7 +48,6 @@ How to use the module in your own python code:
     >>> result = pysed.replace(text, 'This', 'THIS', '', '')
     >>>
     >>> print result
-
         THIS is my cat,
          whose name is Betty.
         THIS is my dog,
@@ -73,7 +73,6 @@ How to use the module in your own python code:
     >>> result = pysed.append(text, 'This', '>', 'max=1', 'green')
     >>>
     >>> print result
-    
         This> is my cat,
          whose name is Betty.
         This is my dog,
@@ -82,6 +81,24 @@ How to use the module in your own python code:
         whose name is George.
         This is my goat,
          whose name is Adam.
+    >>>
+    >>> print '%sHello World!!!%s' % (pysed.colors('green'), pysed.colors('default'))
+    Hello World!!!
+    >>>
+    >>> pysed.get_nums('a1b2c3d4')
+    '1234'
+    >>>
+    >>> pysed.findall('is', text)
+    ['is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is']    
+    >>>
+    >>> str = 'Python is a programming language, that lets you work quickly'
+    >>>
+    >>> pysed.get_to(str, ',')
+    'Python is a programming language,'
+    >>>
+    >>> pysed.get_upside(str, ',')
+    ', that lets you work quickly'
+    >>>
 
 
 
