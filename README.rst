@@ -109,9 +109,6 @@ Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_up
     >>> pysed.get_upside(str, ',')
     ', that lets you work quickly'
     >>>
-    >>> result = pysed.replace(text, 'my', 'MY', 'select=30-100', '')
-    >>>
-
 
 Command Line Tool Usage
 -----------------------
