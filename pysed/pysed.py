@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-''' usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
+'''usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]
 
 Utility that parses and transforms text
 
@@ -12,16 +11,18 @@ optional arguments:
   -p, --print    : print text
                    e extract/, c chars/, s sum/
   -l, --lines    : print lines
-                   'N', '[N-N]', '*, all'
+                   'N', '[N-N]', 'step=N/*, all'
   -r, --replace  : replace text
-                   m max(N)/, u upper */, l lower */, /color
+                   m max=N/, u upper=*/, l lower=*/,
+                   s select=N-N/, /color
   -i, --insert   : insert text
-                   m max(N)/, /color
+                   m max=N/, s select=N-N/, /color
 
-N = Number, {Options}/, 'Pattern'
-color = red, green, blue, cyan, yellow, magenta
+N = Number, Options/, 'Pattern'
+color = red, green, blue, cyan, yellow, magenta, default
 
 '''
+
 
 import sys
 
@@ -31,22 +32,22 @@ from files import *
 
 
 __prog__ = 'pysed'
-__author__ = "dslackw"
-__version__ = "0.1.9"
-__license__ = "GNU General Public License v3 (GPLv3)"
-__email__ = "d.zlatanidis@gmail.com"
+__author__ = 'dslackw'
+__version__ = '0.2.0'
+__license__ = 'GNU General Public License v3 (GPLv3)'
+__email__ = 'd.zlatanidis@gmail.com'
 
 
 def replace(read, arg2, arg3, options_1, options_2):
     '''Replace text with new'''
+
+    find_text = findall(arg2, read)
 
     nums = get_nums(options_1)
     options_1 = options_1.replace(nums, '')
 
     if nums == '':
         nums = 0
-
-    find_text = findall(arg2, read)
 
     if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
         color = colors(options_2)
@@ -55,8 +56,20 @@ def replace(read, arg2, arg3, options_1, options_2):
         color = ''
         default = ''
 
+    if options_1.startswith('s='):
+        nums_all = options_1.replace('s=', '')
+        options_1 = options_1.replace(nums_all, '')
+        region = select(read, nums_all)
+        find_text = findall(arg2, region)
+    elif options_1.startswith('select='):
+        nums_all = options_1.replace('select=', '')
+        options_1 = options_1.replace(nums_all, '')
+        region = select(read, nums_all)
+        find_text = findall(arg2, region)
+
     result = read
-    for text in set(find_text):
+    find_text = set(find_text)
+    for text in find_text:
         if options_1 == 'm=' or options_1 == 'max=':
             result = read.replace(text, color + arg3 + default,
                                   int(nums))
@@ -75,6 +88,11 @@ def replace(read, arg2, arg3, options_1, options_2):
         elif options_1 == 'l=*' or options_1 == 'lower=*':
             result = color + read.lower() + default
 
+        elif options_1 == 's=' or options_1 == 'select=':
+            region_original = region
+            region = region.replace(text, color + arg3 + default)
+            result = result.replace(region_original, region)
+
         else:
             result = result.replace(text, color + arg3 + default)
 
@@ -84,13 +102,13 @@ def replace(read, arg2, arg3, options_1, options_2):
 def append(read, arg2, arg3, options_1, options_2):
     '''Insert new text'''
 
+    find_text = findall(arg2, read)
+
     nums = get_nums(options_1)
     options_1 = options_1.replace(nums, '')
 
     if nums == '':
         nums = 0
-
-    find_text = findall(arg2, read)
 
     if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
         color = colors(options_2)
@@ -99,12 +117,30 @@ def append(read, arg2, arg3, options_1, options_2):
         color = ''
         default = ''
 
+    if options_1.startswith('s='):
+        nums_all = options_1.replace('s=', '')
+        options_1 = options_1.replace(nums_all, '')
+        region = select(read, nums_all)
+        find_text = findall(arg2, region)
+    elif options_1.startswith('select='):
+        nums_all = options_1.replace('select=', '')
+        options_1 = options_1.replace(nums_all, '')
+        region = select(read, nums_all)
+        find_text = findall(arg2, region)
+
     result = read
-    for text in set(find_text):
+    find_text = set(find_text)
+    for text in find_text:
         if options_1 == 'm=' or options_1 == 'max=':
             result = read.replace(text,
                                   text + color + arg3 + default,
                                   int(nums))
+
+        elif options_1 == 's=' or options_1 == 'select=':
+            region_original = region
+            region = region.replace(text, 
+                                    text + color + arg3 + default)
+            result = result.replace(region_original, region)
 
         else:
             result = result.replace(text,
@@ -249,11 +285,14 @@ def write_replace_text(file, arg1, arg2):
 
     options_1 = get_to(arg1, '/')
     arg1 = arg1.replace(options_1 + '/', '', 1)
+    
+    options_2 = get_upside(arg2, '/')
+    arg2 = arg2.replace('/' + options_2, '', 1)
 
     try:
         file = open_file_for_read_and_write(file)
         read = file.read()
-        result = replace(read, arg1, arg2, options_1, '')
+        result = replace(read, arg1, arg2, options_1, options_2)
 
         if result != []:
             write_to_file(file, result)
@@ -271,11 +310,14 @@ def write_append_text(file, arg1, arg2):
     options_1 = get_to(arg1, '/')
     arg1 = arg1.replace(options_1 + '/', '', 1)
 
+    options_2 = get_upside(arg2, '/')
+    arg2 = arg2.replace('/' + options_2, '', 1)
+
     try:
 
         file = open_file_for_read_and_write(file)
         read = file.read()
-        result = append(read, arg1, arg2, options_1, '')
+        result = append(read, arg1, arg2, options_1, options_2)
 
         if result != []:
             write_to_file(file, result)
@@ -306,11 +348,12 @@ def arguments_view():
     print ('  -l, --lines    : print lines')
     print ('                   \'N\', \'[N-N]\', \'step=N/*, all\'')
     print ('  -r, --replace  : replace text')
-    print ('                   m max=N/, u upper=*/, l lower=*/, /color')
+    print ('                   m max=N/, u upper=*/, l lower=*/,')
+    print ('                   s select=N-N/, /color')
     print ('  -i, --insert   : insert text')
-    print ('                   m max=N/, /color\n')
-    print ('N = Number, {Options}/, \'Pattern\'')
-    print ('color = red, green, blue, cyan, yellow, magenta')
+    print ('                   m max=N/, s select=N-N/, /color\n')
+    print ('N = Number, Options/, \'Pattern\'')
+    print ('color = red, green, blue, cyan, yellow, magenta, default')
 
 
 def arguments_error(arg0, argx):

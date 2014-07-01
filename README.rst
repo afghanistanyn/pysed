@@ -23,7 +23,7 @@ Installation
     uninstall
 
     $ pip uninstall pysed
-    
+        
 
 Usage Examples
 --------------
@@ -47,39 +47,50 @@ Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_up
     >>> result = pysed.replace(text, 'This', 'THIS', '', '')
     >>>
     >>> print result
-        THIS is my cat,
-         whose name is Betty.
-        THIS is my dog,
-         whose name is Frank.
-        THIS is my fish,
-        whose name is George.
-        THIS is my goat,
-         whose name is Adam.
+    THIS is my cat,
+     whose name is Betty.
+    THIS is my dog,
+     whose name is Frank.
+    THIS is my fish,
+     whose name is George.
+    THIS is my goat,
+     whose name is Adam.
     >>>
     >>> result = pysed.replace(text, 'This', 'THIS', 'max=2', 'red')
     >>>
     >>> print result
-
-        THIS is my cat,
-         whose name is Betty.
-        THIS is my dog,
-         whose name is Frank.
-        This is my fish,
-        whose name is George.
-        This is my goat,
-         whose name is Adam.
+    THIS is my cat,
+     whose name is Betty.
+    THIS is my dog,
+     whose name is Frank.
+    This is my fish,
+     whose name is George.
+    This is my goat,
+     whose name is Adam.
     >>>
-    >>> result = pysed.append(text, 'This', '>', 'max=1', 'green')
+    >>> result = pysed.append(text, 'This', ' >>>', 'max=1', 'green')
     >>>
     >>> print result
-        This> is my cat,
-         whose name is Betty.
-        This is my dog,
-         whose name is Frank.
-        This is my fish,
-        whose name is George.
-        This is my goat,
-         whose name is Adam.
+    This >>> is my cat,
+     whose name is Betty.
+    This is my dog,
+     whose name is Frank.
+    This is my fish,
+     whose name is George.
+    This is my goat,
+     whose name is Adam.
+    >>>
+    >>> result = pysed.replace(text, 'my', 'MY', 'select=30-100', '')
+    >>>
+    >>> print result
+    This is my cat,
+     whose name is Betty.
+    This is MY dog,
+     whose name is Frank.
+    This is MY fish,
+    whose name is George.
+    This is my goat,
+     whose name is Adam.
     >>>
     >>> print '%sHello World!!!%s' % (pysed.colors('green'), pysed.colors('default'))
     Hello World!!!
@@ -98,7 +109,8 @@ Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_up
     >>> pysed.get_upside(str, ',')
     ', that lets you work quickly'
     >>>
-
+    >>> result = pysed.replace(text, 'my', 'MY', 'select=30-100', '')
+    >>>
 
 
 Command Line Tool Usage
@@ -118,16 +130,15 @@ Command Line Tool Usage
       -l, --lines    : print lines
                        'N', '[N-N]', 'step=N/*, all'
       -r, --replace  : replace text
-                       m max=N/, u upper=*/, l lower=*/, /color
+                       m max=N/, u upper=*/, l lower=*/,
+                       s select=N-N/, /color
       -i, --insert   : insert text
-                       m max=N/, /color
+                       m max=N/, s select=N-N/, /color
 
-    N = Number, {Options}/, 'Pattern'
-    color = red, green, blue, cyan, yellow, magenta
-
+    N = Number, Options/, 'Pattern'
+    color = red, green, blue, cyan, yellow, magenta, default
 
 See changes before modification with options -p --print:
-
 
 Print text file:
 
@@ -301,6 +312,21 @@ Replace max:
      whose name is Frank.
     This is my fish,
      whose name is George.
+    This is my goat,
+     whose name is Adam.
+
+Select region to replace text:
+
+.. code-block:: bash
+
+    $ pysed -r -p select=16-90/'my' 'your' text.txt
+
+    This is my cat,
+     whose name is Betty.
+    This is your dog,
+     whose name is Frank.
+    This is your fish,
+    whose name is George.
     This is my goat,
      whose name is Adam.
 

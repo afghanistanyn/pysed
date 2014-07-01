@@ -1,7 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 import re
+
+def select(read, nums_all):
+    '''Select a region to modify'''
+
+    try:
+        i = int(get_to(nums_all, '-').replace('-', ''))
+        s = int(get_upside(nums_all, '-').replace('-', ''))
+        result = read[i:s]
+    except ValueError:
+        return ''
+
+    return result
+
 
 def get_to(arg, char):
     '''Get any string before char /'''
