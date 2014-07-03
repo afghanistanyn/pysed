@@ -7,6 +7,8 @@ import re
 def select(read, nums_all):
     '''Select a region to modify'''
 
+    nums_all = nums_all.replace('[', '')
+    nums_all = nums_all.replace(']', '')
     try:
         i = int(get_to(nums_all, '-').replace('-', ''))
         s = int(get_upside(nums_all, '-').replace('-', ''))

@@ -14,9 +14,9 @@ optional arguments:
                    'N', '[N-N]', 'step=N/*, all'
   -r, --replace  : replace text
                    m max=N/, u upper=*/, l lower=*/,
-                   s select=N-N/, /color
+                   s select=[N-N]/, /color
   -i, --insert   : insert text
-                   m max=N/, s select=N-N/, /color
+                   m max=N/, s select=[N-N]/, /color
 
 N = Number, Options/, 'Pattern'
 color = red, green, blue, cyan, yellow, magenta, default
@@ -33,7 +33,7 @@ from files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
@@ -349,9 +349,9 @@ def arguments_view():
     print ('                   \'N\', \'[N-N]\', \'step=N/*, all\'')
     print ('  -r, --replace  : replace text')
     print ('                   m max=N/, u upper=*/, l lower=*/,')
-    print ('                   s select=N-N/, /color')
+    print ('                   s select=[N-N]/, /color')
     print ('  -i, --insert   : insert text')
-    print ('                   m max=N/, s select=N-N/, /color\n')
+    print ('                   m max=N/, s select=[N-N]/, /color\n')
     print ('N = Number, Options/, \'Pattern\'')
     print ('color = red, green, blue, cyan, yellow, magenta, default')
 

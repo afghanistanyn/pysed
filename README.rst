@@ -80,7 +80,7 @@ Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_up
     This is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.replace(text, 'my', 'MY', 'select=30-100', '')
+    >>> result = pysed.replace(text, 'my', 'MY', 'select=[30-100]', '')
     >>>
     >>> print result
     This is my cat,
@@ -128,9 +128,9 @@ Command Line Tool Usage
                        'N', '[N-N]', 'step=N/*, all'
       -r, --replace  : replace text
                        m max=N/, u upper=*/, l lower=*/,
-                       s select=N-N/, /color
+                       s select=[N-N]/, /color
       -i, --insert   : insert text
-                       m max=N/, s select=N-N/, /color
+                       m max=N/, s select=[N-N]/, /color
 
     N = Number, Options/, 'Pattern'
     color = red, green, blue, cyan, yellow, magenta, default
@@ -316,7 +316,7 @@ Select region to replace text:
 
 .. code-block:: bash
 
-    $ pysed -r -p select=16-90/'my' 'your' text.txt
+    $ pysed -r -p select=[16-90]/'my' 'your' text.txt
 
     This is my cat,
      whose name is Betty.

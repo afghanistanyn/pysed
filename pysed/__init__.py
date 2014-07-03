@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
 from .pysed import main
 from .pysed import replace
 from .pysed import append
