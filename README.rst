@@ -12,8 +12,7 @@ CLI and API utility that parses and transforms text written in Python.
 [CHANGELOG] : https://github.com/dslackw/pysed/blob/master/CHANGELOG
 
 <a style="float:right" href="https://asciinema.org/a/10617" target="_blank">
-  <img alt="pysed Video Tutorial" 
-src="https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png" width="276" height="537" />
+  <img alt="pysed Video Tutorial" src="https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png" width="276" height="537" />
 </a>
 
 Video Tutorial: https://asciinema.org/a/10617
