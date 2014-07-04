@@ -33,7 +33,19 @@ Usage Examples
 --------------
 
 How to use the module in your own python code:
-Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_upside()
+
+Functions: 
+
+.. code-block:: bash
+
+    replace(), 
+    append(), 
+    lines(),
+    colors(), 
+    get_nums(), 
+    findall(), 
+    get_to(), 
+    get_upside()
 
 .. code-block:: bash
 
@@ -113,6 +125,15 @@ Modules : replace(), append(), colors(), get_nums(), findall(), get_to(), get_up
     >>> pysed.get_upside(str, ',')
     ', that lets you work quickly'
     >>>
+    >>> pysed.lines('text.txt', '0,5')
+    This is my cat,
+    whose name is George.
+    >>>
+    >>> pysed.lines('text.txt', 'step=2/*')
+    This is my cat,
+    This is my dog,
+    This is my fish,
+    This is my goat,
 
 Command Line Tool Usage
 -----------------------
