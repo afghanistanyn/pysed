@@ -11,9 +11,7 @@ CLI and API utility that parses and transforms text written in Python.
 
 [CHANGELOG] : https://github.com/dslackw/pysed/blob/master/CHANGELOG
 
-Video Tutorial:
-
-[![html dark](https://github.com/altercation/solarized/raw/master/img/screen-html-dark-th.png)](https://github.com/altercation/solarized/raw/master/img/screen-html-dark.png)
+Video Tutorial: https://asciinema.org/a/10617
 
 Installation
 ------------
