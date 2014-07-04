@@ -1,3 +1,9 @@
+04-07-2014
+Version 0.2.2
+
+[Updated] - Fix VaulueError and IndexError in lines options
+[Feature] - Added lines as module
+
 03-07-2014
 Version 0.2.1
 

@@ -33,7 +33,7 @@ from files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
@@ -148,65 +148,71 @@ def append(read, arg2, arg3, options_1, options_2):
     return result
 
 
-def linesx(read, argX):
+def lines(file, argX):
     '''Print lines'''
 
     result = []
 
-    options_1 = get_to(argX, '/')
-    argX = argX.replace(options_1 + '/', '', 1)
-    step = get_nums(options_1)
-    options_1 = options_1.replace(step, '')
+    try:
+        read = open_file_for_read(file)
 
-    if step == '' or step == '0':
-        step = 1
+        options_1 = get_to(argX, '/')
+        argX = argX.replace(options_1 + '/', '', 1)
+        step = get_nums(options_1)
+        options_1 = options_1.replace(step, '')
 
-    for line in read.splitlines():
-        result.append(line)
+        if step == '' or step == '0':
+            step = 1
 
-    if argX == '*' or argX == 'all':
-        if options_1 == 'step=':
-            for line in range(0, len(result), int(step)):
-                print result[line]
-            sys.exit()
-        else:
-            for line in range(len(result)):
-                print result[line]
-            sys.exit()
+        for line in read.splitlines():
+            result.append(line)
 
-    elif argX.startswith('[') and argX.endswith(']'):
-        argX = argX.replace('[', '', 1)
-        argX = argX.replace(']', '', 1)
+        if argX == '*' or argX == 'all':
+            if options_1 == 'step=':
+                for line in range(0, len(result), int(step)):
+                    print result[line]
+            else:
+                for line in range(len(result)):
+                    print result[line]
 
-        line_nums = argX.replace('-', '\n').split()
+        elif argX.startswith('[') and argX.endswith(']'):
+            argX = argX.replace('[', '', 1)
+            argX = argX.replace(']', '', 1)
 
-        if len(line_nums) < 2 or int(
-                line_nums[1]) >= len(result):
-            sys.exit()
-
-        else:
-
+            line_nums = argX.replace('-', '\n').split()
+    
             try:
-                for n in range(int(line_nums[0]),
-                               int(line_nums[1]) + 1):
-                    print result[int(n)]
-                sys.exit()
-            except ValueError:
-                sys.exit()
+                if len(line_nums) < 2 or int(
+                       line_nums[1]) >= len(result):
+                    print ("%s: Value Error"
+                        % (__prog__))
 
-    else:
-
-        try:
-            line_nums = argX.replace(',', '\n').split()
-
-            for num in line_nums:
-                if int(num) >= len(result):
-                    pass
                 else:
-                    print result[int(num)]
-            sys.exit()
-        except ValueError:
-            sys.exit()
+
+                    for n in range(int(line_nums[0]),
+                                   int(line_nums[1]) + 1):
+                        print result[int(n)]
+            except (ValueError):
+                print ("%s: Value Error" 
+                    % (__prog__))
+        else:
+    
+            try:
+                line_nums = argX.replace(',', '\n').split()
+    
+                for num in line_nums:
+                    if int(num) >= len(result):
+                        pass
+                    else:
+                        print result[int(num)]
+            except ValueError:
+                print ("%s: Value Error"
+                    % (__prog__))
+
+    except IOError:
+        print ("%s: can't read %s: No such file or directory"
+               % (__prog__, file))
+
 
 
 def print_text(file, arg0, arg1, arg2, arg3):
@@ -233,9 +239,9 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
                 words = read.split()
                 chars = ''.join(words)
-                for lines in range(len(read.splitlines())):
+                for line in range(len(read.splitlines())):
                     pass
-                print '%d lines' % (lines)
+                print '%d lines' % (line)
                 print '%d characters' % len(chars)
                 print '%d words' % len(words)
                 print '%d blanks' % (len(read) - len(chars))
@@ -256,9 +262,6 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
                 print read,
                 sys.exit()
-
-        elif arg0 == '-l' or arg0 == '--lines':
-            result = linesx(read, arg1)
 
         elif arg0 == '-r' or arg0 == '--replace':
             result = replace(read, arg2, arg3, options_1, options_2)
@@ -418,7 +421,7 @@ def main():
 
     elif (len(arg) == 3 and arg[0] == '-l' or len(arg) == 3 and
           arg[0] == '--lines'):
-        print_text(file, arg[0], arg[1], '', '')
+        lines(file, arg[1])
 
     elif (len(arg) == 4 and arg[0] == '-r' or len(arg) == 4 and
           arg[0] == '--replace'):
