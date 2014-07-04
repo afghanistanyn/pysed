@@ -161,8 +161,6 @@ Command Line Tool Usage
     color = red, green, blue, cyan, yellow, magenta, default
 
 
-Video tutorial : https://asciinema.org/a/10617
-
 See changes before modification with options -p --print:
 
 Print text file:
