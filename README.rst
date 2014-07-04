@@ -15,7 +15,7 @@ Video Tutorial
 --------------
 
 .. image:: https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
- :target: https://asciinema.org/a/10617
+ :target: https://asciinema.org/a/10635
 
 Installation
 ------------
