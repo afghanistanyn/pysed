@@ -4,6 +4,7 @@
 
 import re
 
+
 def select(read, nums_all):
     '''Select a region to modify'''
 
@@ -14,8 +15,8 @@ def select(read, nums_all):
         s = int(get_upside(nums_all, '-').replace('-', ''))
         result = read[i:s]
     except ValueError:
-        return ''
-
+        result = ''
+        
     return result
 
 

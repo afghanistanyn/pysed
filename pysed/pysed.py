@@ -33,13 +33,15 @@ from files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.3'
+__version__ = '0.2.4'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
 
 def replace(read, arg2, arg3):
-    '''Replace text with new'''
+    '''Replace characters or entire text with another.
+        Chose specific areas and to replace
+        yet Add color to text'''
 
     options_1 = get_to(arg2, '/')
     arg2 = arg2.replace(options_1 + '/', '', 1)
@@ -105,7 +107,11 @@ def replace(read, arg2, arg3):
 
 
 def append(read, arg2, arg3):
-    '''Insert new text'''
+    '''Introduce new characters or the entire text
+        with new and can also add color. As with the 
+        replacement options and you can select specific
+         areas'''
+
 
     options_1 = get_to(arg2, '/')
     arg2 = arg2.replace(options_1 + '/', '', 1)
@@ -158,86 +164,85 @@ def append(read, arg2, arg3):
     return result
 
 
-def lines(file, argX):
-    '''Print lines'''
+def lines(read, argX):
+    '''Print all lines of text or specific.
+        Printing lines with a step'''
+
 
     result = []
 
-    try:
-        read = open_file_for_read(file)
+    options_1 = get_to(argX, '/')
+    argX = argX.replace(options_1 + '/', '', 1)
 
-        options_1 = get_to(argX, '/')
-        argX = argX.replace(options_1 + '/', '', 1)
-        step = get_nums(options_1)
-        options_1 = options_1.replace(step, '')
+    step = get_nums(options_1)
+    options_1 = options_1.replace(step, '')
 
-        if step == '' or step == '0':
-            step = 1
+    if step == '' or step == '0':
+        step = 1
 
-        for line in read.splitlines():
-            result.append(line)
+    for line in read.splitlines():
+        result.append(line)
 
-        if argX == '*' or argX == 'all':
-            if options_1 == 'step=':
-                for line in range(0, len(result), int(step)):
-                    print result[line]
-            else:
-                for line in range(len(result)):
-                    print result[line]
-
-        elif argX.startswith('[') and argX.endswith(']'):
-            argX = argX.replace('[', '', 1)
-            argX = argX.replace(']', '', 1)
-
-            line_nums = argX.replace('-', '\n').split()
-    
-            try:
-                if len(line_nums) < 2 or int(
-                       line_nums[1]) >= len(result):
-                    print ("%s: Value Error"
-                        % (__prog__))
-
-                else:
-
-                    for n in range(int(line_nums[0]),
-                                   int(line_nums[1]) + 1):
-                        print result[int(n)]
-            except (ValueError):
-                print ("%s: Value Error" 
-                    % (__prog__))
+    if argX == '*' or argX == 'all':
+        if options_1 == 'step=':
+            for line in range(0, len(result), int(step)):
+                print result[line]
         else:
+            for line in range(len(result)):
+                print result[line]
+
+    elif argX.startswith('[') and argX.endswith(']'):
+        argX = argX.replace('[', '', 1)
+        argX = argX.replace(']', '', 1)
+
+        line_nums = argX.replace('-', '\n').split()
     
-            try:
-                line_nums = argX.replace(',', '\n').split()
+        try:
+            if len(line_nums) < 2 or int(
+                line_nums[1]) >= len(result):
+                pass
+
+            else:
+
+                for n in range(int(line_nums[0]),
+                               int(line_nums[1]) + 1):
+                    print result[int(n)]
+        except ValueError:
+            pass
+    else:
     
-                for num in line_nums:
-                    if int(num) >= len(result):
-                        pass
-                    else:
-                        print result[int(num)]
-            except ValueError:
-                print ("%s: Value Error"
-                    % (__prog__))
-
-    except IOError:
-        print ("%s: can't read %s: No such file or directory"
-               % (__prog__, file))
+        try:
+            line_nums = argX.replace(',', '\n').split()
+    
+            for num in line_nums:
+                if int(num) >= len(result):
+                    pass
+                else:
+                    print result[int(num)]
+        except ValueError:
+            pass
 
 
-
-def print_text(file, arg0, arg1, arg2, arg3):
-    '''Print all results before
-    any changes save in a file'''
+def cat(file, arg0, arg1, arg2, arg3):
+    '''Print all results before any changes save in a file
+        or print statics or extract chars'''
 
     result = []
 
     try:
-        read = open_file_for_read(file)
-        if arg0 == '-p' or arg0 == '--print':
 
-            options_1 = get_to(arg1, '/')
-            arg1 = arg1.replace(options_1 + '/', '', 1)
-            find_text = findall(arg1, read)
+        read = open_file_for_read(file)
+  
+        arg_lines = arg1
+        options_1 = get_to(arg1, '/')
+        arg1 = arg1.replace(options_1 + '/', '', 1)
+        find_text = findall(arg1, read)
+
+
+    
+        if arg0 == '-p' or arg0 == '--print':
+            
+            pass            
 
             if options_1 == 's' or options_1 == 'sum':
 
@@ -249,23 +254,21 @@ def print_text(file, arg0, arg1, arg2, arg3):
                 print '%d characters' % len(chars)
                 print '%d words' % len(words)
                 print '%d blanks' % (len(read) - len(chars))
-                sys.exit()
 
-            if options_1 == 'c' or options_1 == 'chars':
-
+            elif options_1 == 'c' or options_1 == 'chars':
+    
                 print 'find %d --> \'%s\'' % (
                     len(find_text), arg1)
-                sys.exit()
 
-            if options_1 == 'e' or options_1 == 'extract':
+            elif options_1 == 'e' or options_1 == 'extract':
 
                 print ' '.join(find_text)
-                sys.exit()
-
+            
             else:
 
                 print read,
-                sys.exit()
+        elif arg0 == '-l' or arg0 == '--lines':
+            result == lines(read, arg_lines)
 
         elif arg0 == '-r' or arg0 == '--replace':
             result = replace(read, arg2, arg3)
@@ -401,19 +404,19 @@ def main():
 
     elif (len(arg) == 2 and arg[0] == '-p' or len(arg) == 2 and
           arg[0] == '--print'):
-        print_text(file, arg[0], '', '', '')
+        cat(file, arg[0], '', '', '')
 
     elif (len(arg) == 3 and arg[0] == '-p' or len(arg) == 3 and
           arg[0] == '--print'):
-        print_text(file, arg[0], arg[1], '', '')
+        cat(file, arg[0], arg[1], '', '')
 
     elif (len(arg) == 5 and arg[1] == '-p' or len(arg) == 5 and
           arg[1] == '--print'):
-        print_text(file, arg[0], arg[1], arg[2], arg[3])
+        cat(file, arg[0], arg[1], arg[2], arg[3])
 
     elif (len(arg) == 3 and arg[0] == '-l' or len(arg) == 3 and
           arg[0] == '--lines'):
-        lines(file, arg[1])
+        cat(file, arg[0], arg[1], '', '')
 
     elif (len(arg) == 4 and arg[0] == '-r' or len(arg) == 4 and
           arg[0] == '--replace'):

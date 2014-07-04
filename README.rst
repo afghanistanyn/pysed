@@ -125,11 +125,13 @@ How to use the module in your own python code:
     >>> pysed.get_upside(str, ',')
     ', that lets you work quickly'
     >>>
-    >>> pysed.lines('text.txt', '0,5')
+    >>> result = pysed.lines(text, '0,5')
+    >>> print result
     This is my cat,
     whose name is George.
     >>>
-    >>> pysed.lines('text.txt', 'step=2/*')
+    >>> result = pysed.lines(text, 'step=2/*')
+    >>> print result
     This is my cat,
     This is my dog,
     This is my fish,
