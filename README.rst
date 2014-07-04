@@ -60,7 +60,7 @@ How to use the module in your own python code:
     ...     This is my goat,
     ...      whose name is Adam.'''
     >>>
-    >>> result = pysed.replace(text, 'This', 'THIS', '', '')
+    >>> result = pysed.replace(text, 'This', 'THIS')
     >>>
     >>> print result
     THIS is my cat,
@@ -72,7 +72,7 @@ How to use the module in your own python code:
     THIS is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.replace(text, 'This', 'THIS', 'max=2', 'red')
+    >>> result = pysed.replace(text, 'max=2/This', 'THIS/red')
     >>>
     >>> print result
     THIS is my cat,
@@ -84,7 +84,7 @@ How to use the module in your own python code:
     This is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.append(text, 'This', ' >>>', 'max=1', 'green')
+    >>> result = pysed.append(text, 'max=1/This', ' >>>/green')
     >>>
     >>> print result
     This >>> is my cat,
@@ -96,7 +96,7 @@ How to use the module in your own python code:
     This is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.replace(text, 'my', 'MY', 'select=[30-100]', '')
+    >>> result = pysed.replace(text, 'select=[30-100]/my', 'MY')
     >>>
     >>> print result
     This is my cat,

@@ -1,4 +1,9 @@
 04-07-2014
+Version 0.2.3
+
+[Updated] - Fix options in functions replace() append()
+
+04-07-2014
 Version 0.2.2
 
 [Updated] - Fix VaulueError and IndexError in lines options

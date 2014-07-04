@@ -33,15 +33,21 @@ from files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
 
-def replace(read, arg2, arg3, options_1, options_2):
+def replace(read, arg2, arg3):
     '''Replace text with new'''
 
     find_text = findall(arg2, read)
+
+    options_1 = get_to(arg2, '/')
+    arg2 = arg2.replace(options_1 + '/', '', 1)
+
+    options_2 = get_upside(arg3, '/')
+    arg3 = arg3.replace('/' + options_2, '', 1)
 
     nums = get_nums(options_1)
     options_1 = options_1.replace(nums, '')
@@ -99,10 +105,16 @@ def replace(read, arg2, arg3, options_1, options_2):
     return result
 
 
-def append(read, arg2, arg3, options_1, options_2):
+def append(read, arg2, arg3):
     '''Insert new text'''
 
     find_text = findall(arg2, read)
+    
+    options_1 = get_to(arg2, '/')
+    arg2 = arg2.replace(options_1 + '/', '', 1)
+
+    options_2 = get_upside(arg3, '/')
+    arg3 = arg3.replace('/' + options_2, '', 1)
 
     nums = get_nums(options_1)
     options_1 = options_1.replace(nums, '')
@@ -221,12 +233,6 @@ def print_text(file, arg0, arg1, arg2, arg3):
 
     result = []
 
-    options_1 = get_to(arg2, '/')
-    arg2 = arg2.replace(options_1 + '/', '', 1)
-
-    options_2 = get_upside(arg3, '/')
-    arg3 = arg3.replace('/' + options_2, '', 1)
-
     try:
         read = open_file_for_read(file)
         if arg0 == '-p' or arg0 == '--print':
@@ -264,10 +270,10 @@ def print_text(file, arg0, arg1, arg2, arg3):
                 sys.exit()
 
         elif arg0 == '-r' or arg0 == '--replace':
-            result = replace(read, arg2, arg3, options_1, options_2)
+            result = replace(read, arg2, arg3)
 
         elif arg0 == '-i' or arg0 == '--insert':
-            result = append(read, arg2, arg3, options_1, options_2)
+            result = append(read, arg2, arg3)
 
         else:
 
@@ -286,16 +292,10 @@ def write_replace_text(file, arg1, arg2):
 
     result = []
 
-    options_1 = get_to(arg1, '/')
-    arg1 = arg1.replace(options_1 + '/', '', 1)
-    
-    options_2 = get_upside(arg2, '/')
-    arg2 = arg2.replace('/' + options_2, '', 1)
-
     try:
         file = open_file_for_read_and_write(file)
         read = file.read()
-        result = replace(read, arg1, arg2, options_1, options_2)
+        result = replace(read, arg1, arg2)
 
         if result != []:
             write_to_file(file, result)
@@ -310,17 +310,11 @@ def write_append_text(file, arg1, arg2):
 
     result = []
 
-    options_1 = get_to(arg1, '/')
-    arg1 = arg1.replace(options_1 + '/', '', 1)
-
-    options_2 = get_upside(arg2, '/')
-    arg2 = arg2.replace('/' + options_2, '', 1)
-
     try:
 
         file = open_file_for_read_and_write(file)
         read = file.read()
-        result = append(read, arg1, arg2, options_1, options_2)
+        result = append(read, arg1, arg2)
 
         if result != []:
             write_to_file(file, result)
