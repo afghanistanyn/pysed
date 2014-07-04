@@ -6,7 +6,6 @@
     :target: https://pypi.python.org/pypi/pysed
 
 
-
 CLI and API utility that parses and transforms text written in Python.
 
 
@@ -134,6 +133,9 @@ Command Line Tool Usage
 
     N = Number, Options/, 'Pattern'
     color = red, green, blue, cyan, yellow, magenta, default
+
+
+Video tutorial : https://asciinema.org/a/10617
 
 See changes before modification with options -p --print:
 
