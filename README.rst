@@ -13,7 +13,7 @@ CLI and API utility that parses and transforms text written in Python.
 
 Video Tutorial:
 
-[![ScreenShot](https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png)](https://asciinema.org/a/10617)
+[![Alt text for your video](https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png)](https://asciinema.org/a/10617)
 
 Installation
 ------------
