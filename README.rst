@@ -32,8 +32,6 @@ Installation
 Usage Examples
 --------------
 
-How to use the module in your own python code:
-
 Functions: 
 
 .. code-block:: bash
@@ -46,6 +44,8 @@ Functions:
     findall(), 
     get_to(), 
     get_upside()
+
+How to use the module in your own python code:
 
 .. code-block:: bash
 
