@@ -11,7 +11,11 @@ CLI and API utility that parses and transforms text written in Python.
 
 [CHANGELOG] : https://github.com/dslackw/pysed/blob/master/CHANGELOG
 
-[VIDEO TUTORIAL] : https://asciinema.org/a/10617
+Video Tutorial
+--------------
+
+.. image:: https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
+ :target: https://asciinema.org/a/10617
 
 Installation
 ------------
