@@ -41,13 +41,12 @@ __email__ = 'd.zlatanidis@gmail.com'
 def replace(read, arg2, arg3):
     '''Replace text with new'''
 
-    find_text = findall(arg2, read)
-
     options_1 = get_to(arg2, '/')
     arg2 = arg2.replace(options_1 + '/', '', 1)
-
     options_2 = get_upside(arg3, '/')
     arg3 = arg3.replace('/' + options_2, '', 1)
+
+    find_text = findall(arg2, read)
 
     nums = get_nums(options_1)
     options_1 = options_1.replace(nums, '')
@@ -108,13 +107,12 @@ def replace(read, arg2, arg3):
 def append(read, arg2, arg3):
     '''Insert new text'''
 
-    find_text = findall(arg2, read)
-    
     options_1 = get_to(arg2, '/')
     arg2 = arg2.replace(options_1 + '/', '', 1)
-
     options_2 = get_upside(arg3, '/')
     arg3 = arg3.replace('/' + options_2, '', 1)
+
+    find_text = findall(arg2, read)
 
     nums = get_nums(options_1)
     options_1 = options_1.replace(nums, '')
