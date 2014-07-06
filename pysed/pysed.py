@@ -11,7 +11,7 @@ optional arguments:
   -p, --print    : print text
                    e extract/, c chars/, s sum/
   -l, --lines    : print lines
-                   'N', '[N-N]', 'step=N/*, all'
+                   'N', '[N-N]', 's step=N/*, all'
   -r, --replace  : replace text
                    m max=N/, u upper=*/, l lower=*/,
                    s select=[N-N]/, /color
@@ -19,7 +19,7 @@ optional arguments:
                    m max=N/, s select=[N-N]/, /color
 
 N = Number, Options/, 'Pattern'
-color = red, green, blue, cyan, yellow, magenta, default
+colors = red, green, blue, cyan, yellow, magenta, default
 
 '''
 
@@ -33,7 +33,7 @@ from files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.4'
+__version__ = '0.2.5'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
@@ -108,10 +108,9 @@ def replace(read, arg2, arg3):
 
 def append(read, arg2, arg3):
     '''Introduce new characters or the entire text
-        with new and can also add color. As with the 
+        with new and can also add color. As with the
         replacement options and you can select specific
          areas'''
-
 
     options_1 = get_to(arg2, '/')
     arg2 = arg2.replace(options_1 + '/', '', 1)
@@ -154,7 +153,7 @@ def append(read, arg2, arg3):
 
         elif options_1 == 's=' or options_1 == 'select=':
             region_original = region
-            region = region.replace(text, 
+            region = region.replace(text,
                                     text + color + arg3 + default)
             result = result.replace(region_original, region)
 
@@ -168,8 +167,8 @@ def lines(read, argX):
     '''Print all lines of text or specific.
         Printing lines with a step'''
 
-
     result = []
+    results = []
 
     options_1 = get_to(argX, '/')
     argX = argX.replace(options_1 + '/', '', 1)
@@ -177,50 +176,56 @@ def lines(read, argX):
     step = get_nums(options_1)
     options_1 = options_1.replace(step, '')
 
-    if step == '' or step == '0':
+    if step == '' or step == "0":
         step = 1
 
     for line in read.splitlines():
         result.append(line)
 
     if argX == '*' or argX == 'all':
-        if options_1 == 'step=':
+        if options_1 == 'step=' or options_1 == 's=':
             for line in range(0, len(result), int(step)):
-                print result[line]
+                results.append(result[line])
+            result = results
         else:
-            for line in range(len(result)):
-                print result[line]
+            result = read,
 
     elif argX.startswith('[') and argX.endswith(']'):
         argX = argX.replace('[', '', 1)
         argX = argX.replace(']', '', 1)
 
         line_nums = argX.replace('-', '\n').split()
-    
+
         try:
             if len(line_nums) < 2 or int(
-                line_nums[1]) >= len(result):
+                    line_nums[1]) >= len(result):
                 pass
 
             else:
 
                 for n in range(int(line_nums[0]),
                                int(line_nums[1]) + 1):
-                    print result[int(n)]
+                    results.append(result[int(n)])
+                result = results
+
         except ValueError:
             pass
     else:
-    
+
         try:
             line_nums = argX.replace(',', '\n').split()
-    
+
             for num in line_nums:
                 if int(num) >= len(result):
                     pass
                 else:
-                    print result[int(num)]
+                    results.append(result[int(num)])
+            result = results
+
         except ValueError:
             pass
+
+    return '\n'.join(result)
 
 
 def cat(file, arg0, arg1, arg2, arg3):
@@ -232,17 +237,15 @@ def cat(file, arg0, arg1, arg2, arg3):
     try:
 
         read = open_file_for_read(file)
-  
+
         arg_lines = arg1
         options_1 = get_to(arg1, '/')
         arg1 = arg1.replace(options_1 + '/', '', 1)
         find_text = findall(arg1, read)
 
-
-    
         if arg0 == '-p' or arg0 == '--print':
-            
-            pass            
+
+            pass
 
             if options_1 == 's' or options_1 == 'sum':
 
@@ -256,19 +259,20 @@ def cat(file, arg0, arg1, arg2, arg3):
                 print '%d blanks' % (len(read) - len(chars))
 
             elif options_1 == 'c' or options_1 == 'chars':
-    
+
                 print 'find %d --> \'%s\'' % (
                     len(find_text), arg1)
 
             elif options_1 == 'e' or options_1 == 'extract':
 
                 print ' '.join(find_text)
-            
+
             else:
 
                 print read,
+
         elif arg0 == '-l' or arg0 == '--lines':
-            result == lines(read, arg_lines)
+            result = lines(read, arg_lines)
 
         elif arg0 == '-r' or arg0 == '--replace':
             result = replace(read, arg2, arg3)
@@ -277,7 +281,6 @@ def cat(file, arg0, arg1, arg2, arg3):
             result = append(read, arg2, arg3)
 
         else:
-
             arguments_error(arg0, '')
 
         if result != []:
@@ -344,14 +347,14 @@ def arguments_view():
     print ('  -p, --print    : print text')
     print ('                   e extract/, c chars/, s sum/')
     print ('  -l, --lines    : print lines')
-    print ('                   \'N\', \'[N-N]\', \'step=N/*, all\'')
+    print ('                   \'N\', \'[N-N]\', \'s step=N/*, all\'')
     print ('  -r, --replace  : replace text')
     print ('                   m max=N/, u upper=*/, l lower=*/,')
     print ('                   s select=[N-N]/, /color')
     print ('  -i, --insert   : insert text')
     print ('                   m max=N/, s select=[N-N]/, /color\n')
     print ('N = Number, Options/, \'Pattern\'')
-    print ('color = red, green, blue, cyan, yellow, magenta, default')
+    print ('colors = red, green, blue, cyan, yellow, magenta, default')
 
 
 def arguments_error(arg0, argx):

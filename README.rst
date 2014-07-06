@@ -125,11 +125,15 @@ How to use the module in your own python code:
     >>> pysed.get_upside(str, ',')
     ', that lets you work quickly'
     >>>
-    >>> pysed.lines(text, '0,5')
+    >>> result = pysed.lines(text, '0,5')
+    >>>
+    >>> print result
     This is my cat,
     whose name is George.
     >>>
-    >>> pysed.lines(text, 'step=2/*')
+    >>> result = pysed.lines(text, 'step=2/*')
+    >>>
+    >>> print result 
     This is my cat,
     This is my dog,
     This is my fish,
@@ -150,7 +154,7 @@ Command Line Tool Usage
       -p, --print    : print text
                        e extract/, c chars/, s sum/
       -l, --lines    : print lines
-                       'N', '[N-N]', 'step=N/*, all'
+                       'N', '[N-N]', 's step=N/*, all'
       -r, --replace  : replace text
                        m max=N/, u upper=*/, l lower=*/,
                        s select=[N-N]/, /color
@@ -158,7 +162,7 @@ Command Line Tool Usage
                        m max=N/, s select=[N-N]/, /color
 
     N = Number, Options/, 'Pattern'
-    color = red, green, blue, cyan, yellow, magenta, default
+    colors = red, green, blue, cyan, yellow, magenta, default
 
 
 See changes before modification with options -p --print:
