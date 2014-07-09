@@ -9,7 +9,7 @@
 CLI and API utility that parses and transforms text written in Python.
 
 
-[CHANGELOG] : https://github.com/dslackw/pysed/blob/master/CHANGELOG
+`[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
 
 Video Tutorial
 --------------
