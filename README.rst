@@ -117,6 +117,8 @@ How to use the module in your own python code:
     >>> pysed.findall('is', text)
     ['is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is']    
     >>>
+    >>> pysed.findall('[0-9]', 'a1b2c3d4')
+    ['1', '2', '3', '4']
     >>> str = 'Python is a programming language, that lets you work quickly'
     >>>
     >>> pysed.get_to(str, ',')
