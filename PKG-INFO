@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: pysed
-Version: 0.2.5
+Version: 0.2.6
 Author: dslackw
 Author-email: d zlatanidis at gmail com
 Maintainer: dslackw
@@ -18,13 +18,14 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
         CLI and API utility that parses and transforms text written in Python.
         
         
-        [CHANGELOG] : https://github.com/dslackw/pysed/blob/master/CHANGELOG
+        `[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
         
         Video Tutorial
         --------------
         
-        .. image:: https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
-         :target: https://asciinema.org/a/10617
+        .. image:: 
+https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
+         :target: https://asciinema.org/a/10635
         
         Installation
         ------------
@@ -117,15 +118,19 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
             This is my goat,
              whose name is Adam.
             >>>
-            >>> print '%sHello World!!!%s' % (pysed.colors('green'), pysed.colors('default'))
+            >>> print '%sHello World!!!%s' % (pysed.colors('green'), 
+pysed.colors('default'))
             Hello World!!!
             >>>
             >>> pysed.get_nums('a1b2c3d4')
             '1234'
             >>>
             >>> pysed.findall('is', text)
-            ['is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is']    
+            ['is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 
+'is']    
             >>>
+            >>> pysed.findall('[0-9]', 'a1b2c3d4')
+            ['1', '2', '3', '4']
             >>> str = 'Python is a programming language, that lets you work quickly'
             >>>
             >>> pysed.get_to(str, ',')
@@ -134,11 +139,15 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
             >>> pysed.get_upside(str, ',')
             ', that lets you work quickly'
             >>>
-            >>> pysed.lines(text, '0,5')
+            >>> result = pysed.lines(text, '0,5')
+            >>>
+            >>> print result
             This is my cat,
             whose name is George.
             >>>
-            >>> pysed.lines(text, 'step=2/*')
+            >>> result = pysed.lines(text, 'step=2/*')
+            >>>
+            >>> print result 
             This is my cat,
             This is my dog,
             This is my fish,
@@ -159,7 +168,7 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
               -p, --print    : print text
                                e extract/, c chars/, s sum/
               -l, --lines    : print lines
-                               'N', '[N-N]', 'step=N/*, all'
+                               'N', '[N-N]', 's step=N/*, all'
               -r, --replace  : replace text
                                m max=N/, u upper=*/, l lower=*/,
                                s select=[N-N]/, /color
@@ -167,7 +176,7 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
                                m max=N/, s select=[N-N]/, /color
         
             N = Number, Options/, 'Pattern'
-            color = red, green, blue, cyan, yellow, magenta, default
+            colors = red, green, blue, cyan, yellow, magenta, default
         
         
         See changes before modification with options -p --print:
@@ -465,23 +474,33 @@ Keywords: sed, stream, editor, txt, doc, linux, windows, msdos, posix, cli
 Classifier: Development Status :: 3 - Alpha
 Classifier: Environment :: Console
 Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
-Classifier: Operating System :: Microsoft
 Classifier: Operating System :: Microsoft :: MS-DOS
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Operating System :: Microsoft :: Windows :: Windows 7
 Classifier: Operating System :: Microsoft :: Windows :: Windows Vista
 Classifier: Operating System :: Microsoft :: Windows :: Windows XP
 Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: BSD :: BSD/OS
+Classifier: Operating System :: POSIX :: BSD :: FreeBSD
 Classifier: Operating System :: POSIX :: Linux
 Classifier: Operating System :: POSIX :: Other
 Classifier: Operating System :: Unix
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
 Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.0
+Classifier: Programming Language :: Python :: 3.1
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
 Classifier: Topic :: Text Editors
+Classifier: Topic :: Text Editors :: Documentation
 Classifier: Topic :: Text Editors :: Text Processing
 Classifier: Topic :: Text Editors :: Word Processors
-Classifier: Topic :: Text Processing
+Classifier: Topic :: Text Processing :: Filters
+Classifier: Topic :: Text Processing :: General
 Classifier: Topic :: Utilities
 
 

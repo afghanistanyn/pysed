@@ -26,14 +26,14 @@ colors = red, green, blue, cyan, yellow, magenta, default
 
 import sys
 
-from paint import colors
-from args import *
-from files import *
+from .paint import colors
+from .args import *
+from .files import *
 
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.5'
+__version__ = '0.2.6'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
@@ -103,7 +103,7 @@ def replace(read, arg2, arg3):
         else:
             result = result.replace(text, color + arg3 + default)
 
-    return result
+    return result.strip()
 
 
 def append(read, arg2, arg3):
@@ -160,7 +160,7 @@ def append(read, arg2, arg3):
         else:
             result = result.replace(text,
                                     text + color + arg3 + default)
-    return result
+    return result.strip()
 
 
 def lines(read, argX):
@@ -253,23 +253,23 @@ def cat(file, arg0, arg1, arg2, arg3):
                 chars = ''.join(words)
                 for line in range(len(read.splitlines())):
                     pass
-                print '%d lines' % (line)
-                print '%d characters' % len(chars)
-                print '%d words' % len(words)
-                print '%d blanks' % (len(read) - len(chars))
+                print ('%d lines' % (line))
+                print ('%d characters' % len(chars))
+                print ('%d words' % len(words))
+                print ('%d blanks' % (len(read) - len(chars)))
 
             elif options_1 == 'c' or options_1 == 'chars':
 
-                print 'find %d --> \'%s\'' % (
-                    len(find_text), arg1)
+                print ('find %d --> \'%s\'' % (
+                    len(find_text), arg1))
 
             elif options_1 == 'e' or options_1 == 'extract':
 
-                print ' '.join(find_text)
+                print (' '.join(find_text))
 
             else:
 
-                print read,
+                print ('{}'.format(read,).strip())
 
         elif arg0 == '-l' or arg0 == '--lines':
             result = lines(read, arg_lines)
@@ -284,7 +284,7 @@ def cat(file, arg0, arg1, arg2, arg3):
             arguments_error(arg0, '')
 
         if result != []:
-            print result,
+            print ('{}'.format(result,))
 
     except IOError:
         print ("%s: can't read %s: No such file or directory"
@@ -331,9 +331,9 @@ def write_append_text(file, arg1, arg2):
 def version():
     '''Print version, license and email'''
 
-    print ('version :'), __version__
-    print ('License :'), __license__
-    print ('Email   :'), __email__
+    print ('version : {}'.format(__version__))
+    print ('License : {}'.format(__license__))
+    print ('Email   : {}'.format(__email__))
 
 
 def arguments_view():
