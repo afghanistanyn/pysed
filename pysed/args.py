@@ -10,9 +10,9 @@ def select(read, nums_all):
     nums_all = nums_all.replace('[', '')
     nums_all = nums_all.replace(']', '')
     try:
-        i = int(get_to(nums_all, '-').replace('-', ''))
-        s = int(get_upside(nums_all, '-').replace('-', ''))
-        result = read[i:s]
+        begin = int(get_to(nums_all, '-').replace('-', ''))
+        end = int(get_upside(nums_all, '-').replace('-', ''))
+        result = read[begin:end]
     except ValueError:
         result = ''
         

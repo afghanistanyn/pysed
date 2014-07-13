@@ -1,4 +1,9 @@
 13-07-2014
+Version 0.2.8
+
+[Updated] - Fix remove spaces after remove, append and print lines
+
+13-07-2014
 Version 0.2.7
 
 [Updated] - Fix append new text before target

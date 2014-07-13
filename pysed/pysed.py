@@ -19,21 +19,22 @@ optional arguments:
                    m max=N/, s select=[N-N]/, /color
 
 N = Number, Options/, 'Pattern'
-colors = red, green, blue, cyan, yellow, magenta, default
+color = red, green, blue, cyan, yellow, magenta, default
 
 '''
 
 
 import sys
 
-from .paint import colors
-from .args import *
-from .files import *
+from paint import colors
+from args import *
+from files import *
 
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.7'
+__version_info__ = (0, 2, 8)
+__version__ = '{0}.{1}.{2}'.format(*__version_info__)
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
@@ -103,7 +104,7 @@ def replace(read, arg2, arg3):
         else:
             result = result.replace(text, color + arg3 + default)
 
-    return result
+    return result.rstrip()
 
 
 def append(read, arg2, arg3):
@@ -160,7 +161,7 @@ def append(read, arg2, arg3):
         else:
             result = result.replace(text,
                                    color + arg3 + default + text)
-    return result
+    return result.rstrip()
 
 
 def lines(read, argX):
@@ -225,7 +226,7 @@ def lines(read, argX):
         except ValueError:
             pass
 
-    return '\n'.join(result)
+    return '\n'.join(result).rstrip()
 
 
 def cat(file, arg0, arg1, arg2, arg3):
@@ -354,7 +355,7 @@ def arguments_view():
     print ('  -i, --insert   : insert text')
     print ('                   m max=N/, s select=[N-N]/, /color\n')
     print ('N = Number, Options/, \'Pattern\'')
-    print ('colors = red, green, blue, cyan, yellow, magenta, default')
+    print ('color = red, green, blue, cyan, yellow, magenta, default')
 
 
 def arguments_error(arg0, argx):

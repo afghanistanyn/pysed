@@ -5,6 +5,8 @@
 .. image:: https://pypip.in/license/pysed/badge.png
     :target: https://pypi.python.org/pypi/pysed
 
+pysed
+=====
 
 CLI and API utility that parses and transforms text written in Python.
 
@@ -37,20 +39,15 @@ Functions:
 
 .. code-block:: bash
 
-    replace(), 
-    append(), 
-    lines(),
-    colors(), 
-    get_nums(), 
-    findall(), 
-    get_to(), 
-    get_upside()
+    replace() replace text with new, 
+    append() insert new text, 
+    lines() print lines,
 
 How to use the module in your own python code:
 
 .. code-block:: bash
 
-    >>> import pysed
+    >>> from pysed import replace, append, lines
     >>>
     >>> text = '''This is my cat,
     ...      whose name is Betty.
@@ -61,7 +58,7 @@ How to use the module in your own python code:
     ...     This is my goat,
     ...      whose name is Adam.'''
     >>>
-    >>> result = pysed.replace(text, 'This', 'THIS')
+    >>> result = replace(text, 'This', 'THIS')
     >>>
     >>> print result
     THIS is my cat,
@@ -73,7 +70,7 @@ How to use the module in your own python code:
     THIS is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.replace(text, 'max=2/This', 'THIS/red')
+    >>> result = replace(text, 'max=2/This', 'THIS/red')
     >>>
     >>> print result
     THIS is my cat,
@@ -85,7 +82,7 @@ How to use the module in your own python code:
     This is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.append(text, 'max=1/cat', ' >>> /green')
+    >>> result = append(text, 'max=1/cat', ' >>> /green')
     >>>
     >>> print result
     This is my >>>cat,
@@ -97,7 +94,7 @@ How to use the module in your own python code:
     This is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.replace(text, 'select=[30-100]/my', 'MY')
+    >>> result = replace(text, 'select=[30-100]/my', 'MY')
     >>>
     >>> print result
     This is my cat,
@@ -109,32 +106,13 @@ How to use the module in your own python code:
     This is my goat,
      whose name is Adam.
     >>>
-    >>> print '%sHello World!!!%s' % (pysed.colors('green'), pysed.colors('default'))
-    Hello World!!!
-    >>>
-    >>> pysed.get_nums('a1b2c3d4')
-    '1234'
-    >>>
-    >>> pysed.findall('is', text)
-    ['is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is']    
-    >>>
-    >>> pysed.findall('[0-9]', 'a1b2c3d4')
-    ['1', '2', '3', '4']
-    >>> str = 'Python is a programming language, that lets you work quickly'
-    >>>
-    >>> pysed.get_to(str, ',')
-    'Python is a programming language,'
-    >>>
-    >>> pysed.get_upside(str, ',')
-    ', that lets you work quickly'
-    >>>
-    >>> result = pysed.lines(text, '0,5')
+    >>> result = lines(text, '0,5')
     >>>
     >>> print result
     This is my cat,
     whose name is George.
     >>>
-    >>> result = pysed.lines(text, 'step=2/*')
+    >>> result = lines(text, 'step=2/*')
     >>>
     >>> print result 
     This is my cat,
@@ -143,7 +121,7 @@ How to use the module in your own python code:
     This is my goat,
 
 Command Line Tool Usage
------------------------
+=======================
 
 .. code-block:: bash
 
@@ -165,7 +143,7 @@ Command Line Tool Usage
                        m max=N/, s select=[N-N]/, /color
 
     N = Number, Options/, 'Pattern'
-    colors = red, green, blue, cyan, yellow, magenta, default
+    color = red, green, blue, cyan, yellow, magenta, default
 
 
 See changes before modification with options -p --print:
