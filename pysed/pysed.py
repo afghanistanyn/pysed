@@ -26,9 +26,9 @@ color = red, green, blue, cyan, yellow, magenta, default
 
 import sys
 
-from paint import colors
-from args import *
-from files import *
+from .paint import colors
+from .args import *
+from .files import *
 
 
 __prog__ = 'pysed'
