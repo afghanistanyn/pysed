@@ -43,59 +43,59 @@ def replace(read, arg2, arg3):
         Chose specific areas and to replace
         yet Add color to text'''
 
-    options_1 = get_to(arg2, '/')
-    arg2 = arg2.replace(options_1 + '/', '', 1)
-    options_2 = get_upside(arg3, '/')
-    arg3 = arg3.replace('/' + options_2, '', 1)
+    OPTIONS_1 = get_to(arg2, '/')
+    arg2 = arg2.replace(OPTIONS_1 + '/', '', 1)
+    OPTIONS_2 = get_upside(arg3, '/')
+    arg3 = arg3.replace('/' + OPTIONS_2, '', 1)
 
     find_text = findall(arg2, read)
 
-    nums = get_nums(options_1)
-    options_1 = options_1.replace(nums, '')
+    nums = get_nums(OPTIONS_1)
+    OPTIONS_1 = OPTIONS_1.replace(nums, '')
 
     if nums == '':
         nums = 0
 
-    if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
-        color = colors(options_2)
+    if OPTIONS_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
+        color = colors(OPTIONS_2)
         default = colors('default')
     else:
         color = ''
         default = ''
 
-    if options_1.startswith('s='):
-        nums_all = options_1.replace('s=', '')
-        options_1 = options_1.replace(nums_all, '')
+    if OPTIONS_1.startswith('s='):
+        nums_all = OPTIONS_1.replace('s=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
-    elif options_1.startswith('select='):
-        nums_all = options_1.replace('select=', '')
-        options_1 = options_1.replace(nums_all, '')
+    elif OPTIONS_1.startswith('select='):
+        nums_all = OPTIONS_1.replace('select=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
 
     result = read
     find_text = set(find_text)
     for text in find_text:
-        if options_1 == 'm=' or options_1 == 'max=':
+        if OPTIONS_1 == 'm=' or OPTIONS_1 == 'max=':
             result = read.replace(text, color + arg3 + default,
                                   int(nums))
 
-        elif options_1 == 'u' or options_1 == 'upper':
+        elif OPTIONS_1 == 'u' or OPTIONS_1 == 'upper':
             result = read.replace(text,
                                   color + arg3.upper() + default)
 
-        elif options_1 == 'u=*' or options_1 == 'upper=*':
+        elif OPTIONS_1 == 'u=*' or OPTIONS_1 == 'upper=*':
             result = color + read.upper() + default
 
-        elif options_1 == 'l' or options_1 == 'lower':
+        elif OPTIONS_1 == 'l' or OPTIONS_1 == 'lower':
             result = read.replace(text,
                                   color + arg3.lower() + default)
 
-        elif options_1 == 'l=*' or options_1 == 'lower=*':
+        elif OPTIONS_1 == 'l=*' or OPTIONS_1 == 'lower=*':
             result = color + read.lower() + default
 
-        elif options_1 == 's=' or options_1 == 'select=':
+        elif OPTIONS_1 == 's=' or OPTIONS_1 == 'select=':
             region_original = region
             region = region.replace(text, color + arg3 + default)
             result = result.replace(region_original, region)
@@ -112,46 +112,46 @@ def append(read, arg2, arg3):
         replacement options and you can select specific
          areas'''
 
-    options_1 = get_to(arg2, '/')
-    arg2 = arg2.replace(options_1 + '/', '', 1)
-    options_2 = get_upside(arg3, '/')
-    arg3 = arg3.replace('/' + options_2, '', 1)
+    OPTIONS_1 = get_to(arg2, '/')
+    arg2 = arg2.replace(OPTIONS_1 + '/', '', 1)
+    OPTIONS_2 = get_upside(arg3, '/')
+    arg3 = arg3.replace('/' + OPTIONS_2, '', 1)
 
     find_text = findall(arg2, read)
 
-    nums = get_nums(options_1)
-    options_1 = options_1.replace(nums, '')
+    nums = get_nums(OPTIONS_1)
+    OPTIONS_1 = OPTIONS_1.replace(nums, '')
 
     if nums == '':
         nums = 0
 
-    if options_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
-        color = colors(options_2)
+    if OPTIONS_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
+        color = colors(OPTIONS_2)
         default = colors('default')
     else:
         color = ''
         default = ''
 
-    if options_1.startswith('s='):
-        nums_all = options_1.replace('s=', '')
-        options_1 = options_1.replace(nums_all, '')
+    if OPTIONS_1.startswith('s='):
+        nums_all = OPTIONS_1.replace('s=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
-    elif options_1.startswith('select='):
-        nums_all = options_1.replace('select=', '')
-        options_1 = options_1.replace(nums_all, '')
+    elif OPTIONS_1.startswith('select='):
+        nums_all = OPTIONS_1.replace('select=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
 
     result = read
     find_text = set(find_text)
     for text in find_text:
-        if options_1 == 'm=' or options_1 == 'max=':
+        if OPTIONS_1 == 'm=' or OPTIONS_1 == 'max=':
             result = read.replace(text,
                                   text + color + arg3 + default,
                                   int(nums))
 
-        elif options_1 == 's=' or options_1 == 'select=':
+        elif OPTIONS_1 == 's=' or OPTIONS_1 == 'select=':
             region_original = region
             region = region.replace(text,
                                     text + color + arg3 + default)
@@ -170,11 +170,11 @@ def lines(read, argX):
     result = []
     results = []
 
-    options_1 = get_to(argX, '/')
-    argX = argX.replace(options_1 + '/', '', 1)
+    OPTIONS_1 = get_to(argX, '/')
+    argX = argX.replace(OPTIONS_1 + '/', '', 1)
 
-    step = get_nums(options_1)
-    options_1 = options_1.replace(step, '')
+    step = get_nums(OPTIONS_1)
+    OPTIONS_1 = OPTIONS_1.replace(step, '')
 
     if step == '' or step == "0":
         step = 1
@@ -183,7 +183,7 @@ def lines(read, argX):
         result.append(line)
 
     if argX == '*' or argX == 'all':
-        if options_1 == 'step=' or options_1 == 's=':
+        if OPTIONS_1 == 'step=' or OPTIONS_1 == 's=':
             for line in range(0, len(result), int(step)):
                 results.append(result[line])
             result = results
@@ -239,15 +239,15 @@ def cat(file, arg0, arg1, arg2, arg3):
         read = open_file_for_read(file)
 
         arg_lines = arg1
-        options_1 = get_to(arg1, '/')
-        arg1 = arg1.replace(options_1 + '/', '', 1)
+        OPTIONS_1 = get_to(arg1, '/')
+        arg1 = arg1.replace(OPTIONS_1 + '/', '', 1)
         find_text = findall(arg1, read)
 
         if arg0 == '-p' or arg0 == '--print':
 
             pass
 
-            if options_1 == 's' or options_1 == 'sum':
+            if OPTIONS_1 == 's' or OPTIONS_1 == 'sum':
 
                 words = read.split()
                 chars = ''.join(words)
@@ -258,12 +258,12 @@ def cat(file, arg0, arg1, arg2, arg3):
                 print ('%d words' % len(words))
                 print ('%d blanks' % (len(read) - len(chars)))
 
-            elif options_1 == 'c' or options_1 == 'chars':
+            elif OPTIONS_1 == 'c' or OPTIONS_1 == 'chars':
 
                 print ('find %d --> \'%s\'' % (
                     len(find_text), arg1))
 
-            elif options_1 == 'e' or options_1 == 'extract':
+            elif OPTIONS_1 == 'e' or OPTIONS_1 == 'extract':
 
                 print (' '.join(find_text))
 
