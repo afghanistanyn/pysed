@@ -8,6 +8,8 @@
 
 CLI and API utility that parses and transforms text written in Python.
 
+Read more for `Regular expression operations <https://docs.python.org/2/library/re.html>`_
+
 
 `[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
 
@@ -84,10 +86,10 @@ How to use the module in your own python code:
     This is my goat,
      whose name is Adam.
     >>>
-    >>> result = pysed.append(text, 'max=1/This', ' >>>/green')
+    >>> result = pysed.append(text, 'max=1/cat', ' >>> /green')
     >>>
     >>> print result
-    This >>> is my cat,
+    This is my >>>cat,
      whose name is Betty.
     This is my dog,
      whose name is Frank.
@@ -426,11 +428,41 @@ Insert text:
     This is my goat,
      whose surname is Adam. 
 
+Add character to the beginning of each line:
+
+.. code-block:: bash
+
+    $ pysed -i -p '^.' '-> ' text.txt
+
+    -> This is my cat,
+     whose name is Betty.
+    -> This is my dog,
+     whose name is Frank.
+    -> This is my fish,
+    whose name is George.
+    -> This is my goat,
+     whose name is Adam.
+
+Add character to the end of each line:
+
+.. code-block:: bash
+
+    $ pysed -i -p '\n' ' <-' text.txt
+
+    This is my cat, <-
+     whose name is Betty. <-
+    This is my dog, <-
+     whose name is Frank. <-
+    This is my fish, <-
+    whose name is George. <-
+    This is my goat, <-
+     whose name is Adam. <-
+
 Insert max:
 
 .. code-block:: bash
 
-    $ pysed -i --print m=2/'whose ' 'sur' text.txt
+    $ pysed -i --print m=2/'name' 'sur' text.txt
 
     This is my cat,
      whose surname is Betty.
@@ -440,6 +472,21 @@ Insert max:
      whose name is George.
     This is my goat, 
      whose name is Adam.    
+
+Select region to insert text:
+
+.. code-block:: bash
+
+    $ pysed -i -p s=[20-90]/'name' 'sur' text.txt
+
+    This is my cat,
+     whose surname is Betty.
+    This is my dog,
+     whose surname is Frank.
+    This is my fish,
+    whose name is George.
+    This is my goat,
+     whose name is Adam.
 
 Delete text:
 

@@ -33,7 +33,7 @@ from .files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version__ = '0.2.6'
+__version__ = '0.2.7'
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
 
@@ -103,7 +103,7 @@ def replace(read, arg2, arg3):
         else:
             result = result.replace(text, color + arg3 + default)
 
-    return result.strip()
+    return result
 
 
 def append(read, arg2, arg3):
@@ -148,19 +148,19 @@ def append(read, arg2, arg3):
     for text in find_text:
         if OPTIONS_1 == 'm=' or OPTIONS_1 == 'max=':
             result = read.replace(text,
-                                  text + color + arg3 + default,
+                                  color + arg3 + default + text,
                                   int(nums))
 
         elif OPTIONS_1 == 's=' or OPTIONS_1 == 'select=':
             region_original = region
             region = region.replace(text,
-                                    text + color + arg3 + default)
+                                    color + arg3 + default + text)
             result = result.replace(region_original, region)
 
         else:
             result = result.replace(text,
-                                    text + color + arg3 + default)
-    return result.strip()
+                                   color + arg3 + default + text)
+    return result
 
 
 def lines(read, argX):
