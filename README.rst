@@ -8,7 +8,7 @@
 
 CLI and API utility that parses and transforms text written in Python.
 
-Read more for `Regular expression operations <https://docs.python.org/2/library/re.html>`_
+Read more for `Regular expression syntax <https://docs.python.org/2/library/re.html>`_
 
 
 `[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
