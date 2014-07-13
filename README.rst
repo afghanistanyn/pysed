@@ -39,9 +39,9 @@ Functions:
 
 .. code-block:: bash
 
-    replace() replace text with new, 
-    append() insert new text, 
-    lines() print lines,
+    replace(), replace text with new
+    append(), insert new text
+    lines(), print lines
 
 How to use the module in your own python code:
 
