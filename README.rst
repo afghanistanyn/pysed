@@ -10,6 +10,10 @@ pysed
 
 CLI and API utility that parses and transforms text written in Python.
 
+Pysed is a Python stream editor, is used to perform basic text transformations
+from a file. It reads text, line by line, from a file and replace, insert or print
+all text or specific area. One of the elements of distinction is the use of colors.
+
 Read more for `Regular Expression Syntax <https://docs.python.org/2/library/re.html>`_
 
 `[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
