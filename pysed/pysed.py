@@ -12,6 +12,7 @@ optional arguments:
                    e extract/, c chars/, s sum/
   -l, --lines    : print lines
                    'N', '[N-N]', 's step=N/*, all'
+                   'c count'
   -r, --replace  : replace text
                    m max=N/, u upper=*/, l lower=*/,
                    s select=[N-N]/, n lines=[N-N]/, /color
@@ -34,7 +35,7 @@ from .files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version_info__ = (0, 2, 9)
+__version_info__ = (0, 3, 0)
 __version__ = '{0}.{1}.{2}'.format(*__version_info__)
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
@@ -58,7 +59,7 @@ def replace(read, arg2, arg3):
     if nums == '':
         nums = 0
 
-    if OPTIONS_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
+    if OPTIONS_2 in ['black', 'red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
         color = colors(OPTIONS_2)
         default = colors('default')
     else:
@@ -143,7 +144,7 @@ def append(read, arg2, arg3):
     if nums == '':
         nums = 0
 
-    if OPTIONS_2 in ['red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
+    if OPTIONS_2 in ['black', 'red', 'green', 'yellow', 'cyan', 'blue', 'magenta']:
         color = colors(OPTIONS_2)
         default = colors('default')
     else:
@@ -245,6 +246,14 @@ def lines(read, argX):
 
         except ValueError:
             pass
+
+    elif OPTIONS_1 == 'c' or OPTIONS_1 == 'count':
+        i = 0
+        for line in read.splitlines():
+            results.append('{0} <-- {1}'.format(i, line))
+            i += 1        
+        result = results
+
     else:
 
         try:
@@ -382,7 +391,8 @@ def arguments_view():
     print ('  -p, --print    : print text')
     print ('                   e extract/, c chars/, s sum/')
     print ('  -l, --lines    : print lines')
-    print ('                   \'N\', \'[N-N]\', \'s step=N/*, all\'')
+    print ('                   \'N\', \'[N-N]\', \'s step=N/*, all\',')
+    print ('                   \'c count\'')
     print ('  -r, --replace  : replace text')
     print ('                   m max=N/, u upper=*/, l lower=*/,')
     print ('                   s select=[N-N]/, n lines=[N-N]/, /color')
@@ -390,7 +400,7 @@ def arguments_view():
     print ('                   m max=N/, s select=[N-N]/, n lines=[N-N]/,')
     print ('                   /color\n')
     print ('N = Number, Options/, \'Pattern\'')
-    print ('color = red, green, blue, cyan, yellow, magenta, default')
+    print ('color = black, red, green, blue, cyan, yellow, magenta, default')
 
 
 def arguments_error(arg0, argx):

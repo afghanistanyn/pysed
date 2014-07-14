@@ -140,7 +140,8 @@ Command Line Tool Usage
       -p, --print    : print text
                        e extract/, c chars/, s sum/
       -l, --lines    : print lines
-                       'N', '[N-N]', 's step=N/*, all'
+                       'N', '[N-N]', 's step=N/*, all',
+                       'c count'
       -r, --replace  : replace text
                        m max=N/, u upper=*/, l lower=*/,
                        s select=[N-N]/, n lines=[N-N]/, /color
@@ -149,7 +150,7 @@ Command Line Tool Usage
                        /color
 
     N = Number, Options/, 'Pattern'
-    color = red, green, blue, cyan, yellow, magenta, default
+    color = black, red, green, blue, cyan, yellow, magenta, default
 
 See changes before modification with options -p --print:
 
@@ -218,6 +219,17 @@ Print lines:
     This is my dog,
     This is my fish,
     This is my goat,
+
+    $ pysed --lines 'count' text.txt
+
+    0 <-- This is my cat,
+    1 <--  whose name is Betty.
+    2 <-- This is my dog,
+    3 <--  whose name is Frank.
+    4 <-- This is my fish,
+    5 <-- whose name is George.
+    6 <-- This is my goat,
+    7 <--  whose name is Adam.
 
 Extract text:
 
