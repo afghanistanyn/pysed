@@ -120,6 +120,7 @@ How to use the module in your own python code:
     This is my fish,
     This is my goat,
 
+
 Command Line Tool Usage
 =======================
 
@@ -338,6 +339,22 @@ Select region to replace text:
     This is my goat,
      whose name is Adam.
 
+Select lines to replace text:
+
+.. code-block:: bash
+
+    $ pysed -r -p lines=[4-6]/'This' 'THIS' text.txt
+
+    This is my cat,
+     whose name is Betty.
+    This is my dog,
+     whose name is Frank.
+    THIS is my fish,
+    whose name is George.
+    THIS is my goat,
+     whose name is Adam.
+
+
 Convert text to uppercase:
 
 .. code-block:: bash
@@ -463,6 +480,21 @@ Select region to insert text:
     This is my fish,
     whose name is George.
     This is my goat,
+     whose name is Adam.
+
+Select lines to insert text:
+
+.. code-block:: bash
+
+    $ pysed -i -p lines=[4-6]/'^.' '--> ' text.txt
+
+    This is my cat,
+     whose name is Betty.
+    This is my dog,
+     whose name is Frank.
+    --> This is my fish,
+    whose name is George.
+    --> This is my goat,
      whose name is Adam.
 
 Delete text:

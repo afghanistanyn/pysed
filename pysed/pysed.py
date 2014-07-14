@@ -14,9 +14,10 @@ optional arguments:
                    'N', '[N-N]', 's step=N/*, all'
   -r, --replace  : replace text
                    m max=N/, u upper=*/, l lower=*/,
-                   s select=[N-N]/, /color
+                   s select=[N-N]/, n lines=[N-N]/, /color
   -i, --insert   : insert text
-                   m max=N/, s select=[N-N]/, /color
+                   m max=N/, s select=[N-N]/, n lines=[N-N]/,
+                   color
 
 N = Number, Options/, 'Pattern'
 color = red, green, blue, cyan, yellow, magenta, default
@@ -33,7 +34,7 @@ from .files import *
 
 __prog__ = 'pysed'
 __author__ = 'dslackw'
-__version_info__ = (0, 2, 8)
+__version_info__ = (0, 2, 9)
 __version__ = '{0}.{1}.{2}'.format(*__version_info__)
 __license__ = 'GNU General Public License v3 (GPLv3)'
 __email__ = 'd.zlatanidis@gmail.com'
@@ -75,6 +76,17 @@ def replace(read, arg2, arg3):
         region = select(read, nums_all)
         find_text = findall(arg2, region)
 
+    if OPTIONS_1.startswith('n='):
+        nums_all = OPTIONS_1.replace('n=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+        region = lines(read, nums_all)
+        find_text = findall(arg2, region)
+    elif OPTIONS_1.startswith('lines='):
+        nums_all = OPTIONS_1.replace('lines=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+        region = lines(read, nums_all)
+        find_text = findall(arg2, region)
+
     result = read
     find_text = set(find_text)
     for text in find_text:
@@ -100,6 +112,11 @@ def replace(read, arg2, arg3):
             region_original = region
             region = region.replace(text, color + arg3 + default)
             result = result.replace(region_original, region)
+
+        elif OPTIONS_1 == 'n=' or OPTIONS_1 == 'lines=':
+            region_original = region
+            region = region.replace(text, color + arg3 + default)
+            result = result.replace(region_original, region)            
 
         else:
             result = result.replace(text, color + arg3 + default)
@@ -144,6 +161,17 @@ def append(read, arg2, arg3):
         region = select(read, nums_all)
         find_text = findall(arg2, region)
 
+    if OPTIONS_1.startswith('n='):
+        nums_all = OPTIONS_1.replace('n=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+        region = lines(read, nums_all)
+        find_text = findall(arg2, region)
+    elif OPTIONS_1.startswith('lines='):
+        nums_all = OPTIONS_1.replace('lines=', '')
+        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+        region = lines(read, nums_all)
+        find_text = findall(arg2, region)
+
     result = read
     find_text = set(find_text)
     for text in find_text:
@@ -155,6 +183,12 @@ def append(read, arg2, arg3):
         elif OPTIONS_1 == 's=' or OPTIONS_1 == 'select=':
             region_original = region
             region = region.replace(text,
+                                    color + arg3 + default + text)
+            result = result.replace(region_original, region)
+
+        elif OPTIONS_1 == 'n=' or OPTIONS_1 == 'lines=':
+            region_original = region
+            region = region.replace(text, 
                                     color + arg3 + default + text)
             result = result.replace(region_original, region)
 
@@ -351,9 +385,10 @@ def arguments_view():
     print ('                   \'N\', \'[N-N]\', \'s step=N/*, all\'')
     print ('  -r, --replace  : replace text')
     print ('                   m max=N/, u upper=*/, l lower=*/,')
-    print ('                   s select=[N-N]/, /color')
+    print ('                   s select=[N-N]/, n lines=[N-N]/, /color')
     print ('  -i, --insert   : insert text')
-    print ('                   m max=N/, s select=[N-N]/, /color\n')
+    print ('                   m max=N/, s select=[N-N]/, n lines=[N-N]/,')
+    print ('                   color\n')
     print ('N = Number, Options/, \'Pattern\'')
     print ('color = red, green, blue, cyan, yellow, magenta, default')
 
