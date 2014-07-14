@@ -139,13 +139,13 @@ Command Line Tool Usage
                        'N', '[N-N]', 's step=N/*, all'
       -r, --replace  : replace text
                        m max=N/, u upper=*/, l lower=*/,
-                       s select=[N-N]/, /color
+                       s select=[N-N]/, n lines=[N-N]/, /color
       -i, --insert   : insert text
-                       m max=N/, s select=[N-N]/, /color
+                       m max=N/, s select=[N-N]/, n lines=[N-N]/,
+                       /color
 
     N = Number, Options/, 'Pattern'
     color = red, green, blue, cyan, yellow, magenta, default
-
 
 See changes before modification with options -p --print:
 

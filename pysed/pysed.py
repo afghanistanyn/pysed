@@ -17,7 +17,7 @@ optional arguments:
                    s select=[N-N]/, n lines=[N-N]/, /color
   -i, --insert   : insert text
                    m max=N/, s select=[N-N]/, n lines=[N-N]/,
-                   color
+                   /color
 
 N = Number, Options/, 'Pattern'
 color = red, green, blue, cyan, yellow, magenta, default
@@ -388,7 +388,7 @@ def arguments_view():
     print ('                   s select=[N-N]/, n lines=[N-N]/, /color')
     print ('  -i, --insert   : insert text')
     print ('                   m max=N/, s select=[N-N]/, n lines=[N-N]/,')
-    print ('                   color\n')
+    print ('                   /color\n')
     print ('N = Number, Options/, \'Pattern\'')
     print ('color = red, green, blue, cyan, yellow, magenta, default')
 
