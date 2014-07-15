@@ -42,51 +42,53 @@ __email__ = 'd.zlatanidis@gmail.com'
 
 
 def replace(read, arg2, arg3):
+
     '''Replace characters or entire text with another.
-        Chose specific areas and to replace
-        yet Add color to text'''
+       Chose specific areas and to replace
+       yet Add color to text
+    '''
 
-    OPTIONS_1 = get_to(arg2, '/')
-    arg2 = arg2.replace(OPTIONS_1 + '/', '', 1)
+    opt_LEFT = get_to(arg2, '/')
+    arg2 = arg2.replace(opt_LEFT + '/', '', 1)
 
-    OPTIONS_2 = get_upside(arg3, '/')
-    arg3 = arg3.replace('/' + OPTIONS_2, '', 1)
+    opt_RIGHT = get_upside(arg3, '/')
+    arg3 = arg3.replace('/' + opt_RIGHT, '', 1)
 
     find_text = findall(arg2, read)
 
-    nums = get_nums(OPTIONS_1)
-    OPTIONS_1 = OPTIONS_1.replace(nums, '')
+    nums = get_nums(opt_LEFT)
+    opt_LEFT = opt_LEFT.replace(nums, '')
 
     if nums == '':
         nums = 0
 
-    if OPTIONS_2 in ['black', 'red', 'green', 'yellow',
+    if opt_RIGHT in ['black', 'red', 'green', 'yellow',
                      'cyan', 'blue', 'magenta']:
-        color = colors(OPTIONS_2)
+        color = colors(opt_RIGHT)
         default = colors('default')
     else:
         color = ''
         default = ''
 
-    if OPTIONS_1.startswith('s='):
-        nums_all = OPTIONS_1.replace('s=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    if opt_LEFT.startswith('s='):
+        nums_all = opt_LEFT.replace('s=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
-    elif OPTIONS_1.startswith('select='):
-        nums_all = OPTIONS_1.replace('select=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    elif opt_LEFT.startswith('select='):
+        nums_all = opt_LEFT.replace('select=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
 
-    if OPTIONS_1.startswith('n='):
-        nums_all = OPTIONS_1.replace('n=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    if opt_LEFT.startswith('n='):
+        nums_all = opt_LEFT.replace('n=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = lines(read, nums_all)
         find_text = findall(arg2, region)
-    elif OPTIONS_1.startswith('lines='):
-        nums_all = OPTIONS_1.replace('lines=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    elif opt_LEFT.startswith('lines='):
+        nums_all = opt_LEFT.replace('lines=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = lines(read, nums_all)
         find_text = findall(arg2, region)
 
@@ -94,24 +96,24 @@ def replace(read, arg2, arg3):
     find_text = set(find_text)
 
     for text in find_text:
-        if OPTIONS_1 == 'm=' or OPTIONS_1 == 'max=':
+        if opt_LEFT == 'm=' or opt_LEFT == 'max=':
             result = read.replace(text, color + arg3 + default,
                                   int(nums))
-        elif OPTIONS_1 == 'u' or OPTIONS_1 == 'upper':
+        elif opt_LEFT == 'u' or opt_LEFT == 'upper':
             result = read.replace(text,
                                   color + arg3.upper() + default)
-        elif OPTIONS_1 == 'u=*' or OPTIONS_1 == 'upper=*':
+        elif opt_LEFT == 'u=*' or opt_LEFT == 'upper=*':
             result = color + read.upper() + default
-        elif OPTIONS_1 == 'l' or OPTIONS_1 == 'lower':
+        elif opt_LEFT == 'l' or opt_LEFT == 'lower':
             result = read.replace(text,
                                   color + arg3.lower() + default)
-        elif OPTIONS_1 == 'l=*' or OPTIONS_1 == 'lower=*':
+        elif opt_LEFT == 'l=*' or opt_LEFT == 'lower=*':
             result = color + read.lower() + default
-        elif OPTIONS_1 == 's=' or OPTIONS_1 == 'select=':
+        elif opt_LEFT == 's=' or opt_LEFT == 'select=':
             region_original = region
             region = region.replace(text, color + arg3 + default)
             result = result.replace(region_original, region)
-        elif OPTIONS_1 == 'n=' or OPTIONS_1 == 'lines=':
+        elif opt_LEFT == 'n=' or opt_LEFT == 'lines=':
             region_original = region
             region = region.replace(text, color + arg3 + default)
             result = result.replace(region_original, region)            
@@ -122,52 +124,54 @@ def replace(read, arg2, arg3):
 
 
 def append(read, arg2, arg3):
+
     '''Introduce new characters or the entire text
-        with new and can also add color. As with the
-        replacement options and you can select specific
-         areas'''
+       with new and can also add color. As with the
+       replacement options and you can select specific
+       areas
+    '''
 
-    OPTIONS_1 = get_to(arg2, '/')
-    arg2 = arg2.replace(OPTIONS_1 + '/', '', 1)
+    opt_LEFT = get_to(arg2, '/')
+    arg2 = arg2.replace(opt_LEFT + '/', '', 1)
 
-    OPTIONS_2 = get_upside(arg3, '/')
-    arg3 = arg3.replace('/' + OPTIONS_2, '', 1)
+    opt_RIGHT = get_upside(arg3, '/')
+    arg3 = arg3.replace('/' + opt_RIGHT, '', 1)
 
     find_text = findall(arg2, read)
 
-    nums = get_nums(OPTIONS_1)
-    OPTIONS_1 = OPTIONS_1.replace(nums, '')
+    nums = get_nums(opt_LEFT)
+    opt_LEFT = opt_LEFT.replace(nums, '')
 
     if nums == '':
         nums = 0
 
-    if OPTIONS_2 in ['black', 'red', 'green', 'yellow',
+    if opt_RIGHT in ['black', 'red', 'green', 'yellow',
                      'cyan', 'blue', 'magenta']:
-        color = colors(OPTIONS_2)
+        color = colors(opt_RIGHT)
         default = colors('default')
     else:
         color = ''
         default = ''
 
-    if OPTIONS_1.startswith('s='):
-        nums_all = OPTIONS_1.replace('s=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    if opt_LEFT.startswith('s='):
+        nums_all = opt_LEFT.replace('s=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
-    elif OPTIONS_1.startswith('select='):
-        nums_all = OPTIONS_1.replace('select=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    elif opt_LEFT.startswith('select='):
+        nums_all = opt_LEFT.replace('select=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
 
-    if OPTIONS_1.startswith('n='):
-        nums_all = OPTIONS_1.replace('n=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    if opt_LEFT.startswith('n='):
+        nums_all = opt_LEFT.replace('n=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = lines(read, nums_all)
         find_text = findall(arg2, region)
-    elif OPTIONS_1.startswith('lines='):
-        nums_all = OPTIONS_1.replace('lines=', '')
-        OPTIONS_1 = OPTIONS_1.replace(nums_all, '')
+    elif opt_LEFT.startswith('lines='):
+        nums_all = opt_LEFT.replace('lines=', '')
+        opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = lines(read, nums_all)
         find_text = findall(arg2, region)
 
@@ -175,16 +179,16 @@ def append(read, arg2, arg3):
     find_text = set(find_text)
 
     for text in find_text:
-        if OPTIONS_1 == 'm=' or OPTIONS_1 == 'max=':
+        if opt_LEFT == 'm=' or opt_LEFT == 'max=':
             result = read.replace(text,
                                   color + arg3 + default + text,
                                   int(nums))
-        elif OPTIONS_1 == 's=' or OPTIONS_1 == 'select=':
+        elif opt_LEFT == 's=' or opt_LEFT == 'select=':
             region_original = region
             region = region.replace(text,
                                     color + arg3 + default + text)
             result = result.replace(region_original, region)
-        elif OPTIONS_1 == 'n=' or OPTIONS_1 == 'lines=':
+        elif opt_LEFT == 'n=' or opt_LEFT == 'lines=':
             region_original = region
             region = region.replace(text, 
                                     color + arg3 + default + text)
@@ -197,17 +201,19 @@ def append(read, arg2, arg3):
 
 
 def lines(read, argX):
+
     '''Print all lines of text or specific.
-        Printing lines with a step'''
+       Printing lines with a step
+    '''
 
     result = []
     results = []
 
-    OPTIONS_1 = get_to(argX, '/')
-    argX = argX.replace(OPTIONS_1 + '/', '', 1)
+    opt_LEFT = get_to(argX, '/')
+    argX = argX.replace(opt_LEFT + '/', '', 1)
 
-    step = get_nums(OPTIONS_1)
-    OPTIONS_1 = OPTIONS_1.replace(step, '')
+    step = get_nums(opt_LEFT)
+    opt_LEFT = opt_LEFT.replace(step, '')
 
     if step == '' or step == "0":
         step = 1
@@ -217,7 +223,7 @@ def lines(read, argX):
 
     try:
         if argX == '*' or argX == 'all':
-            if OPTIONS_1 == 'step=' or OPTIONS_1 == 's=':
+            if opt_LEFT == 'step=' or opt_LEFT == 's=':
                 for line in range(0, len(result), int(step)):
                     results.append(result[line])
                 result = results
@@ -235,7 +241,7 @@ def lines(read, argX):
                                int(line_nums[1]) + 1):
                     results.append(result[int(n)])
                 result = results
-        elif OPTIONS_1 == 'c' or OPTIONS_1 == 'count':
+        elif opt_LEFT == 'c' or opt_LEFT == 'count':
             i = 0
             for line in read.splitlines():
                 results.append('{0} <-- {1}'.format(i, line))
@@ -256,8 +262,10 @@ def lines(read, argX):
 
 
 def cat(file, arg0, arg1, arg2, arg3):
+
     '''Print all results before any changes save in a file
-        or print statics or extract chars'''
+       or print statics or extract chars
+    '''
 
     result = []
 
@@ -265,14 +273,14 @@ def cat(file, arg0, arg1, arg2, arg3):
         read = open_file_for_read(file)
 
         arg_lines = arg1
-        OPTIONS_1 = get_to(arg1, '/')
+        opt_LEFT = get_to(arg1, '/')
 
-        arg1 = arg1.replace(OPTIONS_1 + '/', '', 1)
+        arg1 = arg1.replace(opt_LEFT + '/', '', 1)
         find_text = findall(arg1, read)
 
         if arg0 == '-p' or arg0 == '--print':
             pass
-            if OPTIONS_1 == 's' or OPTIONS_1 == 'sum':
+            if opt_LEFT == 's' or opt_LEFT == 'sum':
                 words = read.split()
                 chars = ''.join(words)
                 for line in range(len(read.splitlines())):
@@ -281,10 +289,10 @@ def cat(file, arg0, arg1, arg2, arg3):
                 print ('%d characters' % len(chars))
                 print ('%d words' % len(words))
                 print ('%d blanks' % (len(read) - len(chars)))
-            elif OPTIONS_1 == 'c' or OPTIONS_1 == 'chars':
+            elif opt_LEFT == 'c' or opt_LEFT == 'chars':
                 print ('find %d --> \'%s\'' % (
                     len(find_text), arg1))
-            elif OPTIONS_1 == 'e' or OPTIONS_1 == 'extract':
+            elif opt_LEFT == 'e' or opt_LEFT == 'extract':
                 print (' '.join(find_text))
             else:
                 print ('{}'.format(read,).strip())
@@ -305,6 +313,7 @@ def cat(file, arg0, arg1, arg2, arg3):
 
 
 def write_replace_text(file, arg1, arg2):
+
     '''Replace the text and save changes to the file'''
 
     result = []
@@ -321,6 +330,7 @@ def write_replace_text(file, arg1, arg2):
 
 
 def write_append_text(file, arg1, arg2):
+
     '''Insert text and save changes to the file'''
 
     result = []
@@ -337,6 +347,7 @@ def write_append_text(file, arg1, arg2):
 
 
 def version():
+
     '''Print version, license and email'''
 
     print ('version : {}'.format(__version__))
@@ -345,6 +356,7 @@ def version():
 
 
 def arguments_view():
+
     '''Print arguments options'''
 
     print ('usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]\n')
@@ -368,6 +380,7 @@ def arguments_view():
 
 
 def arguments_error(arg0, argx):
+
     '''Print errors arguments'''
 
     print ('usage: %s [-h] [-v] [-p] [-l] [-r] [-i]\n' % __prog__)
