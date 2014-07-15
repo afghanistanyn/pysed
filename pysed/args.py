@@ -63,12 +63,10 @@ def findall(argX, read):
     '''Find text from string'''
 
     try:
-
         find_text = re.findall(argX, read)
 
         if find_text == []:
             find_text == ''
-
     except re.error:
         find_text = ''
 

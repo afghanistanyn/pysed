@@ -6,7 +6,6 @@ import platform
 
 if platform.system() == 'Linux':
     path = os.getcwd() + '/'
-
 elif platform.system() == 'Windows':
     path = os.getcwd() + '\/'
 
