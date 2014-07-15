@@ -5,8 +5,9 @@
 import re
 
 def select(read, nums_all):
-
-    '''Select a region to modify'''
+    '''
+    Select a region to modify
+    '''
 
     nums_all = nums_all.replace('[', '')
     nums_all = nums_all.replace(']', '')
@@ -16,13 +17,14 @@ def select(read, nums_all):
         result = read[begin:end]
     except ValueError:
         result = ''
-        
+
     return result
 
 
 def get_to(arg, char):
-
-    '''Get any string before char /'''
+    '''
+    Get any string before char /
+    '''
 
     result = []
     for c in arg:
@@ -34,8 +36,9 @@ def get_to(arg, char):
 
 
 def get_upside(arg, char):
-
-    '''Get any string after char /'''
+    '''
+    Get any string after char /
+    '''
 
     i = 0
     result = []
@@ -49,7 +52,9 @@ def get_upside(arg, char):
 
 
 def get_nums(text):
-    '''Grep numbers from a string'''
+    '''
+    Grep numbers from a string
+    '''
 
     nums = '0123456789'
 
@@ -63,7 +68,9 @@ def get_nums(text):
 
 
 def findall(argX, read):
-    '''Find text from string'''
+    '''
+    Find text from string
+    '''
 
     try:
         find_text = re.findall(argX, read)

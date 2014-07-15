@@ -42,10 +42,10 @@ __email__ = 'd.zlatanidis@gmail.com'
 
 
 def replace(read, arg2, arg3):
-
-    '''Replace characters or entire text with another.
-       Chose specific areas and to replace
-       yet Add color to text
+    '''
+    Replace characters or entire text with another.
+    Chose specific areas and to replace
+    yet Add color to text
     '''
 
     opt_LEFT = get_to(arg2, '/')
@@ -116,7 +116,7 @@ def replace(read, arg2, arg3):
         elif opt_LEFT == 'n=' or opt_LEFT == 'lines=':
             region_original = region
             region = region.replace(text, color + arg3 + default)
-            result = result.replace(region_original, region)            
+            result = result.replace(region_original, region)
         else:
             result = result.replace(text, color + arg3 + default)
 
@@ -124,11 +124,11 @@ def replace(read, arg2, arg3):
 
 
 def append(read, arg2, arg3):
-
-    '''Introduce new characters or the entire text
-       with new and can also add color. As with the
-       replacement options and you can select specific
-       areas
+    '''
+    Introduce new characters or the entire text
+    with new and can also add color. As with the
+    replacement options and you can select specific
+    areas
     '''
 
     opt_LEFT = get_to(arg2, '/')
@@ -146,7 +146,7 @@ def append(read, arg2, arg3):
         nums = 0
 
     if opt_RIGHT in ['black', 'red', 'green', 'yellow',
-                     'cyan', 'blue', 'magenta']:
+                    'cyan', 'blue', 'magenta']:
         color = colors(opt_RIGHT)
         default = colors('default')
     else:
@@ -190,7 +190,7 @@ def append(read, arg2, arg3):
             result = result.replace(region_original, region)
         elif opt_LEFT == 'n=' or opt_LEFT == 'lines=':
             region_original = region
-            region = region.replace(text, 
+            region = region.replace(text,
                                     color + arg3 + default + text)
             result = result.replace(region_original, region)
         else:
@@ -201,9 +201,9 @@ def append(read, arg2, arg3):
 
 
 def lines(read, argX):
-
-    '''Print all lines of text or specific.
-       Printing lines with a step
+    '''
+    Print all lines of text or specific.
+    Printing lines with a step
     '''
 
     result = []
@@ -245,7 +245,7 @@ def lines(read, argX):
             i = 0
             for line in read.splitlines():
                 results.append('{0} <-- {1}'.format(i, line))
-                i += 1        
+                i += 1
             result = results
         else:
             line_nums = argX.replace(',', '\n').split()
@@ -262,9 +262,9 @@ def lines(read, argX):
 
 
 def cat(file, arg0, arg1, arg2, arg3):
-
-    '''Print all results before any changes save in a file
-       or print statics or extract chars
+    '''
+    Print all results before any changes save in a file
+    or print statics or extract chars
     '''
 
     result = []
@@ -313,8 +313,9 @@ def cat(file, arg0, arg1, arg2, arg3):
 
 
 def write_replace_text(file, arg1, arg2):
-
-    '''Replace the text and save changes to the file'''
+    '''
+    Replace the text and save changes to the file
+    '''
 
     result = []
 
@@ -330,8 +331,9 @@ def write_replace_text(file, arg1, arg2):
 
 
 def write_append_text(file, arg1, arg2):
-
-    '''Insert text and save changes to the file'''
+    '''
+    Insert text and save changes to the file
+    '''
 
     result = []
 
@@ -347,8 +349,9 @@ def write_append_text(file, arg1, arg2):
 
 
 def version():
-
-    '''Print version, license and email'''
+    '''
+    Print version, license and email
+    '''
 
     print ('version : {}'.format(__version__))
     print ('License : {}'.format(__license__))
@@ -356,8 +359,9 @@ def version():
 
 
 def arguments_view():
-
-    '''Print arguments options'''
+    '''
+    Print arguments options
+    '''
 
     print ('usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]\n')
     print ('Utility that parses and transforms text\n')
@@ -380,8 +384,9 @@ def arguments_view():
 
 
 def arguments_error(arg0, argx):
-
-    '''Print errors arguments'''
+    '''
+    Print errors arguments
+    '''
 
     print ('usage: %s [-h] [-v] [-p] [-l] [-r] [-i]\n' % __prog__)
 

@@ -3,10 +3,11 @@
 
 
 def colors(color):
+    '''
+    Print colors
+    '''
 
-    '''Print colors'''
-
-    paint = {
+   paint = {
         'black'      : '\x1b[30m',
         'red'        : '\x1b[31m',
         'green'      : '\x1b[32m',
