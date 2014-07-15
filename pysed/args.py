@@ -5,6 +5,7 @@
 import re
 
 def select(read, nums_all):
+
     '''Select a region to modify'''
 
     nums_all = nums_all.replace('[', '')
@@ -20,6 +21,7 @@ def select(read, nums_all):
 
 
 def get_to(arg, char):
+
     '''Get any string before char /'''
 
     result = []
@@ -32,6 +34,7 @@ def get_to(arg, char):
 
 
 def get_upside(arg, char):
+
     '''Get any string after char /'''
 
     i = 0

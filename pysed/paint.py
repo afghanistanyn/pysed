@@ -3,6 +3,7 @@
 
 
 def colors(color):
+
     '''Print colors'''
 
     paint = {
