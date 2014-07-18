@@ -6,7 +6,6 @@ def colors(color):
     '''
     Paint text with following colors
     '''
-
     paint = {
         'black'      : '\x1b[30m',
         'red'        : '\x1b[31m',
@@ -17,5 +16,4 @@ def colors(color):
         'cyan'       : '\x1b[36m',
         'default'    : '\x1b[0m'
         }
-
     return paint[color]

@@ -28,9 +28,9 @@ color = red, green, blue, cyan, yellow, magenta, default
 
 import sys
 
-from .paint import colors
-from .args import *
-from .files import *
+from paint import colors
+from args import *
+from files import *
 
 
 __prog__ = 'pysed'
@@ -47,29 +47,21 @@ def replace(read, arg2, arg3):
     Chose specific areas and to replace
     yet Add color to text
     '''
-
     opt_LEFT = get_to(arg2, '/')
     arg2 = arg2.replace(opt_LEFT + '/', '', 1)
-
     opt_RIGHT = get_upside(arg3, '/')
     arg3 = arg3.replace('/' + opt_RIGHT, '', 1)
-
     find_text = findall(arg2, read)
-
     nums = get_nums(opt_LEFT)
     opt_LEFT = opt_LEFT.replace(nums, '')
-
     if nums == '':
         nums = 0
-
     if opt_RIGHT in ['black', 'red', 'green', 'yellow',
                      'cyan', 'blue', 'magenta']:
         color = colors(opt_RIGHT)
         default = colors('default')
     else:
-        color = ''
-        default = ''
-
+        color, default = '', ''
     if opt_LEFT.startswith('s='):
         nums_all = opt_LEFT.replace('s=', '')
         opt_LEFT = opt_LEFT.replace(nums_all, '')
@@ -80,7 +72,6 @@ def replace(read, arg2, arg3):
         opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
-
     if opt_LEFT.startswith('n='):
         nums_all = opt_LEFT.replace('n=', '')
         opt_LEFT = opt_LEFT.replace(nums_all, '')
@@ -91,10 +82,8 @@ def replace(read, arg2, arg3):
         opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = lines(read, nums_all)
         find_text = findall(arg2, region)
-
     result = read
     find_text = set(find_text)
-
     for text in find_text:
         if opt_LEFT == 'm=' or opt_LEFT == 'max=':
             result = read.replace(text, color + arg3 + default,
@@ -119,9 +108,7 @@ def replace(read, arg2, arg3):
             result = result.replace(region_original, region)
         else:
             result = result.replace(text, color + arg3 + default)
-
     return result.rstrip()
-
 
 def append(read, arg2, arg3):
     '''
@@ -130,29 +117,21 @@ def append(read, arg2, arg3):
     replacement options and you can select specific
     areas
     '''
-
     opt_LEFT = get_to(arg2, '/')
     arg2 = arg2.replace(opt_LEFT + '/', '', 1)
-
     opt_RIGHT = get_upside(arg3, '/')
     arg3 = arg3.replace('/' + opt_RIGHT, '', 1)
-
     find_text = findall(arg2, read)
-
     nums = get_nums(opt_LEFT)
     opt_LEFT = opt_LEFT.replace(nums, '')
-
     if nums == '':
         nums = 0
-
     if opt_RIGHT in ['black', 'red', 'green', 'yellow',
                     'cyan', 'blue', 'magenta']:
         color = colors(opt_RIGHT)
         default = colors('default')
     else:
-        color = ''
-        default = ''
-
+        color, default = '', ''
     if opt_LEFT.startswith('s='):
         nums_all = opt_LEFT.replace('s=', '')
         opt_LEFT = opt_LEFT.replace(nums_all, '')
@@ -163,7 +142,6 @@ def append(read, arg2, arg3):
         opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = select(read, nums_all)
         find_text = findall(arg2, region)
-
     if opt_LEFT.startswith('n='):
         nums_all = opt_LEFT.replace('n=', '')
         opt_LEFT = opt_LEFT.replace(nums_all, '')
@@ -174,10 +152,8 @@ def append(read, arg2, arg3):
         opt_LEFT = opt_LEFT.replace(nums_all, '')
         region = lines(read, nums_all)
         find_text = findall(arg2, region)
-
     result = read
     find_text = set(find_text)
-
     for text in find_text:
         if opt_LEFT == 'm=' or opt_LEFT == 'max=':
             result = read.replace(text,
@@ -196,31 +172,23 @@ def append(read, arg2, arg3):
         else:
             result = result.replace(text,
                                    color + arg3 + default + text)
-
     return result.rstrip()
-
 
 def lines(read, argX):
     '''
     Print all lines of text or specific.
     Printing lines with a step
     '''
-
     result = []
     results = []
-
     opt_LEFT = get_to(argX, '/')
     argX = argX.replace(opt_LEFT + '/', '', 1)
-
     step = get_nums(opt_LEFT)
     opt_LEFT = opt_LEFT.replace(step, '')
-
     if step == '' or step == "0":
         step = 1
-
     for line in read.splitlines():
         result.append(line)
-
     try:
         if argX == '*' or argX == 'all':
             if opt_LEFT == 'step=' or opt_LEFT == 's=':
@@ -257,27 +225,20 @@ def lines(read, argX):
             result = results
     except ValueError:
             pass
-
     return '\n'.join(result).rstrip()
-
 
 def cat(file, arg0, arg1, arg2, arg3):
     '''
     Print all results before any changes save in a file
     or print statics or extract chars
     '''
-
     result = []
-
     try:
         read = open_file_for_read(file)
-
         arg_lines = arg1
         opt_LEFT = get_to(arg1, '/')
-
         arg1 = arg1.replace(opt_LEFT + '/', '', 1)
         find_text = findall(arg1, read)
-
         if arg0 == '-p' or arg0 == '--print':
             pass
             if opt_LEFT == 's' or opt_LEFT == 'sum':
@@ -300,7 +261,6 @@ def cat(file, arg0, arg1, arg2, arg3):
             result = lines(read, arg_lines)
         elif arg0 == '-r' or arg0 == '--replace':
             result = replace(read, arg2, arg3)
-
         elif arg0 == '-i' or arg0 == '--insert':
             result = append(read, arg2, arg3)
         else:
@@ -311,14 +271,11 @@ def cat(file, arg0, arg1, arg2, arg3):
         print ("%s: can't read %s: No such file or directory"
                % (__prog__, file))
 
-
 def write_replace_text(file, arg1, arg2):
     '''
     Replace the text and save changes to the file
     '''
-
     result = []
-
     try:
         file = open_file_for_read_and_write(file)
         read = file.read()
@@ -329,14 +286,11 @@ def write_replace_text(file, arg1, arg2):
         print ("%s: can't read %s: No such file or directory"
                % (__prog__, file))
 
-
 def write_append_text(file, arg1, arg2):
     '''
     Insert text and save changes to the file
     '''
-
     result = []
-
     try:
         file = open_file_for_read_and_write(file)
         read = file.read()
@@ -347,22 +301,18 @@ def write_append_text(file, arg1, arg2):
         print ("%s: can't read %s: No such file or directory"
                % (__prog__, file))
 
-
 def version():
     '''
     Print version, license and email
     '''
-
     print ('version : {}'.format(__version__))
     print ('License : {}'.format(__license__))
     print ('Email   : {}'.format(__email__))
-
 
 def arguments_view():
     '''
     Print arguments options
     '''
-
     print ('usage: pysed [-h] [-v] [-p] [-l] [-r] [-i]\n')
     print ('Utility that parses and transforms text\n')
     print ('optional arguments:')
@@ -382,14 +332,11 @@ def arguments_view():
     print ('N = Number, Options/, \'Pattern\'')
     print ('color = black, red, green, blue, cyan, yellow, magenta, default')
 
-
 def arguments_error(arg0, argx):
     '''
     Print errors arguments
     '''
-
     print ('usage: %s [-h] [-v] [-p] [-l] [-r] [-i]\n' % __prog__)
-
     if arg0 == '':
         print ('%s: error: argument: expected one argument' % __prog__)
     elif arg0 in ['-p', '--print',
@@ -402,11 +349,9 @@ def arguments_error(arg0, argx):
         print ('%s: error: unrecognized arguments: %s %s'
                % (__prog__, arg0, ' '.join(argx)))
 
-
 def main():
     arg = sys.argv
     arg.pop(0)
-
     if len(arg) == 2:
         file = arg[1]
     elif len(arg) == 3:
@@ -415,7 +360,6 @@ def main():
         file = arg[3]
     elif len(arg) == 5:
         file = arg[4]
-
     if len(arg) == 0:
         arguments_error('', '')
     elif (len(arg) == 1 and arg[0] == '-h' or len(arg) == 1
