@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 
 
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 from pysed import __version__
 from pysed import __email__

@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: pysed
-Version: 0.3.0
+Version: 0.3.1
 Author: dslackw
 Author-email: d zlatanidis at gmail com
 Maintainer: dslackw
@@ -14,9 +14,19 @@ Description: .. image:: https://badge.fury.io/py/pysed.png
         .. image:: https://pypip.in/license/pysed/badge.png
             :target: https://pypi.python.org/pypi/pysed
         
+        pysed
+        =====
         
         CLI and API utility that parses and transforms text written in Python.
         
+        Pysed is a Python stream editor, is used to perform basic text transformations
+        from a file. It reads text, line by line, from a file and replace, insert or 
+print
+        all text or specific area. One of the elements of distinction is the use of 
+colors.
+        
+        Read more for `Regular Expression Syntax 
+<https://docs.python.org/2/library/re.html>`_
         
         `[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
         
@@ -46,20 +56,15 @@ https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
         
         .. code-block:: bash
         
-            replace(), 
-            append(), 
-            lines(),
-            colors(), 
-            get_nums(), 
-            findall(), 
-            get_to(), 
-            get_upside()
+            replace(), replace text with new
+            append(), insert new text
+            lines(), print lines
         
         How to use the module in your own python code:
         
         .. code-block:: bash
         
-            >>> import pysed
+            >>> from pysed import replace, append, lines
             >>>
             >>> text = '''This is my cat,
             ...      whose name is Betty.
@@ -70,7 +75,7 @@ https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
             ...     This is my goat,
             ...      whose name is Adam.'''
             >>>
-            >>> result = pysed.replace(text, 'This', 'THIS')
+            >>> result = replace(text, 'This', 'THIS')
             >>>
             >>> print result
             THIS is my cat,
@@ -82,7 +87,7 @@ https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
             THIS is my goat,
              whose name is Adam.
             >>>
-            >>> result = pysed.replace(text, 'max=2/This', 'THIS/red')
+            >>> result = replace(text, 'max=2/This', 'THIS/red')
             >>>
             >>> print result
             THIS is my cat,
@@ -94,10 +99,10 @@ https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
             This is my goat,
              whose name is Adam.
             >>>
-            >>> result = pysed.append(text, 'max=1/This', ' >>>/green')
+            >>> result = append(text, 'max=1/cat', ' >>> /green')
             >>>
             >>> print result
-            This >>> is my cat,
+            This is my >>>cat,
              whose name is Betty.
             This is my dog,
              whose name is Frank.
@@ -106,7 +111,7 @@ https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
             This is my goat,
              whose name is Adam.
             >>>
-            >>> result = pysed.replace(text, 'select=[30-100]/my', 'MY')
+            >>> result = replace(text, 'select=[30-100]/my', 'MY')
             >>>
             >>> print result
             This is my cat,
@@ -118,34 +123,13 @@ https://raw.githubusercontent.com/dslackw/images/master/pysed/screenshot-1.png
             This is my goat,
              whose name is Adam.
             >>>
-            >>> print '%sHello World!!!%s' % (pysed.colors('green'), 
-pysed.colors('default'))
-            Hello World!!!
-            >>>
-            >>> pysed.get_nums('a1b2c3d4')
-            '1234'
-            >>>
-            >>> pysed.findall('is', text)
-            ['is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 'is', 
-'is']    
-            >>>
-            >>> pysed.findall('[0-9]', 'a1b2c3d4')
-            ['1', '2', '3', '4']
-            >>> str = 'Python is a programming language, that lets you work quickly'
-            >>>
-            >>> pysed.get_to(str, ',')
-            'Python is a programming language,'
-            >>>
-            >>> pysed.get_upside(str, ',')
-            ', that lets you work quickly'
-            >>>
-            >>> result = pysed.lines(text, '0,5')
+            >>> result = lines(text, '0,5')
             >>>
             >>> print result
             This is my cat,
             whose name is George.
             >>>
-            >>> result = pysed.lines(text, 'step=2/*')
+            >>> result = lines(text, 'step=2/*')
             >>>
             >>> print result 
             This is my cat,
@@ -153,8 +137,9 @@ pysed.colors('default'))
             This is my fish,
             This is my goat,
         
+        
         Command Line Tool Usage
-        -----------------------
+        =======================
         
         .. code-block:: bash
         
@@ -168,16 +153,17 @@ pysed.colors('default'))
               -p, --print    : print text
                                e extract/, c chars/, s sum/
               -l, --lines    : print lines
-                               'N', '[N-N]', 's step=N/*, all'
+                               'N', '[N-N]', 's step=N/*, all',
+                               'c count'
               -r, --replace  : replace text
                                m max=N/, u upper=*/, l lower=*/,
-                               s select=[N-N]/, /color
+                               s select=[N-N]/, n lines=[N-N]/, /color
               -i, --insert   : insert text
-                               m max=N/, s select=[N-N]/, /color
+                               m max=N/, s select=[N-N]/, n lines=[N-N]/,
+                               /color
         
             N = Number, Options/, 'Pattern'
-            colors = red, green, blue, cyan, yellow, magenta, default
-        
+            color = black, red, green, blue, cyan, yellow, magenta, default
         
         See changes before modification with options -p --print:
         
@@ -246,6 +232,17 @@ pysed.colors('default'))
             This is my dog,
             This is my fish,
             This is my goat,
+        
+            $ pysed --lines 'count' text.txt
+        
+            0 <-- This is my cat,
+            1 <--  whose name is Betty.
+            2 <-- This is my dog,
+            3 <--  whose name is Frank.
+            4 <-- This is my fish,
+            5 <-- whose name is George.
+            6 <-- This is my goat,
+            7 <--  whose name is Adam.
         
         Extract text:
         
@@ -371,6 +368,22 @@ pysed.colors('default'))
             This is my goat,
              whose name is Adam.
         
+        Select lines to replace text:
+        
+        .. code-block:: bash
+        
+            $ pysed -r -p lines=[4-6]/'This' 'THIS' text.txt
+        
+            This is my cat,
+             whose name is Betty.
+            This is my dog,
+             whose name is Frank.
+            THIS is my fish,
+            whose name is George.
+            THIS is my goat,
+             whose name is Adam.
+        
+        
         Convert text to uppercase:
         
         .. code-block:: bash
@@ -438,11 +451,41 @@ pysed.colors('default'))
             This is my goat,
              whose surname is Adam. 
         
+        Add character to the beginning of each line:
+        
+        .. code-block:: bash
+        
+            $ pysed -i -p '^.' '-> ' text.txt
+        
+            -> This is my cat,
+             whose name is Betty.
+            -> This is my dog,
+             whose name is Frank.
+            -> This is my fish,
+            whose name is George.
+            -> This is my goat,
+             whose name is Adam.
+        
+        Add character to the end of each line:
+        
+        .. code-block:: bash
+        
+            $ pysed -i -p '\n' ' <-' text.txt
+        
+            This is my cat, <-
+             whose name is Betty. <-
+            This is my dog, <-
+             whose name is Frank. <-
+            This is my fish, <-
+            whose name is George. <-
+            This is my goat, <-
+             whose name is Adam. <-
+        
         Insert max:
         
         .. code-block:: bash
         
-            $ pysed -i --print m=2/'whose ' 'sur' text.txt
+            $ pysed -i --print m=2/'name' 'sur' text.txt
         
             This is my cat,
              whose surname is Betty.
@@ -452,6 +495,36 @@ pysed.colors('default'))
              whose name is George.
             This is my goat, 
              whose name is Adam.    
+        
+        Select region to insert text:
+        
+        .. code-block:: bash
+        
+            $ pysed -i -p s=[20-90]/'name' 'sur' text.txt
+        
+            This is my cat,
+             whose surname is Betty.
+            This is my dog,
+             whose surname is Frank.
+            This is my fish,
+            whose name is George.
+            This is my goat,
+             whose name is Adam.
+        
+        Select lines to insert text:
+        
+        .. code-block:: bash
+        
+            $ pysed -i -p lines=[4-6]/'^.' '--> ' text.txt
+        
+            This is my cat,
+             whose name is Betty.
+            This is my dog,
+             whose name is Frank.
+            --> This is my fish,
+            whose name is George.
+            --> This is my goat,
+             whose name is Adam.
         
         Delete text:
         
