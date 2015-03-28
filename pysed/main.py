@@ -40,19 +40,22 @@ def print_file(text):
         print("{0}".format(line))
 
 
-def replace_text(old, new, text):
+def replace_text(old, new, num, text):
     """ return replace text """
     find = re.findall(old, text)
-    for p in find:
-        text = text.replace(p, new)
+    if num == "":
+        num = len(text)
+    for p in set(find):
+        text = text.replace(p, new, int(num))
     return text.rstrip()
 
 
 def choice(pattern, reg):
     """ return results """
+    num = "".join(re.findall(r"\d+", pattern[0]))
     if len(pattern) == 4:
         if pattern[0].startswith("s"):
-            return replace_text(pattern[1], pattern[2], reg)
+            return replace_text(pattern[1], pattern[2], num, reg)
     return ""
 
 
