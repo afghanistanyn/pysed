@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# pysed.py file.
+# main.py file is part of pysed.
 
-# Copyright 2014 Dimitris Zlatanidis <d.zlatanidis@gmail.com>
+# Copyright 2014-2015 Dimitris Zlatanidis <d.zlatanidis@gmail.com>
 # All rights reserved.
 
 # pysed is utility that parses and transforms text
@@ -27,7 +27,7 @@ import sys
 
 
 def write_file(text, reg):
-    """ write to a new file """
+    """ write a new file """
     with open(reg, "w") as f:
         for line in text.splitlines():
             f.write(line + "\n")
@@ -35,7 +35,7 @@ def write_file(text, reg):
 
 
 def print_file(text):
-    """ print text file """
+    """ print text """
     for line in text.splitlines():
         print("{0}".format(line))
 
@@ -57,7 +57,7 @@ def choice(pattern, reg):
     """ return results """
     if len(pattern) == 4:
         num = "".join(re.findall(r"\d+", pattern[0]))
-        if pattern[0].startswith("r"):
+        if pattern[0].startswith("s"):
             return replace_text(pattern[1], pattern[2], num, reg)
     return ""
 
