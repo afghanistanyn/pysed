@@ -107,8 +107,13 @@ def arguments(args):
     if len(args) == 1:
         if args[0] in ["-h", "--help"]:
             options()
-        else:
-            usage()
+        elif args[0] in ["-v", "--version"]:
+            print("Version : {0}\n"
+                  "License : {1}\n"
+                  "Email   : {2}".format(__version__,
+                                         __license__,
+                                         __email__))
+            sys.exit()
 
 
 def main():
