@@ -122,8 +122,13 @@ def main():
     arguments(args)
 
     if len(sys.argv) > 1:
-        f = open(args[1])
-        data = f.read()
+        try:
+            f = open(args[1])
+            data = f.read()
+        except IOError:
+            print("{0}: error: No such file or directory: {1}".format(__all__,
+                                                                      args[1]))
+            sys.exit(0)
     else:
         try:
             data = sys.stdin.read()
