@@ -40,7 +40,7 @@ __email__ = "d.zlatanidis@gmail.com"
 __website__ = "https://github.com/dslackw/pysed"
 
 
-def check_special(old, new, text):
+def checkSpecial(old, new, text):
     """check special characters and return results"""
     if old == "^":
         return ("".join(
@@ -50,19 +50,36 @@ def check_special(old, new, text):
             [line + new + "\n" for line in text.splitlines()]).rstrip())
 
 
-def replace_text(old, new, num, text):
+def replaceText(old, new, num, text):
     """return replace tex"""
     find = re.findall(old, text)
     if not num:
         num = len(text)
     if old in ["^", "$"]:
-        return check_special(old, new, text)
+        return checkSpecial(old, new, text)
     for p in set(find):
         text = text.replace(p, new, int(num))
     return text.rstrip()
 
 
-def find_line(find, text):
+def replaceLines(pattern, text):
+    """replace specific text in specific lines"""
+    nums = pattern[0][2:]
+    for n in nums:
+        if "," not in n and not n.isdigit():
+            usage("left")
+        num = nums.split(",")
+        old = findLines(num, text)
+        for l in text.splitlines():
+            for o in old.splitlines():
+                if l == o:
+                    new = o.replace(pattern[1], pattern[2])
+                    text = replaceText(l, new, "", text)
+        return text
+    return replaceText(pattern[1], pattern[2], "", text)
+
+
+def findPatternLine(find, text):
     """find pattern and return lines"""
     lines = ""
     for line in text.splitlines():
@@ -71,16 +88,14 @@ def find_line(find, text):
     return lines.rstrip()
 
 
-def lines(line_num, text):
-    """return line"""
-    if not line_num:
-        return text
-    count = 1
+def findLines(nums, text):
+    """return specific lines"""
+    count, lines = 1, ""
     for ln in text.splitlines():
-        if count == int(line_num):
-            return ln
+        if str(count) in nums:
+            lines += ln + "\n"
         count += 1
-    return ""
+    return lines
 
 
 def options():
@@ -110,7 +125,8 @@ def usage(option):
     for opt in usg:
         print opt
     if option:
-        print("{0}: error: {1} argument".format(__all__, option))
+        print("{0}: error: {1} argument is not recognized".format(__all__,
+                                                                  option))
     sys.exit(0)
 
 
@@ -128,33 +144,31 @@ def arguments(args):
             sys.exit(0)
 
 
-def execute_left(pattern, text):
+def executeLeft(pattern, text):
     """executes leftist options and return
        modified text
     """
     if len(pattern) == 4:
-        num = "".join(re.findall(r"\d+", pattern[0]))
+        depth = "".join(re.findall(r"\d+", pattern[0]))
         if pattern[0] == "s" or pattern[0][1:].isdigit():
-            return replace_text(pattern[1], pattern[2], num, text)
-        elif pattern[0] == "sl" or pattern[0][2:].isdigit():
-            old = lines(num, text)
-            new = old.replace(pattern[1], pattern[2])
-            return replace_text(old, new, num, text)
+            return replaceText(pattern[1], pattern[2], depth, text)
+        elif pattern[0].startswith("sl"):
+            return replaceLines(pattern, text)
     if len(pattern) == 3:
         if pattern[0] == "l":
-            return find_line(pattern[1], text)
+            return findPatternLine(pattern[1], text)
     if pattern[0] not in ["s", "l"]:
         usage("left")
 
 
-def execute_right(args, data):
+def executeRight(args, data):
     """executes rightist options and final
        results
     """
     # try:
     if len(args) >= 1 and len(args) <= 2:
         pattern = fix_pattern(args[0].split("/"))
-        text = execute_left(pattern, data)
+        text = executeLeft(pattern, data)
 
         if len(pattern) == 4:
             option = pattern[3]
@@ -198,7 +212,7 @@ def main():
         except KeyboardInterrupt:
             print("")
             sys.exit(0)
-    execute_right(args, data)
+    executeRight(args, data)
 
 if __name__ == "__main__":
     main()
