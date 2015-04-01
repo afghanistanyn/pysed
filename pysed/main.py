@@ -106,22 +106,23 @@ def findLines(nums, text):
 def options():
     """print arguments options"""
     args = [
-        "Usage: %s {left}/pattern/{right} [input-file]\n" % __all__,
+        "Usage: %s {left}/[pattern]/{right} [input-file]\n" % __all__,
         "Left options:",
-        "  s[n]/        search and replace text",
-        "  sl[n]/       search and replace in specific line",
-        "  l/           find pattern in each line",
+        "  s[n]/                search and replace text",
+        "  sl[n]/               search and replace in specific line",
+        "  l/                   find pattern in each line",
         "Right option:",
-        "  /p           print text",
-        "  /w           write to file\n",
+        "  /p                   print text",
+        "  /w                   write to file\n",
     ]
     for opt in args:
         print opt
     sys.exit(0)
 
 
-def usage(option):
+def usage(*args):
     """print arguments usage"""
+    msg, option = args
     usg = [
         "usage: {0} [-h] [-v]".format(__all__),
         "             left  [s[n]/, sl[n], l/]",
@@ -129,9 +130,13 @@ def usage(option):
     ]
     for opt in usg:
         print opt
-    if option:
-        print("{0}: error: {1} argument is not recognized".format(__all__,
-                                                                  option))
+    if msg in ["left", "right"]:
+        print("{0}: error: {1} argument '{2}' is not recognized".format(__all__,
+                                                                        msg,
+                                                                        option))
+    elif msg == "not used":
+        print("{0}: error: right argument '{1}' {2}".format(__all__, option,
+                                                            msg))
     sys.exit(0)
 
 
@@ -159,11 +164,13 @@ def executeLeft(pattern, text):
             return replaceText(pattern[1], pattern[2], depth, text)
         elif pattern[0].startswith("sl"):
             return replaceLines(pattern, text)
-    if len(pattern) == 3:
+    elif len(pattern) == 3:
         if pattern[0] == "l":
             return findPatternLine(pattern[1], text)
+        else:
+            usage("", "")
     if pattern[0] not in ["s", "l"]:
-        usage("left")
+        usage("left", pattern[0])
 
 
 def executeRight(args, data):
@@ -182,17 +189,13 @@ def executeRight(args, data):
             elif option == "w":
                 write_file(text, args[1])
             else:
-                usage("right")
-        elif len(pattern) == 3:
-            option = pattern[2]
-            if option == "p":
+                usage("right", option)
+        elif len(pattern) == 3 and pattern[2] == "p":
                 print_file(text)
-            else:
-                usage("right")
         else:
-            usage("right")
+            usage("", "")
     else:
-        usage()
+        usage("", "")
     # except IndexError:
     #     sys.exit(0)
 
