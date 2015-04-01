@@ -40,6 +40,9 @@ __email__ = "d.zlatanidis@gmail.com"
 __website__ = "https://github.com/dslackw/pysed"
 
 
+SpecialChars = ["^", "$"]
+
+
 def checkSpecial(old, new, text):
     """check special characters and return results"""
     if old == "^":
@@ -55,7 +58,7 @@ def replaceText(old, new, num, text):
     find = re.findall(old, text)
     if not num:
         num = len(text)
-    if old in ["^", "$"]:
+    if old in SpecialChars:
         return checkSpecial(old, new, text)
     for p in set(find):
         text = text.replace(p, new, int(num))
@@ -74,6 +77,8 @@ def replaceLines(pattern, text):
             for o in old.splitlines():
                 if l == o:
                     new = o.replace(pattern[1], pattern[2])
+                    if pattern[1] in SpecialChars:
+                        new = checkSpecial(pattern[1], pattern[2], new)
                     text = replaceText(l, new, "", text)
         return text
     return replaceText(pattern[1], pattern[2], "", text)
