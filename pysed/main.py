@@ -40,21 +40,30 @@ __email__ = "d.zlatanidis@gmail.com"
 __website__ = "https://github.com/dslackw/pysed"
 
 
-def replace_text(old, new, depth, text):
-    """ return replace text """
-    find = re.findall(old, text)
-    if depth == "":
-        depth = len(text)
+def check_special(old, new, text):
+    """check special characters and return results"""
     if old == "^":
         return ("".join(
             [new + line + "\n" for line in text.splitlines()]).rstrip())
+    elif old == "$":
+        return ("".join(
+            [line + new + "\n" for line in text.splitlines()]).rstrip())
+
+
+def replace_text(old, new, num, text):
+    """return replace tex"""
+    find = re.findall(old, text)
+    if not num:
+        num = len(text)
+    if old in ["^", "$"]:
+        return check_special(old, new, text)
     for p in set(find):
-        text = text.replace(p, new, int(depth))
+        text = text.replace(p, new, int(num))
     return text.rstrip()
 
 
 def find_line(find, text):
-    """ find pattern and return lines """
+    """find pattern and return lines"""
     lines = ""
     for line in text.splitlines():
         if find in line:
@@ -62,48 +71,51 @@ def find_line(find, text):
     return lines.rstrip()
 
 
-def choice(pattern, text):
-    """ return results """
-    if len(pattern) == 4:
-        if pattern[0].startswith("s"):
-            depth = "".join(re.findall(r"\d+", pattern[0]))
-            return replace_text(pattern[1], pattern[2], depth, text)
-    if len(pattern) == 3:
-        if pattern[0].startswith("l"):
-            return find_line(pattern[1], text)
-    usage()
+def lines(line_num, text):
+    """return line"""
+    if not line_num:
+        return text
+    count = 1
+    for ln in text.splitlines():
+        if count == int(line_num):
+            return ln
+        count += 1
+    return ""
 
 
 def options():
-    """ print arguments options """
+    """print arguments options"""
     args = [
-        "Usage: %s '{left}/pattern/{right}' [input-file]\n" % __all__,
+        "Usage: %s {left}/pattern/{right} [input-file]\n" % __all__,
         "Left options:",
-        "  s/           search and replace text",
-        "  l/           find pattern and print lines",
+        "  s[n]/        search and replace text",
+        "  sl[n]/       search and replace in specific line",
+        "  l/           find pattern in each line",
         "Right option:",
         "  /p           print text",
-        "  /w           write to a file\n",
+        "  /w           write to file\n",
     ]
     for opt in args:
         print opt
-    sys.exit()
+    sys.exit(0)
 
 
-def usage():
-    """ print arguments usage """
+def usage(option):
+    """print arguments usage"""
     usg = [
         "usage: {0} [-h] [-v]".format(__all__),
-        "             left  [s/, l/]",
+        "             left  [s[n]/, sl[n], l/]",
         "             right [/p, /w]\n"
     ]
     for opt in usg:
         print opt
-    sys.exit()
+    if option:
+        print("{0}: error: {1} argument".format(__all__, option))
+    sys.exit(0)
 
 
 def arguments(args):
-    """ optional arguments """
+    """optional arguments"""
     if len(args) == 1:
         if args[0] in ["-h", "--help"]:
             options()
@@ -113,13 +125,64 @@ def arguments(args):
                   "Email   : {2}".format(__version__,
                                          __license__,
                                          __email__))
-            sys.exit()
+            sys.exit(0)
+
+
+def execute_left(pattern, text):
+    """executes leftist options and return
+       modified text
+    """
+    if len(pattern) == 4:
+        num = "".join(re.findall(r"\d+", pattern[0]))
+        if pattern[0] == "s" or pattern[0][1:].isdigit():
+            return replace_text(pattern[1], pattern[2], num, text)
+        elif pattern[0] == "sl" or pattern[0][2:].isdigit():
+            old = lines(num, text)
+            new = old.replace(pattern[1], pattern[2])
+            return replace_text(old, new, num, text)
+    if len(pattern) == 3:
+        if pattern[0] == "l":
+            return find_line(pattern[1], text)
+    if pattern[0] not in ["s", "l"]:
+        usage("left")
+
+
+def execute_right(args, data):
+    """executes rightist options and final
+       results
+    """
+    # try:
+    if len(args) >= 1 and len(args) <= 2:
+        pattern = fix_pattern(args[0].split("/"))
+        text = execute_left(pattern, data)
+
+        if len(pattern) == 4:
+            option = pattern[3]
+            if option == "p":
+                print_file(text)
+            elif option == "w":
+                write_file(text, args[1])
+            else:
+                usage("right")
+        elif len(pattern) == 3:
+            option = pattern[2]
+            if option == "p":
+                print_file(text)
+            else:
+                usage("right")
+        else:
+            usage("right")
+    else:
+        usage()
+    # except IndexError:
+    #     sys.exit(0)
 
 
 def main():
     args = sys.argv
     args.pop(0)
     arguments(args)
+    data = ""
 
     if len(sys.argv) > 1:
         try:
@@ -129,34 +192,13 @@ def main():
             print("{0}: error: No such file or directory: {1}".format(__all__,
                                                                       args[1]))
             sys.exit(0)
-    else:
+    elif len(sys.argv) == 1:
         try:
             data = sys.stdin.read()
         except KeyboardInterrupt:
             print("")
-            sys.exit()
-
-    # try:
-    if len(args) >= 1 and len(args) <= 2:
-        pattern = fix_pattern(args[0].split("/"))
-        text = choice(pattern, data)
-
-        if len(pattern) == 4:
-            option = pattern[3]
-            if option == "p":
-                print_file(text)
-            elif option == "w":
-                write_file(text, args[1])
-        elif len(pattern) == 3:
-            option = pattern[2]
-            if option == "p":
-                print_file(text)
-        else:
-            usage()
-    else:
-        usage()
-    # except IndexError:
-    #     sys.exit()
+            sys.exit(0)
+    execute_right(args, data)
 
 if __name__ == "__main__":
     main()
