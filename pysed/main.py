@@ -24,10 +24,45 @@
 import sys
 
 
+def helps():
+    """print help"""
+    arguments = [
+        "pysed is utility that parses and transforms text\n",
+        "Usage: pysed [OPTION] [source] [dest] [input-file] [flag]\n",
+        "Optional arguments:",
+        "  -h, --help                   display this help and exit",
+        "  -v, --version                print program version and exit",
+        "  -s, --search-replace         search and replace text\n",
+        "Optional flags:",
+        "  -p --print                   print text",
+        "  -w --write                   write to file"
+    ]
+    for arg in arguments:
+        print("{0}".format(arg))
+    sys.exit()
+
+
+def version():
+    print("0.5.0")
+    sys.exit()
+
+
+def execute(args, data):
+    if args[0] in ["-s", "--search-replace"]:
+        sys.stdout.write(data.replace(args[1], args[2]))
+
+
 def main():
     args = sys.argv
     args.pop(0)
     data = ""
+    if args and args[0] in ["-h", "--help"]:
+        helps()
+    elif args and args[0] in ["-v", "--version"]:
+        version()
+    elif args and args[0] not in ["-h", "--help", "-v" "--version", "-s",
+                                  "--search-replace"]:
+        sys.exit("Wrong argument")
 
     if len(args) > 3:
         fileInput = args[3]
@@ -44,8 +79,7 @@ def main():
             sys.exit()
     if len(args) > 5:
         sys.exit("Too many arguments")
-    r = data.replace(args[1], args[2])
-    sys.stdout.write(r)
+    execute(args, data)
 
 if __name__ == "__main__":
     main()
