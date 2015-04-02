@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# utils.py file is part of pysed.
+# __metadata__.py file is part of pysed.
 
 # Copyright 2014-2015 Dimitris Zlatanidis <d.zlatanidis@gmail.com>
 # All rights reserved.
@@ -22,15 +22,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-def write_file(text, reg):
-    """ write a new file """
-    with open(reg, "w") as f:
-        for line in text.splitlines():
-            f.write(line + "\n")
-        f.close()
+__all__ = "pysed"
+__author__ = "dslackw"
+__copyright__ = "2014 - 2015"
+__version_info__ = (0, 5, 0)
+__version__ = "{0}.{1}.{2}".format(*__version_info__)
+__license__ = "GNU General Public License v3 (GPLv3)"
+__email__ = "d.zlatanidis@gmail.com"
+__website__ = "https://github.com/dslackw/pysed"
 
 
-def print_file(text):
-    """ print text """
-    for line in text.splitlines():
-        print("{0}".format(line))
+specialChars = ["^", "$"]

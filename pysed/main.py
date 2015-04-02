@@ -25,22 +25,18 @@
 import re
 import sys
 from utils import (
-    fix_pattern,
     write_file,
     print_file
 )
-
-__all__ = "pysed"
-__author__ = "dslackw"
-__copyright__ = 2014 - 2015
-__version_info__ = (0, 5, 0)
-__version__ = "{0}.{1}.{2}".format(*__version_info__)
-__license__ = "GNU General Public License v3 (GPLv3)"
-__email__ = "d.zlatanidis@gmail.com"
-__website__ = "https://github.com/dslackw/pysed"
-
-
-SpecialChars = ["^", "$"]
+from arguments import (
+    usage,
+    optional
+)
+from __metadata__ import (
+    __all__,
+    specialChars
+)
+from pattern import Pattern
 
 
 def checkSpecial(old, new, text):
@@ -53,39 +49,8 @@ def checkSpecial(old, new, text):
             [line + new + "\n" for line in text.splitlines()]).rstrip())
 
 
-def replaceText(old, new, num, text):
-    """return replace tex"""
-    find = re.findall(old, text)
-    if not num:
-        num = len(text)
-    if old in SpecialChars:
-        return checkSpecial(old, new, text)
-    for p in set(find):
-        text = text.replace(p, new, int(num))
-    return text.rstrip()
-
-
-def replaceLines(pattern, text):
-    """replace specific text in specific lines"""
-    nums = pattern[0][2:]
-    for n in nums:
-        if "," not in n and not n.isdigit():
-            usage("left")
-        num = nums.split(",")
-        old = findLines(num, text)
-        for l in text.splitlines():
-            for o in old.splitlines():
-                if l == o:
-                    new = o.replace(pattern[1], pattern[2])
-                    if pattern[1] in SpecialChars:
-                        new = checkSpecial(pattern[1], pattern[2], new)
-                    text = replaceText(l, new, "", text)
-        return text
-    return replaceText(pattern[1], pattern[2], "", text)
-
-
 def findPatternLine(find, text):
-    """find pattern and return lines"""
+    """find pattern in lines"""
     lines = ""
     for line in text.splitlines():
         if find in line:
@@ -103,69 +68,40 @@ def findLines(nums, text):
     return lines
 
 
-def options():
-    """print arguments options"""
-    args = [
-        "Usage: %s {left}/[pattern]/{right} [input-file]\n" % __all__,
-        "Left options:",
-        "  s[n]/                search and replace text",
-        "  sl[n]/               search and replace in specific line",
-        "  l/                   find pattern in each line",
-        "Right option:",
-        "  /p                   print text",
-        "  /w                   write to file\n",
-    ]
-    for opt in args:
-        print opt
-    sys.exit(0)
+def replaceLines(pattern, text):
+    """replace specific text in specific lines"""
+    nums = pattern[0][2:]
+    for n in nums:
+        if "," not in n and not n.isdigit():
+            usage("left", pattern[0])
+        num = nums.split(",")
+        old = findLines(num, text)
+        for l in text.splitlines():
+            for o in old.splitlines():
+                if l == o:
+                    new = o.replace(pattern[1], pattern[2])
+                    text = replaceText(l, new, text)
+        return text
+    return replaceText(pattern[1], pattern[2], text)
 
 
-def usage(*args):
-    """print arguments usage"""
-    msg, option = args
-    usg = [
-        "usage: {0} [-h] [-v]".format(__all__),
-        "             left  [s[n]/, sl[n], l/]",
-        "             right [/p, /w]\n"
-    ]
-    for opt in usg:
-        print opt
-    if msg in ["left", "right"]:
-        print("{0}: error: {1} argument '{2}' is not recognized".format(__all__,
-                                                                        msg,
-                                                                        option))
-    elif msg == "not used":
-        print("{0}: error: right argument '{1}' {2}".format(__all__, option,
-                                                            msg))
-    sys.exit(0)
-
-
-def arguments(args):
-    """optional arguments"""
-    if len(args) == 1:
-        if args[0] in ["-h", "--help"]:
-            options()
-        elif args[0] in ["-v", "--version"]:
-            print("Version : {0}\n"
-                  "License : {1}\n"
-                  "Email   : {2}".format(__version__,
-                                         __license__,
-                                         __email__))
-            sys.exit(0)
+def replaceText(pattern, new, text):
+    """return replace text"""
+    return re.sub(pattern, new, text)
 
 
 def executeLeft(pattern, text):
     """executes leftist options and return
        modified text
     """
+    if pattern[1] in specialChars:
+        return checkSpecial(pattern[1], pattern[2], text)
     if len(pattern) == 4:
-        depth = "".join(re.findall(r"\d+", pattern[0]))
-        if pattern[0] == "s" or pattern[0][1:].isdigit():
-            return replaceText(pattern[1], pattern[2], depth, text)
+        if pattern[0] == "s":
+            return replaceText(pattern[1], pattern[2], text)
         elif pattern[0].startswith("sl"):
             return replaceLines(pattern, text)
-    elif len(pattern) == 3:
-        if pattern[0] == "l":
+        elif pattern[0] == "l":
             return findPatternLine(pattern[1], text)
         else:
             usage("", "")
@@ -179,9 +115,8 @@ def executeRight(args, data):
     """
     # try:
     if len(args) >= 1 and len(args) <= 2:
-        pattern = fix_pattern(args[0].split("/"))
+        pattern = Pattern(args[0]).Split()
         text = executeLeft(pattern, data)
-
         if len(pattern) == 4:
             option = pattern[3]
             if option == "p":
@@ -203,7 +138,7 @@ def executeRight(args, data):
 def main():
     args = sys.argv
     args.pop(0)
-    arguments(args)
+    optional(args)
     data = ""
 
     if len(sys.argv) > 1:
