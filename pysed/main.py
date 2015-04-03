@@ -47,6 +47,34 @@ def replaceText(args, data):
         print(newText.rstrip())
 
 
+def findText(args, data):
+    """find text and print"""
+    patt, flag = args[1], args[2]
+    patt_flag = ""
+    for i in flag.split("|"):
+        re_patt = {
+            "I": "re.I",
+            "L": "re.L",
+            "M": "re.M",
+            "S": "re.S",
+            "U": "re.U",
+            "X": "re.X",
+            "": ""
+        }
+        try:
+            patt_flag += re_patt[i] + "|"
+        except KeyError:
+            sys.exit(0)
+    if flag:
+        flag = eval(patt_flag[:-1])
+    else:
+        flag = 0
+    for line in data.splitlines():
+        find = re.search(patt, line, flag)
+        if find:
+            print(line.rstrip())
+
+
 def helps():
     """print help"""
     arguments = [
@@ -55,7 +83,8 @@ def helps():
         "Optional arguments:",
         "  -h, --help                   display this help and exit",
         "  -v, --version                print program version and exit",
-        "  -s, --search-replace         search and replace text\n",
+        "  -s, --search-replace         search and replace text",
+        "  -f, --find                   find text and print\n",
         "Optional flags:",
         "  -w --write                   write to file"
     ]
@@ -72,6 +101,8 @@ def version():
 def execute(args, data):
     if args[0] in ["-s", "--search-replace"]:
         replaceText(args, data)
+    elif args[0] in ["-f", "--find"]:
+        findText(args, data)
 
 
 def main():
@@ -83,7 +114,7 @@ def main():
     elif args and args[0] in ["-v", "--version"]:
         version()
     elif args and args[0] not in ["-h", "--help", "-v" "--version", "-s",
-                                  "--search-replace"]:
+                                  "--search-replace", "-f", "--find"]:
         sys.exit("Wrong argument")
 
     if len(args) > 3:
