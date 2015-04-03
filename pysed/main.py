@@ -21,7 +21,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import re
 import sys
+
+
+def writeFile(fileName, data):
+    """write data to file"""
+    with open(fileName, "w") as fo:
+        for line in data.splitlines():
+            fo.write(line + "\n")
+        fo.close()
+
+
+def replaceText(args, data):
+    """replace text with new"""
+    # flag = args[4]
+    newText = ""
+    patt, repl = args[1], args[2]
+    for line in data.splitlines():
+        newText += re.sub(patt, repl, line + "\n")
+    if len(args) == 5 and args[4] in ["-w", "--write"]:
+        fileName = args[3]
+        writeFile(fileName, newText)
+    else:
+        print(newText.rstrip())
 
 
 def helps():
@@ -34,7 +57,6 @@ def helps():
         "  -v, --version                print program version and exit",
         "  -s, --search-replace         search and replace text\n",
         "Optional flags:",
-        "  -p --print                   print text",
         "  -w --write                   write to file"
     ]
     for arg in arguments:
@@ -49,7 +71,7 @@ def version():
 
 def execute(args, data):
     if args[0] in ["-s", "--search-replace"]:
-        sys.stdout.write(data.replace(args[1], args[2]))
+        replaceText(args, data)
 
 
 def main():
