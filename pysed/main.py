@@ -33,23 +33,7 @@ def writeFile(fileName, data):
         fo.close()
 
 
-def replaceText(args, data):
-    """replace text with new"""
-    # flag = args[4]
-    newText = ""
-    patt, repl = args[1], args[2]
-    for line in data.splitlines():
-        newText += re.sub(patt, repl, line + "\n")
-    if len(args) == 5 and args[4] in ["-w", "--write"]:
-        fileName = args[3]
-        writeFile(fileName, newText)
-    else:
-        print(newText.rstrip())
-
-
-def findText(args, data):
-    """find text and print"""
-    patt, flag = args[1], args[2]
+def flags(flag):
     patt_flag = ""
     for i in flag.split("|"):
         re_patt = {
@@ -69,6 +53,28 @@ def findText(args, data):
         flag = eval(patt_flag[:-1])
     else:
         flag = 0
+    return flag
+
+
+def replaceText(args, data):
+    """replace text with new"""
+    # flag = args[4]
+    newText = ""
+    patt, repl, count, flag = args[1], args[2], args[3], args[4]
+    flag = flags(flag)
+    for line in data.splitlines():
+        newText += re.sub(patt, repl, line + "\n", int(count), flag)
+    if len(args) == 5 and args[4] in ["-w", "--write"]:
+        fileName = args[3]
+        writeFile(fileName, newText)
+    else:
+        print(newText.rstrip())
+
+
+def findText(args, data):
+    """find text and print"""
+    patt, flag = args[1], args[4]
+    flag = flags(flag)
     for line in data.splitlines():
         find = re.search(patt, line, flag)
         if find:
@@ -79,14 +85,13 @@ def helps():
     """print help"""
     arguments = [
         "pysed is utility that parses and transforms text\n",
-        "Usage: pysed [OPTION] [source] [dest] [input-file] [flag]\n",
-        "Optional arguments:",
+        "Usage: pysed [OPTION] {pattern} {repl} {count} {flag} [input-file]\n",
+        "Options:",
         "  -h, --help                   display this help and exit",
         "  -v, --version                print program version and exit",
-        "  -s, --search-replace         search and replace text",
-        "  -f, --find                   find text and print\n",
-        "Optional flags:",
-        "  -w --write                   write to file"
+        "  -r, --search-repl            search and replace text",
+        "  -s, --search                 search pattern and print",
+        "      --write                  write to file\n"
     ]
     for arg in arguments:
         print("{0}".format(arg))
@@ -99,9 +104,9 @@ def version():
 
 
 def execute(args, data):
-    if args[0] in ["-s", "--search-replace"]:
+    if args[0] in ["-r", "--search-repl"]:
         replaceText(args, data)
-    elif args[0] in ["-f", "--find"]:
+    elif args[0] in ["-s", "--search"]:
         findText(args, data)
 
 
@@ -113,24 +118,24 @@ def main():
         helps()
     elif args and args[0] in ["-v", "--version"]:
         version()
-    elif args and args[0] not in ["-h", "--help", "-v" "--version", "-s",
-                                  "--search-replace", "-f", "--find"]:
+    elif args and args[0] not in ["-h", "--help", "-v" "--version", "-r",
+                                  "--search-repl", "-s", "--search"]:
         sys.exit("Wrong argument")
 
-    if len(args) > 3:
-        fileInput = args[3]
+    if len(args) > 5:
+        fileInput = args[5]
         try:
             f = open(fileInput)
             data = f.read()
         except IOError:
-            print("No such file or directory: {0}".format(args[3]))
+            print("No such file or directory: {0}".format(args[4]))
     else:
         try:
             data = sys.stdin.read()
         except KeyboardInterrupt:
             print("")
             sys.exit()
-    if len(args) > 5:
+    if len(args) > 7:
         sys.exit("Too many arguments")
     execute(args, data)
 
