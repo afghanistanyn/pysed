@@ -43,8 +43,8 @@ def helps():
     """print help"""
     arguments = [
         "{0} is utility that parses and transforms text\n".format(__prog__),
-        "Usage: {0} [OPTION] {pattern} {repl} {count} {flag} "
-        "[input-file]\n".format(__prog__),
+        "Usage: %s [OPTION] {pattern} {repl} {count} {flag} "
+        "[input-file]\n" % (__prog__),
         "Options:",
         "  -h, --help                   display this help and exit",
         "  -v, --version                print program version and exit",

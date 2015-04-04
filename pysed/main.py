@@ -68,6 +68,7 @@ class Pysed(object):
                 print(line.rstrip())
 
     def flags(self):
+        """python regex flags"""
         patt_flag = ""
         for i in self.flag.split("|"):
             re_patt = {
@@ -100,25 +101,33 @@ class Pysed(object):
 
 
 def execute(args, data):
+    """execute available arguments"""
+    if len(args) == 7 and args[6] not in ["-w", "--write"]:
+        usage()
+        sys.exit("{0}: error: '{1}' argument does not recognized".format(
+            __prog__, args[6]))
+
     if args[0] in ["-r", "--search-repl"]:
         Pysed(args, data).replaceText()
     elif args[0] in ["-s", "--search"]:
         Pysed(args, data).findText()
+    elif args and args[0] not in ["-r", "--search-repl", "-s", "--search"]:
+        usage()
+        sys.exit("{0}: error: '{1}' argument does not recognized".format(
+            __prog__, args[0]))
 
 
 def main():
     args = sys.argv
     args.pop(0)
     data = ""
-    if args and args[0] in ["-h", "--help"]:
+    if len(args) == 1 and args[0] in ["-h", "--help"]:
         helps()
-    elif args and args[0] in ["-v", "--version"]:
+    elif len(args) == 1 and args[0] in ["-v", "--version"]:
         version()
-    elif args and args[0] not in ["-h", "--help", "-v" "--version", "-r",
-                                  "--search-repl", "-s", "--search"]:
+    elif len(args) == 0:
         usage()
-        sys.exit("{0}: error: '{1}' argument doesn't exist".format(__prog__,
-                                                                   args[0]))
+        sys.exit("{0}: error: Too few arguments".format(__prog__))
 
     if len(args) > 5:
         fileInput = args[5]
