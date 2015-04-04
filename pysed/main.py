@@ -45,15 +45,14 @@ class Pysed(object):
         self.filename = args[5]
         if len(self.args) > 6:
             self.write = args[6]
-        self.data = data
+        self.data = data.rstrip()
 
     def replaceText(self):
         """replace text with new"""
         newtext = ""
         self.flags()
-        for line in self.data.splitlines():
-            newtext += re.sub(self.pattern, self.repl, line,
-                              self.count, self.flag) + "\n"
+        newtext += re.sub(self.pattern, self.repl, self.data,
+                          self.count, self.flag)
         if len(self.args) > 6 and self.write in ["-w", "--write"]:
             self.writeFile(newtext)
         else:
@@ -65,7 +64,7 @@ class Pysed(object):
         for line in self.data.splitlines():
             find = re.search(self.pattern, line, self.flag)
             if find:
-                print(line.rstrip())
+                print(line)
 
     def flags(self):
         """python regex flags"""
