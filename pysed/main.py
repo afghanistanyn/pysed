@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # main.py file is part of pysed.
@@ -23,91 +23,87 @@
 
 import re
 import sys
+from __metadata__ import __prog__
+from options import (
+    usage,
+    helps,
+    version
+)
 
 
-def writeFile(fileName, data):
-    """write data to file"""
-    with open(fileName, "w") as fo:
-        for line in data.splitlines():
-            fo.write(line + "\n")
-        fo.close()
+class Pysed(object):
 
-
-def flags(flag):
-    patt_flag = ""
-    for i in flag.split("|"):
-        re_patt = {
-            "I": "re.I",
-            "L": "re.L",
-            "M": "re.M",
-            "S": "re.S",
-            "U": "re.U",
-            "X": "re.X",
-            "": ""
-        }
+    def __init__(self, args, data):
+        self.args = args
+        self.pattern = args[1]
+        self.repl = args[2]
         try:
-            patt_flag += re_patt[i] + "|"
-        except KeyError:
-            sys.exit(0)
-    if flag:
-        flag = eval(patt_flag[:-1])
-    else:
-        flag = 0
-    return flag
+            self.count = int(args[3])
+        except ValueError:
+            self.count = 0
+        self.flag = args[4]
+        self.filename = args[5]
+        if len(self.args) > 6:
+            self.write = args[6]
+        self.data = data
 
+    def replaceText(self):
+        """replace text with new"""
+        newtext = ""
+        self.flags()
+        for line in self.data.splitlines():
+            newtext += re.sub(self.pattern, self.repl, line,
+                              self.count, self.flag) + "\n"
+        if len(self.args) > 6 and self.write in ["-w", "--write"]:
+            self.writeFile(newtext)
+        else:
+            print(newtext.rstrip())
 
-def replaceText(args, data):
-    """replace text with new"""
-    # flag = args[4]
-    newText = ""
-    patt, repl, count, flag = args[1], args[2], args[3], args[4]
-    flag = flags(flag)
-    for line in data.splitlines():
-        newText += re.sub(patt, repl, line + "\n", int(count), flag)
-    if len(args) == 5 and args[4] in ["-w", "--write"]:
-        fileName = args[3]
-        writeFile(fileName, newText)
-    else:
-        print(newText.rstrip())
+    def findText(self):
+        """find text and print"""
+        self.flags()
+        for line in self.data.splitlines():
+            find = re.search(self.pattern, line, self.flag)
+            if find:
+                print(line.rstrip())
 
+    def flags(self):
+        patt_flag = ""
+        for i in self.flag.split("|"):
+            re_patt = {
+                "I": "re.I",
+                "L": "re.L",
+                "M": "re.M",
+                "S": "re.S",
+                "U": "re.U",
+                "X": "re.X",
+                "0": "0",
+                "": ""
+            }
+            try:
+                patt_flag += re_patt[i] + "|"
+            except KeyError:
+                usage()
+                sys.exit("{0}: error: '{1}' flag doesn't exist".format(
+                    __prog__, self.flag))
+        if self.flag:
+            self.flag = eval(patt_flag[:-1])
+        else:
+            self.flag = 0
 
-def findText(args, data):
-    """find text and print"""
-    patt, flag = args[1], args[4]
-    flag = flags(flag)
-    for line in data.splitlines():
-        find = re.search(patt, line, flag)
-        if find:
-            print(line.rstrip())
-
-
-def helps():
-    """print help"""
-    arguments = [
-        "pysed is utility that parses and transforms text\n",
-        "Usage: pysed [OPTION] {pattern} {repl} {count} {flag} [input-file]\n",
-        "Options:",
-        "  -h, --help                   display this help and exit",
-        "  -v, --version                print program version and exit",
-        "  -r, --search-repl            search and replace text",
-        "  -s, --search                 search pattern and print",
-        "      --write                  write to file\n"
-    ]
-    for arg in arguments:
-        print("{0}".format(arg))
-    sys.exit()
-
-
-def version():
-    print("0.5.0")
-    sys.exit()
+    def writeFile(self, newtext):
+        """write data to file"""
+        with open(self.filename, "w") as fo:
+            for line in newtext.splitlines():
+                fo.write(line + "\n")
+            fo.close()
 
 
 def execute(args, data):
     if args[0] in ["-r", "--search-repl"]:
-        replaceText(args, data)
+        Pysed(args, data).replaceText()
     elif args[0] in ["-s", "--search"]:
-        findText(args, data)
+        Pysed(args, data).findText()
 
 
 def main():
@@ -120,7 +116,9 @@ def main():
         version()
     elif args and args[0] not in ["-h", "--help", "-v" "--version", "-r",
                                   "--search-repl", "-s", "--search"]:
-        sys.exit("Wrong argument")
+        usage()
+        sys.exit("{0}: error: '{1}' argument doesn't exist".format(__prog__,
+                                                                   args[0]))
 
     if len(args) > 5:
         fileInput = args[5]
@@ -128,7 +126,9 @@ def main():
             f = open(fileInput)
             data = f.read()
         except IOError:
-            print("No such file or directory: {0}".format(args[4]))
+            usage()
+            sys.exit("{0}: error: No such file or directory '{1}'".format(
+                __prog__, args[5]))
     else:
         try:
             data = sys.stdin.read()
@@ -136,7 +136,8 @@ def main():
             print("")
             sys.exit()
     if len(args) > 7:
-        sys.exit("Too many arguments")
+        usage()
+        sys.exit("{0}: error: Too many arguments".format(__prog__))
     execute(args, data)
 
 if __name__ == "__main__":
