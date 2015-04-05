@@ -45,6 +45,8 @@ class Pysed(object):
         self.filename = args[5]
         if len(self.args) > 6:
             self.write = args[6]
+        self.color = ""
+        self.color_def = "\x1b[0m"
         self.data = data.rstrip()
 
     def replaceText(self):
@@ -58,13 +60,28 @@ class Pysed(object):
         else:
             print(newtext.rstrip())
 
-    def findText(self):
+    def findLines(self):
         """find text and print"""
         self.flags()
+        lines = ""
         for line in self.data.splitlines():
             find = re.search(self.pattern, line, self.flag)
             if find:
-                print(line)
+                lines += line + "\n"
+        if len(self.args) > 6 and self.write in ["-w", "--write"]:
+            self.writeFile(lines)
+        else:
+            print(lines.rstrip())
+
+    def highLight(self):
+        """highlight text and print"""
+        self.colors()
+        text = (self.data.replace(
+            self.pattern, self.color + self.pattern + self.color_def))
+        if len(self.args) > 6 and self.write in ["-w", "--write"]:
+            self.writeFile(text)
+        else:
+            print(text.rstrip())
 
     def flags(self):
         """python regex flags"""
@@ -91,6 +108,24 @@ class Pysed(object):
         else:
             self.flag = 0
 
+    def colors(self):
+        """colors dict"""
+        paint = {
+            'black': '\x1b[30m',
+            'red': '\x1b[31m',
+            'green': '\x1b[32m',
+            'yellow': '\x1b[33m',
+            'blue': '\x1b[34m',
+            'magenta': '\x1b[35m',
+            'cyan': '\x1b[36m',
+            }
+        try:
+            self.color = paint[self.repl]
+        except KeyError:
+            usage()
+            sys.exit("{0}: error: '{1}' color doesn't exist".format(
+                __prog__, self.repl))
+
     def writeFile(self, newtext):
         """write data to file"""
         with open(self.filename, "w") as fo:
@@ -106,14 +141,12 @@ def execute(args, data):
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[6]))
 
-    if args[0] in ["-r", "--search-repl"]:
+    if args[0] in ["-r", "--replace"]:
         Pysed(args, data).replaceText()
-    elif args[0] in ["-s", "--search"]:
-        Pysed(args, data).findText()
-    elif args and args[0] not in ["-r", "--search-repl", "-s", "--search"]:
-        usage()
-        sys.exit("{0}: error: '{1}' argument does not recognized".format(
-            __prog__, args[0]))
+    elif args[0] in ["-l", "--lines"]:
+        Pysed(args, data).findLines()
+    elif args[0] in ["-g", "--highlight"]:
+        Pysed(args, data).highLight()
 
 
 def main():
@@ -127,6 +160,11 @@ def main():
     elif len(args) == 0:
         usage()
         sys.exit("{0}: error: Too few arguments".format(__prog__))
+    elif args and args[0] not in ["-r", "--replace", "-l", "--lines",
+                                  "-g", "--highlight"]:
+        usage()
+        sys.exit("{0}: error: '{1}' argument does not recognized".format(
+            __prog__, args[0]))
 
     if len(args) > 5:
         fileInput = args[5]
