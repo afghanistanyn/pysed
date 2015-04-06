@@ -33,16 +33,20 @@ from options import (
 
 class Pysed(object):
 
-    def __init__(self, args, data):
+    def __init__(self, args, data, filename):
         self.args = args
+        self.flag = "0"
+        self.count = 0
         self.pattern = args[1]
         self.repl = args[2]
-        try:
-            self.count = int(args[3])
-        except ValueError:
-            self.count = 0
-        self.flag = args[4]
-        self.filename = args[5]
+        self.filename = filename
+        if len(args) >= 4:
+            try:
+                self.count = int(args[3])
+            except ValueError:
+                self.count = 0
+        if len(args) >= 6:
+            self.flag = args[4]
         if len(self.args) > 6:
             self.write = args[6]
         self.color = ""
@@ -133,19 +137,20 @@ class Pysed(object):
             fo.close()
 
 
-def execute(args, data):
+def execute(args, data, filename):
     """execute available arguments"""
     if len(args) == 7 and args[6] not in ["-w", "--write"]:
         usage()
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[6]))
 
+    pysed = Pysed(args, data, filename)
     if args[0] in ["-r", "--replace"]:
-        Pysed(args, data).replaceText()
+        pysed.replaceText()
     elif args[0] in ["-l", "--lines"]:
-        Pysed(args, data).findLines()
+        pysed.findLines()
     elif args[0] in ["-g", "--highlight"]:
-        Pysed(args, data).highLight()
+        pysed.highLight()
 
 
 def main():
@@ -165,25 +170,31 @@ def main():
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[0]))
 
-    if len(args) > 5:
-        fileInput = args[5]
+    filename = ""
+    not_piping = sys.stdin.isatty()
+    if not_piping:
+        fileInput = filename = args[len(args) - 1]
+        print fileInput
+        if fileInput in ["-w", "--write"]:
+            fileInput = filename = args[len(args) - 2]
         try:
             f = open(fileInput)
             data = f.read()
         except IOError:
             usage()
             sys.exit("{0}: error: No such file or directory '{1}'".format(
-                __prog__, args[5]))
+                __prog__, args[len(args) - 1]))
     else:
         try:
             data = sys.stdin.read()
         except KeyboardInterrupt:
             print("")
             sys.exit()
+
     if len(args) > 7:
         usage()
         sys.exit("{0}: error: Too many arguments".format(__prog__))
-    execute(args, data)
+    execute(args, data, filename)
 
 if __name__ == "__main__":
     main()
