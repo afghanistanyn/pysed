@@ -48,30 +48,23 @@ class Pysed(object):
         self.color = ""
         self.color_def = "\x1b[0m"
         self.data = data.rstrip()
+        self.text = ""
 
     def replaceText(self):
         """replace text with new"""
-        newtext = ""
         self.flags()
-        newtext += re.sub(self.pattern, self.repl, self.data,
-                          self.count, self.flag)
-        if len(self.args) > 6 and self.write in ["-w", "--write"]:
-            self.writeFile(newtext)
-        else:
-            print(newtext.rstrip())
+        self.text += re.sub(self.pattern, self.repl, self.data, self.count,
+                            self.flag)
+        self.selectPrintWrite()
 
     def findLines(self):
         """find text and print"""
         self.flags()
-        lines = ""
         for line in self.data.splitlines():
             find = re.search(self.pattern, line, self.flag)
             if find:
-                lines += line + "\n"
-        if len(self.args) > 6 and self.write in ["-w", "--write"]:
-            self.writeFile(lines)
-        else:
-            print(lines.rstrip())
+                self.text += line + "\n"
+        self.selectPrintWrite()
 
     def highLight(self):
         """highlight text and print"""
@@ -125,6 +118,12 @@ class Pysed(object):
             usage()
             sys.exit("{0}: error: '{1}' color doesn't exist".format(
                 __prog__, self.repl))
+
+    def selectPrintWrite(self):
+        if len(self.args) > 6 and self.write in ["-w", "--write"]:
+            self.writeFile(self.text)
+        else:
+            print(self.text.rstrip())
 
     def writeFile(self, newtext):
         """write data to file"""
