@@ -73,17 +73,17 @@ Python regex flags
 
    * - Syntax	
      - Long syntax,	Meaning
-   * - I	
+   * - I or IGNORECASE	
      - re.IGNORECASE,	ignore case.
-   * - M	
+   * - M or MULTILINE	
      - re.MULTILINE,	make begin/end {^, $} consider each line.
-   * - S	
+   * - S or DOTALL	
      - re.DOTALL,	make . match newline too.
-   * - U	
+   * - U or UNICODE
      - re.UNICODE,	make {\w, \W, \b, \B} follow Unicode rules.
-   * - L	
+   * - L or LOCALE
      - re.LOCALE,	make {\w, \W, \b, \B} follow locale.
-   * - X	
+   * - X or VERBOSE	
      - re.VERBOSE,	allow comment in regex.
 
           
