@@ -68,7 +68,7 @@ Python regex flags
 ------------------
 
 .. list-table::
-    :widths: 30 80
+    :widths: 60 80
     :header-rows: 1
 
     * - syntax	
