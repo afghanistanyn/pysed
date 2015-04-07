@@ -72,7 +72,7 @@ Python regex flags
    :header-rows: 1
 
    * - Syntax	
-     - Long syntax,	Meaning
+     - Python syntax,	Meaning
    * - I or IGNORECASE	
      - re.IGNORECASE,	ignore case.
    * - M or MULTILINE	
