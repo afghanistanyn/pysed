@@ -87,7 +87,16 @@ Python regex flags
     * - X	
       - re.VERBOSE	allow comment in regex.
 
-          
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Shapes
+     - Description
+   * - Square
+     - Four sides of equal length, 90 degree angles
+   * - Rectangle
+     - Four sides, 90 degree angles          
           
 Usage Examples
 --------------
