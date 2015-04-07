@@ -53,7 +53,7 @@ Command Line Tool Usage
 
 .. code-block:: bash
 
-    Usage: pysed [OPTION] {pattern} {repl} {count} {flag} [input-file]
+    Usage: pysed [OPTION] {pattern} {repl} {max} {flag} [input-file]
 
     Options:
       -h, --help                   display this help and exit
@@ -114,6 +114,18 @@ Usage Examples
     This is my goat,
      whose surname is Adam.
 
+    Maximum replace text:
+    
+    $ pysed -r "name" "surname" 2 text.txt
+    This is my cat,
+     whose surname is Betty.
+    This is my dog,
+     whose surname is Frank.
+    This is my fish,
+     whose name is George.
+    This is my goat,
+     whose name is Adam.
+     
     Add character to the beginning of each line:
 
     $ pysed -r "^" "# " 0 M text.txt
@@ -127,6 +139,7 @@ Usage Examples
     #  whose name is Adam.
     
     Add character to the beginning of each line:
+    
     $ pysed -r "$" " <-" 0 M text.txt
     This is my cat, <-
      whose name is Betty. <-
@@ -145,4 +158,19 @@ Usage Examples
      whose name is George.
      whose name is Adam.
 
+    Highlight text:
 
+    $ pysed -g "name" "red" text.txt
+    This is my cat,
+     whose name is Betty.
+    This is my dog,
+     whose name is Frank.
+    This is my fish,
+     whose name is George.
+    This is my goat,
+     whose name is Adam.
+
+    Print statics text:
+
+    $ pysed -s text.txt
+    Lines: 8, Words: 32, Chars: 125, Blanks: 27
