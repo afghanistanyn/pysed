@@ -68,12 +68,11 @@ Python regex flags
 ------------------
 
 .. list-table::
-   :widths: 10 80
+   :widths: 20 80
    :header-rows: 1
 
    * - Syntax	
-     - Long syntax	
-     - Meaning
+     - Long syntax	Meaning
    * - I	
      - re.IGNORECASE	ignore case.
    * - M	
@@ -88,7 +87,7 @@ Python regex flags
      - re.VERBOSE	allow comment in regex.
 
 .. list-table::
-   :widths: 10 80
+   :widths: 20 80
    :header-rows: 1
 
    * - Syntax
