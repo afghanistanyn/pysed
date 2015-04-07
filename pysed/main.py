@@ -38,9 +38,11 @@ class Pysed(object):
         self.flag = "0"
         self.count = 0
         self.write = write
-        self.pattern = args[1]
-        self.repl = args[2]
         self.filename = filename
+        if len(args) >= 2:
+            self.pattern = args[1]
+        if len(args) >= 3:
+            self.repl = args[2]
         if len(args) >= 4:
             try:
                 self.count = int(args[3])
@@ -57,14 +59,14 @@ class Pysed(object):
 
     def replaceText(self):
         """replace text with new"""
-        self.flags()
+        self.regexFlags()
         self.text += re.sub(self.pattern, self.repl, self.data, self.count,
                             self.flag)
         self.selectPrintWrite()
 
     def findLines(self):
         """find text and print"""
-        self.flags()
+        self.regexFlags()
         for line in self.data.splitlines():
             find = re.search(self.pattern, line, self.flag)
             if find:
@@ -78,7 +80,19 @@ class Pysed(object):
             self.pattern, self.color + self.pattern + self.color_def))
         self.selectPrintWrite()
 
-    def flags(self):
+    def textStat(self):
+        """print text statics"""
+        lines, words = 0, 0
+        chars = len(self.data.replace(" ", ""))
+        blanks = len(self.data) - chars
+        for line in self.data.splitlines():
+            lines += 1
+            words += len(re.findall(r"[\w']+", line))
+        self.text = ("Lines: {0}, Words: {1}, Chars: {2}, Blanks: {3}".format(
+            lines, words, chars, blanks))
+        self.selectPrintWrite()
+
+    def regexFlags(self):
         """python regex flags"""
         patt_flag = ""
         for i in self.flag.split("|"):
@@ -149,6 +163,8 @@ def execute(args, data, filename, isWrite):
         pysed.findLines()
     elif args[0] in ["-g", "--highlight"]:
         pysed.highLight()
+    elif args[0] in ["-s", "--stat"]:
+        pysed.textStat()
 
 
 def main():
@@ -156,9 +172,6 @@ def main():
     args.pop(0)
     data = ""
     isWrite = False
-    if args[-1] in ["-w", "write"]:
-        isWrite = True
-        del args[-1]
 
     if len(args) == 1 and args[0] in ["-h", "--help"]:
         helps()
@@ -168,10 +181,14 @@ def main():
         usage()
         sys.exit("{0}: error: Too few arguments".format(__prog__))
     elif args and args[0] not in ["-r", "--replace", "-l", "--lines",
-                                  "-g", "--highlight"]:
+                                  "-g", "--highlight", "-s", "--stat"]:
         usage()
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[0]))
+
+    if args[-1] in ["-w", "write"]:
+        isWrite = True
+        del args[-1]
 
     filename = "{0}.log".format(__prog__)
     not_piping = sys.stdin.isatty()
