@@ -138,7 +138,7 @@ Usage Examples
     # This is my goat,
     #  whose name is Adam.
     
-    Add character to the beginning of each line:
+    Add character to the end of each line:
     
     $ pysed -r "$" " <-" 0 M text.txt
     This is my cat, <-
