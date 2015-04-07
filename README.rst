@@ -179,3 +179,16 @@ Usage Examples
 
     $ pysed -r "name" "surname" text.txt --write
 
+    Use as piping:
+
+    $ echo "This is my cat, whose name is Betty" | pysed -r "cat" "dog"
+    This is my dog, whose name is Betty
+
+    $ echo "This is my cat, whose name is Betty" | pysed -r "[^\W]+" "-"
+    - - - -, - - - -
+    
+    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 1
+    ThIS is my cat, whose name is Betty
+
+    $ echo "/usr/local/bin" | pysed -r "/local" ""
+    /usr/bin
