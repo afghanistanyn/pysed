@@ -88,7 +88,7 @@ Python regex flags
      - re.VERBOSE	allow comment in regex.
 
 .. list-table::
-   :widths: 20 80
+   :widths: 30 80
    :header-rows: 1
 
    * - Shapes
