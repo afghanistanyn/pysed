@@ -28,7 +28,7 @@ CLI utility that parses and transforms text written in Python.
 Pysed is a Python stream editor, is used to perform basic text transformations
 from a file. It reads text, line by line, from a file and replace, insert or print
 all text or specific area. One of the elements of distinction is the use of colors.
-Actually pysed is a passage of unity 're' in terminal.
+Actually pysed is a passage of Python module 're' in terminal.
 
 Read more for `Regular Expression Syntax <https://docs.python.org/2/library/re.html>`_
 
@@ -66,8 +66,6 @@ Command Line Tool Usage
 
 Python regex flags
 ------------------
-
-Summary of Regex Flags
 
 .. list-table::
     :widths: 20 80
