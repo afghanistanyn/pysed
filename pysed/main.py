@@ -97,12 +97,18 @@ class Pysed(object):
         patt_flag = ""
         for i in self.flag.split("|"):
             re_patt = {
-                "I": "re.I",
-                "L": "re.L",
-                "M": "re.M",
-                "S": "re.S",
-                "U": "re.U",
-                "X": "re.X",
+                "I": "2",
+                "L": "4",
+                "M": "8",
+                "S": "16",
+                "U": "32",
+                "X": "64",
+                "IGNORECASE": "2",
+                "LOCALE": "4",
+                "MULTILINE": "8",
+                "DOTALL": "16",
+                "UNICODE": "32",
+                "VERBOSE": "64",
                 "0": "0",
                 "": ""
             }
@@ -113,7 +119,7 @@ class Pysed(object):
                 sys.exit("{0}: error: '{1}' flag doesn't exist".format(
                     __prog__, self.flag))
         if self.flag:
-            self.flag = eval(patt_flag[:-1])
+            self.flag = int(patt_flag[:-1])
         else:
             self.flag = 0
 
