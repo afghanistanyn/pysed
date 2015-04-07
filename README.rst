@@ -68,24 +68,24 @@ Python regex flags
 ------------------
 
 .. list-table::
-    :widths: 60 80
-    :header-rows: 1
+   :widths: 60 80
+   :header-rows: 1
 
-    * - syntax	
-      - long syntax	
-      - meaning
-    * - I	
-      - re.IGNORECASE	ignore case.
-    * - M	
-      - re.MULTILINE	make begin/end {^, $} consider each line.
-    * - S	
-      - re.DOTALL	make . match newline too.
-    * - U	
-      - re.UNICODE	make {\w, \W, \b, \B} follow Unicode rules.
-    * - L	
-      - re.LOCALE	make {\w, \W, \b, \B} follow locale.
-    * - X	
-      - re.VERBOSE	allow comment in regex.
+   * - syntax	
+     - long syntax	
+     - meaning
+   * - I	
+     - re.IGNORECASE	ignore case.
+   * - M	
+     - re.MULTILINE	make begin/end {^, $} consider each line.
+   * - S	
+     - re.DOTALL	make . match newline too.
+   * - U	
+     - re.UNICODE	make {\w, \W, \b, \B} follow Unicode rules.
+   * - L	
+     - re.LOCALE	make {\w, \W, \b, \B} follow locale.
+   * - X	
+     - re.VERBOSE	allow comment in regex.
 
 .. list-table::
    :widths: 20 80
