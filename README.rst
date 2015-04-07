@@ -174,3 +174,8 @@ Usage Examples
 
     $ pysed -s text.txt
     Lines: 8, Words: 32, Chars: 125, Blanks: 27
+
+    use the argument "--write" in any case when you want to save the changes like:
+
+    $ pysed -r "name" "surname" text.txt --write
+
