@@ -33,10 +33,11 @@ from options import (
 
 class Pysed(object):
 
-    def __init__(self, args, data, filename):
+    def __init__(self, args, data, filename, write):
         self.args = args
         self.flag = "0"
         self.count = 0
+        self.write = write
         self.pattern = args[1]
         self.repl = args[2]
         self.filename = filename
@@ -45,7 +46,7 @@ class Pysed(object):
                 self.count = int(args[3])
             except ValueError:
                 self.count = 0
-        if len(args) >= 6:
+        if len(args) > 5:
             self.flag = args[4]
         if len(self.args) > 6:
             self.write = args[6]
@@ -73,12 +74,9 @@ class Pysed(object):
     def highLight(self):
         """highlight text and print"""
         self.colors()
-        text = (self.data.replace(
+        self.text = (self.data.replace(
             self.pattern, self.color + self.pattern + self.color_def))
-        if len(self.args) > 6 and self.write in ["-w", "--write"]:
-            self.writeFile(text)
-        else:
-            print(text.rstrip())
+        self.selectPrintWrite()
 
     def flags(self):
         """python regex flags"""
@@ -124,7 +122,7 @@ class Pysed(object):
                 __prog__, self.repl))
 
     def selectPrintWrite(self):
-        if len(self.args) > 6 and self.write in ["-w", "--write"]:
+        if self.write:
             self.writeFile(self.text)
         else:
             print(self.text.rstrip())
@@ -137,14 +135,14 @@ class Pysed(object):
             fo.close()
 
 
-def execute(args, data, filename):
+def execute(args, data, filename, isWrite):
     """execute available arguments"""
     if len(args) == 7 and args[6] not in ["-w", "--write"]:
         usage()
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[6]))
 
-    pysed = Pysed(args, data, filename)
+    pysed = Pysed(args, data, filename, isWrite)
     if args[0] in ["-r", "--replace"]:
         pysed.replaceText()
     elif args[0] in ["-l", "--lines"]:
@@ -157,6 +155,11 @@ def main():
     args = sys.argv
     args.pop(0)
     data = ""
+    isWrite = False
+    if args[-1] in ["-w", "write"]:
+        isWrite = True
+        del args[-1]
+
     if len(args) == 1 and args[0] in ["-h", "--help"]:
         helps()
     elif len(args) == 1 and args[0] in ["-v", "--version"]:
@@ -170,13 +173,10 @@ def main():
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[0]))
 
-    filename = ""
+    filename = "{0}.log".format(__prog__)
     not_piping = sys.stdin.isatty()
     if not_piping:
         fileInput = filename = args[len(args) - 1]
-        print fileInput
-        if fileInput in ["-w", "--write"]:
-            fileInput = filename = args[len(args) - 2]
         try:
             f = open(fileInput)
             data = f.read()
@@ -185,6 +185,7 @@ def main():
             sys.exit("{0}: error: No such file or directory '{1}'".format(
                 __prog__, args[len(args) - 1]))
     else:
+        args.append("last")
         try:
             data = sys.stdin.read()
         except KeyboardInterrupt:
@@ -194,7 +195,7 @@ def main():
     if len(args) > 7:
         usage()
         sys.exit("{0}: error: Too many arguments".format(__prog__))
-    execute(args, data, filename)
+    execute(args, data, filename, isWrite)
 
 if __name__ == "__main__":
     main()
