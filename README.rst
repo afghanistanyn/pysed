@@ -91,8 +91,9 @@ Python regex flags
    :widths: 10 80
    :header-rows: 1
 
-   * - Shapes
+   * - Syntax
      - Description
+     - My
    * - Square
      - Four sides of equal length, 90 degree angles
    * - Rectangle
