@@ -142,6 +142,7 @@ class Pysed(object):
                 __prog__, self.repl))
 
     def selectPrintWrite(self):
+        """write to file or print"""
         if self.write:
             self.writeFile(self.text)
         else:

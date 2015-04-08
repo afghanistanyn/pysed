@@ -190,5 +190,8 @@ Usage Examples
     $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 1
     ThIS is my cat, whose name is Betty
 
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -r "[^\d+]" ""
+    91013576066759758407
+
     $ echo "/usr/local/bin" | pysed -r "/local" ""
     /usr/bin
