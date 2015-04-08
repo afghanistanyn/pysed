@@ -60,15 +60,21 @@ class Pysed(object):
     def replaceText(self):
         """replace text with new"""
         self.regexFlags()
-        self.text += re.sub(self.pattern, self.repl, self.data, self.count,
-                            self.flag)
+        try:
+            self.text += re.sub(self.pattern, self.repl, self.data, self.count,
+                                self.flag)
+        except re.error:
+            sys.exit(0)
         self.selectPrintWrite()
 
     def findLines(self):
         """find text and print"""
         self.regexFlags()
         for line in self.data.splitlines():
-            find = re.search(self.pattern, line, self.flag)
+            try:
+                find = re.search(self.pattern, line, self.flag)
+            except re.error:
+                sys.exit(0)
             if find:
                 self.text += line + "\n"
         self.selectPrintWrite()
