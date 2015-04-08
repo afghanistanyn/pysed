@@ -27,8 +27,7 @@ CLI utility that parses and transforms text written in Python.
 
 Pysed is a Python stream editor, is used to perform basic text transformations
 from a file. It reads text, line by line, from a file and replace, insert or print
-all text or specific area. One of the elements of distinction is the use of colors.
-Actually pysed is a passage of Python module 're' in terminal.
+all text or specific area. Actually pysed is a passage of Python module 're' in terminal.
 
 Read more for `Regular Expression Syntax <https://docs.python.org/2/library/re.html>`_
 
@@ -175,10 +174,11 @@ Usage Examples
     $ pysed -s text.txt
     Lines: 8, Words: 32, Chars: 125, Blanks: 27
 
-    use the argument "--write" in any case when you want to save the changes like:
-
+    Use the argument "--write" in any case when you want to save the changes like:
+    
     $ pysed -r "name" "surname" text.txt --write
 
+    
     Use as piping:
 
     $ echo "This is my cat, whose name is Betty" | pysed -r "cat" "dog"
@@ -195,3 +195,11 @@ Usage Examples
 
     $ echo "/usr/local/bin" | pysed -r "/local" ""
     /usr/bin
+
+Please report `Issues <https://github.com/dslackw/pysed/issues>`_
+
+Copyright 
+---------
+
+- Copyright © Dimitris Zlatanidis
+- Linux is a Registered Trademark of Linus Torvalds.
