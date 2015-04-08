@@ -35,13 +35,15 @@ class Pysed(object):
 
     def __init__(self, args, data, filename, write):
         self.args = args
+        self.pattern = ""
+        self.repl = ""
         self.flag = "0"
         self.count = 0
         self.write = write
         self.filename = filename
         if len(args) >= 2:
             self.pattern = args[1]
-        if len(args) >= 3:
+        if len(args) > 3:
             self.repl = args[2]
         if len(args) >= 4:
             try:
@@ -63,8 +65,8 @@ class Pysed(object):
         try:
             self.text += re.sub(self.pattern, self.repl, self.data, self.count,
                                 self.flag)
-        except re.error:
-            sys.exit(0)
+        except re.error as e:
+            sys.exit("{0}: error: {1}".format(__prog__, e))
         self.selectPrintWrite()
 
     def findLines(self):
@@ -73,8 +75,8 @@ class Pysed(object):
         for line in self.data.splitlines():
             try:
                 find = re.search(self.pattern, line, self.flag)
-            except re.error:
-                sys.exit(0)
+            except re.error as e:
+                sys.exit("{0}: error: {1}".format(__prog__, e))
             if find:
                 self.text += line + "\n"
         self.selectPrintWrite()

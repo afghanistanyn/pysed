@@ -51,8 +51,8 @@ def helps():
         "  -r, --replace                search and replace text",
         "  -l, --lines                  search pattern and print lines",
         "  -g, --highlight              highlight and print text",
-        "  -s, --stat                   print text statics",
-        "      --write                  write to file\n"
+        "  -s, --stat                   print text statistics",
+        "      --write                  write changes to file\n"
     ]
     for arg in arguments:
         print("{0}".format(arg))

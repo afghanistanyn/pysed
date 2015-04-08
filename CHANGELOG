@@ -1,4 +1,10 @@
 08-04-2015
+Version 0.5.1
+
+[Updated] - Fix sre_constants.error: nothing to repeat.
+          - Fix AttributeError: 'Pysed' object has no attribute 'repl'.
+
+08-04-2015
 Version 0.5.0
 
 [Feature] - Code rewritten.
