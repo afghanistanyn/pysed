@@ -181,7 +181,7 @@ Usage Examples
 
     Print statics text:
 
-    $ pysed -s text.txt
+    $ pysed -t text.txt
     Lines: 8, Words: 32, Chars: 125, Blanks: 27
 
     Use the argument "--write" in any case when you want to save the changes:
