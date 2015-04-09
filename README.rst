@@ -139,15 +139,15 @@ Usage Examples
     
     Add character to the end of each line:
     
-    $ pysed -r "$" " <-" 0 M text.txt
-    This is my cat, <-
-     whose name is Betty. <-
-    This is my dog, <-
-     whose name is Frank. <-
-    This is my fish, <-
-     whose name is George. <-
-    This is my goat, <-
-     whose name is Adam. <-
+    $ pysed -r "$" " # " 0 M text.txt
+    This is my cat, #
+     whose name is Betty. #
+    This is my dog, #
+     whose name is Frank. #
+    This is my fish, #
+     whose name is George. #
+    This is my goat, #
+     whose name is Adam. #
 
     Search and print lines:
     
