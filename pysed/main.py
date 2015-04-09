@@ -63,9 +63,40 @@ class Pysed(object):
         """replace text with new"""
         self.regexFlags()
         try:
-            self.text += re.sub(self.pattern, self.repl, self.data, self.count,
-                                self.flag)
+            self.text = re.sub(self.pattern, self.repl, self.data, self.count,
+                               self.flag)
         except re.error as e:
+            sys.exit("{0}: error: {1}".format(__prog__, e))
+        self.selectPrintWrite()
+
+    def findallText(self):
+        """find all from pattern in text"""
+        self.regexFlags()
+        try:
+            self.text = " ".join(re.findall(self.pattern, self.data, self.flag))
+        except (re.error, IndexError, AttributeError, TypeError) as e:
+            sys.exit("{0}: error: {1}".format(__prog__, e))
+        self.selectPrintWrite()
+
+    def searchText(self):
+        """search for the first matching"""
+        self.regexFlags()
+        try:
+            text = re.search(self.pattern, self.data, self.flag)
+            if text is not None:
+                self.text = text.group(self.count)
+        except (re.error, IndexError, AttributeError) as e:
+            sys.exit("{0}: error: {1}".format(__prog__, e))
+        self.selectPrintWrite()
+
+    def matchText(self):
+        """matching pattern into text"""
+        self.regexFlags()
+        try:
+            text = re.match(self.pattern, self.data, self.flag)
+            if text is not None:
+                self.text = text.group(self.count)
+        except (re.error, IndexError, AttributeError) as e:
             sys.exit("{0}: error: {1}".format(__prog__, e))
         self.selectPrintWrite()
 
@@ -75,7 +106,7 @@ class Pysed(object):
         for line in self.data.splitlines():
             try:
                 find = re.search(self.pattern, line, self.flag)
-            except re.error as e:
+            except (re.error, IndexError, AttributeError) as e:
                 sys.exit("{0}: error: {1}".format(__prog__, e))
             if find:
                 self.text += line + "\n"
@@ -174,11 +205,17 @@ def execute(args, data, filename, isWrite):
     pysed = Pysed(args, data, filename, isWrite)
     if args[0] in ["-r", "--replace"]:
         pysed.replaceText()
+    elif args[0] in ["-f", "--findall"]:
+        pysed.findallText()
+    elif args[0] in ["-s", "--search"]:
+        pysed.searchText()
+    elif args[0] in ["-m", "--match"]:
+        pysed.matchText()
     elif args[0] in ["-l", "--lines"]:
         pysed.findLines()
     elif args[0] in ["-g", "--highlight"]:
         pysed.highLight()
-    elif args[0] in ["-s", "--stat"]:
+    elif args[0] in ["-t", "--stat"]:
         pysed.textStat()
 
 
@@ -195,8 +232,10 @@ def main():
     elif len(args) == 0:
         usage()
         sys.exit("{0}: error: Too few arguments".format(__prog__))
-    elif args and args[0] not in ["-r", "--replace", "-l", "--lines",
-                                  "-g", "--highlight", "-s", "--stat"]:
+    elif args and args[0] not in ["-r", "--replace", "-f", "--findall",
+                                  "-s", "--search", "-m", "--match",
+                                  "-l", "--lines", "-g", "--highlight",
+                                  "-t", "--stat"]:
         usage()
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[0]))

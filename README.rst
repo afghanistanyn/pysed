@@ -52,12 +52,17 @@ Command Line Tool Usage
 
 .. code-block:: bash
 
+    pysed is utility that parses and transforms text
+
     Usage: pysed [OPTION] {pattern} {repl} {max} {flag} [input-file]
 
     Options:
       -h, --help                   display this help and exit
       -v, --version                print program version and exit
       -r, --replace                search and replace text
+      -f, --findall                find all from pattern in text
+      -s, --search                 search for the first matching
+      -m, --match                  pattern matching in the beginning
       -l, --lines                  search pattern and print lines
       -g, --highlight              highlight and print text
       -s, --stat                   print text statistics
@@ -148,7 +153,12 @@ Usage Examples
      whose name is George. #
     This is my goat, #
      whose name is Adam. #
+    
+    Find all matching pattern: 
 
+    $ pysed -f "name" text.txt
+    name name name name
+    
     Search and print lines:
     
     $ pysed -l "name" text.txt
@@ -194,8 +204,20 @@ Usage Examples
     $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 1
     ThIS is my cat, whose name is Betty
 
-    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -r "[^\d+]" ""
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -r "[^\d+]"
     91013576066759758407
+
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -f "\d+"
+    910 13 57 6 06675 975 8407
+    
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "\d+"
+    910
+    
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 1
+    910
+    
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 2
+    a13de57dfbdf6f06675db975f8407
 
     $ echo "/usr/local/bin" | pysed -r "/local" ""
     /usr/bin

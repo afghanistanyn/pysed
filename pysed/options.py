@@ -33,7 +33,7 @@ from __metadata__ import (
 def usage():
     arguments = [
         "Usage: {0} [-h] [-v]".format(__prog__),
-        "             [[-r] [-l] [-g] [-s] --write]"
+        "             [[-r] [-f] [-s] [-m] [-l] [-g] [-s] --write]"
     ]
     for arg in arguments:
         print("{0}".format(arg))
@@ -49,9 +49,12 @@ def helps():
         "  -h, --help                   display this help and exit",
         "  -v, --version                print program version and exit",
         "  -r, --replace                search and replace text",
+        "  -f, --findall                find all from pattern in text",
+        "  -s, --search                 search for the first matching",
+        "  -m, --match                  pattern matching in the beginning",
         "  -l, --lines                  search pattern and print lines",
         "  -g, --highlight              highlight and print text",
-        "  -s, --stat                   print text statistics",
+        "  -t, --stat                   print text statistics",
         "      --write                  write changes to file\n"
     ]
     for arg in arguments:

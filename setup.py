@@ -22,6 +22,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import os
+import sys
+import gzip
+import shutil
+
 try:
     from setuptools import setup
 except ImportError:
@@ -79,3 +84,17 @@ setup(
         "Classifier: Topic :: Utilities"],
     long_description=open("README.rst").read()
 )
+
+if "install" in sys.argv:
+    man_path = "/usr/man/man1/"
+    if not os.path.exists(man_path):
+        os.makedirs(man_path)
+    man_page = "man/pysed.1"
+    gzip_man = "man/pysed.1.gz"
+    print("Installing '{0}' man pages".format(gzip_man.split('/')[1]))
+    f_in = open(man_page, "rb")
+    f_out = gzip.open(gzip_man, 'wb')
+    f_out.writelines(f_in)
+    f_out.close()
+    f_in.close()
+    shutil.copy2(gzip_man, man_path)

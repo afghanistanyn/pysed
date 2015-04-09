@@ -1,3 +1,11 @@
+10-04-2015
+Version 0.6.0
+
+[Feature] - Bump to Version 0.6.0.
+          - Added 'search' and 'match' arguments.
+          - Rename statistic argument.
+          - Install man page with 'pip' command.
+
 09-04-2015
 Version 0.5.2
 

@@ -11,12 +11,12 @@
 .\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 .\" GNU General Public License for more details.
 .\"
-.TH pysed "9" "4 2015" "pysed"
+.TH pysed "10" "4 2015" "pysed"
 .SH NAME
 pysed is utility that parses and transforms text
 .SH SYNOPSIS
 Usage: pysed [-h] [-v]
-             [[-r] [-l] [-g] [-s] --write]
+             [[-r] [-f] [-s] [-m] [-l] [-g] [-s] --write]
 .SH DESCRIPTION
 \fBpysed\fP is utility that parses and transforms text
 .PP
@@ -27,14 +27,15 @@ from a file. It reads text, line by line, from a file and replace, insert or
 print all text or specific area. Actually pysed is a passage of Python module 're'
 in terminal.
 .SH EXAMPLES
-pysed is utility that parses and transforms text
-
 Usage: pysed [OPTION] {pattern} {repl} {max} {flag} [input-file]
 
 Options:
   -h, --help                   display this help and exit
   -v, --version                print program version and exit
   -r, --replace                search and replace text
+  -f, --findall                find all from pattern in text
+  -s, --search                 search for the first matching
+  -m, --match                  pattern matching in the beginning
   -l, --lines                  search pattern and print lines
   -g, --highlight              highlight and print text
   -s, --stat                   print text statistics
@@ -59,17 +60,47 @@ Print the version of program and exit.
 .SS -r, --replace, search and replace text
 \fBpysed\fP \fB-r\fP \fB"pattern"\fP \fB"replace"\fP \fBmax\fP \fBflag\fP \fBinput-file\fP
 .PP
-Replace text with new.
+Return the string obtained by replacing the leftmost non-overlapping 
+occurrences of pattern in string by the replacement repl. If the pattern 
+isn’t found, string is returned unchanged. repl can be a string or a function; 
+if it is a string, any backslash escapes in it are processed. That is, \n is 
+converted to a single newline character, \r is converted to a carriage return, 
+and so forth. Unknown escapes such as \j are left alone. Backreferences, 
+such as \6, are replaced with the substring matched by group 6 in the pattern.
+Source: https://docs.python.org/2.7/library/re.html#re.sub
+
+.SS -f , --findall, find all from pattern in text
+\fBpysed\fP \fB-f\fP \fB"pattern"\fP \fB""\fP \fB0\fP \fBflag\fP \fBinput-file\fP
+.PP
+Return all non-overlapping matches of pattern in string, as a list of strings. 
+The string is scanned left-to-right, and matches are returned in the order found. 
+Empty matches are included in the result unless they touch the beginning of another 
+match. Source: https://docs.python.org/2.7/library/re.html#re.findall
+
+.SS -s , --search, search for the first matching
+\fBpysed\fP \fB-s\fP \fB"pattern"\fP \fB""\fP \fBgroup\fP \fBflag\fP \fBinput-file\fP
+.PP
+Scan through string looking for the first location where the regular expression 
+pattern produces a match, and print text. 
+the string. Source: https://docs.python.org/2.7/library/re.html#re.search
+
+.SS -m , --match, pattern matching in the beginning
+\fBpysed\fP \fB-m\fP \fB"pattern"\fP \fB""\fP \fBgroup\fP \fBflag\fP \fBinput-file\fP
+.PP
+If zero or more characters at the beginning of string match the regular expression 
+pattern, print matching text.
+Source: https://docs.python.org/2.7/library/re.html#re.match
 
 .SS -l , --lines, search pattern and print lines
 \fBpysed\fP \fB-l\fP \fB"pattern"\fP \fBinput-file\fP
 .PP
-Print lines found in pattern.
+Same argument as the '--search' except that facing the file line by line and prints
+the line found in pattern.
 
 .SS -g , --highlight, highlight and print text
 \fBpysed\fP \fB-g\fP \fB"pattern"\fP \fB"color"\fP \fBinput-file\fP 
 .PP
-Print text with indication of pattern.
+Print a file with an highlight on the pattern.
 
 .SS -s , --stat, print text statistics
 \fBpysed\fP \fB-s\fP \fBinput-file\fP
