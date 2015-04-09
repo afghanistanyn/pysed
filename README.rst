@@ -184,6 +184,10 @@ Usage Examples
     $ echo "This is my cat, whose name is Betty" | pysed -r "cat" "dog"
     This is my dog, whose name is Betty
 
+    $ repl="fish"
+    $ echo "This is my cat, whose name is Betty" | pysed -r "cat" $repl
+    This is my fish, whose name is Betty
+    
     $ echo "This is my cat, whose name is Betty" | pysed -r "[^\W]+" "-"
     - - - -, - - - -
     
