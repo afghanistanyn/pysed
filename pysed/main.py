@@ -42,6 +42,7 @@ class Pysed(object):
         self.write = write
         self.filename = filename
         self.data = data.rstrip()
+        self.numlines = range(1, len(self.data.splitlines()) + 1)
         if len(self.args) >= 2:     # pattern
             self.pattern = self.args[1]
         if len(self.args) > 3:      # replace
@@ -82,44 +83,56 @@ class Pysed(object):
     def findallText(self):
         """find all from pattern in text"""
         self.regexFlags()
-        try:
-            self.text = " ".join(re.findall(self.pattern, self.data, self.flag))
-        except (re.error, IndexError, AttributeError, TypeError) as e:
-            sys.exit("{0}: error: {1}".format(__prog__, e))
+        count = 0
+        for line in self.data.splitlines():
+            count += 1
+            if count in self.numlines:
+                try:
+                    self.text += " ".join(re.findall(self.pattern, line,
+                                                     self.flag))
+                except (re.error, IndexError, AttributeError, TypeError) as e:
+                    sys.exit("{0}: error: {1}".format(__prog__, e))
         self.selectPrintWrite()
 
     def searchText(self):
         """search for the first matching"""
         self.regexFlags()
-        try:
-            text = re.search(self.pattern, self.data, self.flag)
-            if text is not None:
-                self.text = text.group(self.count)
-        except (re.error, IndexError, AttributeError) as e:
-            sys.exit("{0}: error: {1}".format(__prog__, e))
+        text = ""
+        count = 0
+        for line in self.data.splitlines():
+            count += 1
+            if count in self.numlines:
+                try:
+                    text = re.search(self.pattern, line, self.flag)
+                    if text is not None:
+                        self.text += text.group(self.count)
+                except (re.error, IndexError, AttributeError) as e:
+                    sys.exit("{0}: error: {1}".format(__prog__, e))
         self.selectPrintWrite()
 
     def matchText(self):
         """matching pattern into text"""
         self.regexFlags()
-        try:
-            text = re.match(self.pattern, self.data, self.flag)
-            if text is not None:
-                self.text = text.group(self.count)
-        except (re.error, IndexError, AttributeError) as e:
-            sys.exit("{0}: error: {1}".format(__prog__, e))
+        text = ""
+        count = 0
+        for line in self.data.splitlines():
+            count += 1
+            if count in self.numlines:
+                try:
+                    text = re.match(self.pattern, line, self.flag)
+                    if text is not None:
+                        self.text += text.group(self.count)
+                except (re.error, IndexError, AttributeError) as e:
+                    sys.exit("{0}: error: {1}".format(__prog__, e))
         self.selectPrintWrite()
 
     def findLines(self):
-        """find text and print"""
-        self.regexFlags()
+        """find text and print line"""
+        count = 0
         for line in self.data.splitlines():
-            try:
-                find = re.search(self.pattern, line, self.flag)
-            except (re.error, IndexError, AttributeError) as e:
-                sys.exit("{0}: error: {1}".format(__prog__, e))
-            if find:
-                self.text += line + "\n"
+            count += 1
+            if self.pattern in line:
+                self.text += "{0} {1}".format(count, line + "\n")
         self.selectPrintWrite()
 
     def highLight(self):
@@ -209,7 +222,7 @@ def execute(args, data, filename, isWrite):
     """execute available arguments"""
     if len(args) == 8 and args[7] not in ["-w", "--write"]:
         usage()
-        sys.exit("{0}: error: '{1}' argument does not recognized".format(
+        sys.exit("{0}: error: {1} argument does not recognized".format(
             __prog__, args[6]))
 
     pysed = Pysed(args, data, filename, isWrite)
