@@ -37,36 +37,46 @@ class Pysed(object):
         self.args = args
         self.pattern = ""
         self.repl = ""
-        self.flag = "0"
         self.count = 0
+        self.flag = "0"
         self.write = write
         self.filename = filename
-        if len(args) >= 2:
-            self.pattern = args[1]
-        if len(args) > 3:
-            self.repl = args[2]
-        if len(args) >= 4:
+        self.data = data.rstrip()
+        if len(self.args) >= 2:     # pattern
+            self.pattern = self.args[1]
+        if len(self.args) > 3:      # replace
+            self.repl = self.args[2]
+        if len(self.args) >= 4:     # lines
+            self.numlines = map(int, re.findall("\d+", self.args[3]))
+            if self.numlines == [] or self.numlines == [0]:
+                self.numlines = range(1, len(self.data.splitlines()) + 1)
+        if len(self.args) >= 5:     # max depth
             try:
-                self.count = int(args[3])
+                self.count = int(self.args[4])
             except ValueError:
                 self.count = 0
-        if len(args) > 5:
-            self.flag = args[4]
-        if len(self.args) > 6:
-            self.write = args[6]
+        if len(self.args) > 6:      # flags
+            self.flag = self.args[5]
+        if len(self.args) > 7:      # write
+            self.write = self.args[7]
         self.color = ""
         self.color_def = "\x1b[0m"
-        self.data = data.rstrip()
         self.text = ""
 
     def replaceText(self):
         """replace text with new"""
         self.regexFlags()
-        try:
-            self.text = re.sub(self.pattern, self.repl, self.data, self.count,
-                               self.flag)
-        except re.error as e:
-            sys.exit("{0}: error: {1}".format(__prog__, e))
+        count = 0
+        for line in self.data.splitlines():
+            count += 1
+            if count in self.numlines:
+                try:
+                    self.text += re.sub(self.pattern, self.repl, line,
+                                        self.count, self.flag) + "\n"
+                except re.error as e:
+                    sys.exit("{0}: error: {1}".format(__prog__, e))
+            else:
+                self.text += line + "\n"
         self.selectPrintWrite()
 
     def findallText(self):
@@ -197,7 +207,7 @@ class Pysed(object):
 
 def execute(args, data, filename, isWrite):
     """execute available arguments"""
-    if len(args) == 7 and args[6] not in ["-w", "--write"]:
+    if len(args) == 8 and args[7] not in ["-w", "--write"]:
         usage()
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[6]))
@@ -263,7 +273,7 @@ def main():
             print("")
             sys.exit()
 
-    if len(args) > 7:
+    if len(args) > 8:
         usage()
         sys.exit("{0}: error: Too many arguments".format(__prog__))
     execute(args, data, filename, isWrite)
