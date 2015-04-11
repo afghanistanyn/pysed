@@ -27,7 +27,7 @@ from a file. It reads text, line by line, from a file and replace, insert or
 print all text or specific area. Actually pysed is a passage of Python module 're'
 in terminal.
 .SH EXAMPLES
-Usage: pysed [OPTION] {pattern} {repl} {lines} {max} {flag} [input-file]
+Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
 
 Options:
   -h, --help                   display this help and exit
@@ -58,7 +58,7 @@ Options:
 Print the version of program and exit.
 
 .SS -r, --replace, search and replace text
-\fBpysed\fP \fB-r\fP \fB"pattern"\fP \fB"replace"\fP \fBlines\fP \fBmax\fP \fBflag\fP \fBinput-file\fP
+\fBpysed\fP \fB-r\fP \fB"pattern"\fP \fB"replace"\fP \fBlines/max/flag\fP \fBinput-file\fP
 .PP
 Return the string obtained by replacing the leftmost non-overlapping 
 occurrences of pattern in string by the replacement repl. If the pattern 
@@ -70,7 +70,7 @@ such as \6, are replaced with the substring matched by group 6 in the pattern.
 Source: https://docs.python.org/2.7/library/re.html#re.sub
 
 .SS -f , --findall, find all from pattern in text
-\fBpysed\fP \fB-f\fP \fB"pattern"\fP \fB""\fP \fB0\fP \fBflag\fP \fBinput-file\fP
+\fBpysed\fP \fB-f\fP \fB"pattern"\fP \fB""\fP \fBlines/0/flags\fP \fBinput-file\fP
 .PP
 Return all non-overlapping matches of pattern in string, as a list of strings. 
 The string is scanned left-to-right, and matches are returned in the order found. 
@@ -78,14 +78,14 @@ Empty matches are included in the result unless they touch the beginning of anot
 match. Source: https://docs.python.org/2.7/library/re.html#re.findall
 
 .SS -s , --search, search for the first matching
-\fBpysed\fP \fB-s\fP \fB"pattern"\fP \fB""\fP \fBgroup\fP \fBflag\fP \fBinput-file\fP
+\fBpysed\fP \fB-s\fP \fB"pattern"\fP \fB""\fP \fBlines/group/flag\fP \fBinput-file\fP
 .PP
 Scan through string looking for the first location where the regular expression 
 pattern produces a match, and print text. 
 the string. Source: https://docs.python.org/2.7/library/re.html#re.search
 
 .SS -m , --match, pattern matching in the beginning
-\fBpysed\fP \fB-m\fP \fB"pattern"\fP \fB""\fP \fBgroup\fP \fBflag\fP \fBinput-file\fP
+\fBpysed\fP \fB-m\fP \fB"pattern"\fP \fB""\fP \fBlines/group/flag\fP \fBinput-file\fP
 .PP
 If zero or more characters at the beginning of string match the regular expression 
 pattern, print matching text.

@@ -54,7 +54,7 @@ Command Line Tool Usage
 
     pysed is utility that parses and transforms text
 
-    Usage: pysed [OPTION] {pattern} {repl} {lines} {max} {flag} [input-file]
+    Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
 
     Options:
       -h, --help                   display this help and exit
@@ -132,7 +132,7 @@ Usage Examples
      
     Replace text in specific lines and max:
     
-    $ pysed -r "is" "IS" 1,7 1 text.txt
+    $ pysed -r "is" "IS" 1,7/1 text.txt
     ThIS is my cat,
      whose surname is Betty.
     This is my dog,
@@ -218,7 +218,7 @@ Usage Examples
     $ echo "This is my cat, whose name is Betty" | pysed -r "[^\W]+" "-"
     - - - -, - - - -
     
-    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 0 1
+    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 0/1
     ThIS is my cat, whose name is Betty
 
     $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -r "[^\d+]"
@@ -230,13 +230,19 @@ Usage Examples
     $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "\d+"
     910
     
-    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 0 1
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 0/1
     910
     
-    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 0 2
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 0/2
     a13de57dfbdf6f06675db975f8407
 
+    $ echo "The temperature today is at +12 degrees Celsius" | pysed -s ".\d+"
+    +12
+    
     $ echo "/usr/local/bin" | pysed -r "/local" ""
+    /usr/bin
+
+    $ echo "/usr/local/bin" | pysed -r "/LoCal" "" //IGNORECASE
     /usr/bin
 
 Please report `Issues <https://github.com/dslackw/pysed/issues>`_
