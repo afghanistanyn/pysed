@@ -1,4 +1,9 @@
 11-04-2015
+Version 0.7.1
+
+[Updated] - Fix messages and class initialization.
+
+11-04-2015
 Version 0.7.0
 
 [Feature] - Merge lines, max, flags in one argument.
