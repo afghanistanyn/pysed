@@ -46,17 +46,24 @@ class Pysed(object):
         self.color_def = "\x1b[0m"
         self.text = ""
         self.numlines = range(1, len(self.data.splitlines()) + 1)
+        self._patternInit()
+        self._extraInit()
+        self._writeInit()
 
+    def _patternInit(self):
+        """pattern initialization"""
         if len(self.args) >= 2:     # pattern
             self.pattern = self.args[1]
         if len(self.args) > 3:      # replace
             self.repl = self.args[2]
 
-        if len(self.args) > 4:
+    def _extraInit(self):
+        """extra initialization"""
+        if len(self.args) > 4:      # extra
             adv = self.args[3].split("/")
             if len(adv) > 3:
                 usage()
-                sys.exit("{0}: error: Too many arguments".format(__prog__))
+                sys.exit("{0}: {1}".format(__prog__, messageError(200, Err="")))
             if len(adv) < 3:
                 adv += [''] * (3 - len(adv))
             if adv[0]:
@@ -68,6 +75,8 @@ class Pysed(object):
             if adv[2]:
                 self.flag = adv[2]
 
+    def _writeInit(self):
+        """write initilization"""
         if len(self.args) > 7:      # write
             self.write = self.args[7]
 
@@ -82,7 +91,8 @@ class Pysed(object):
                     self.text += re.sub(self.pattern, self.repl, line,
                                         self.count, self.flag) + "\n"
                 except re.error as e:
-                    sys.exit("{0}: error: {1}".format(__prog__, e))
+                    sys.exit("{0}: {1}".format(__prog__, messageError(
+                        000, Err=e)))
             else:
                 self.text += line + "\n"
         self.selectPrintWrite()
@@ -98,7 +108,8 @@ class Pysed(object):
                     self.text += " ".join(re.findall(self.pattern, line,
                                                      self.flag))
                 except (re.error, IndexError, AttributeError, TypeError) as e:
-                    sys.exit("{0}: error: {1}".format(__prog__, e))
+                    sys.exit("{0}: {1}".format(__prog__, messageError(
+                        000, Err=e)))
         self.selectPrintWrite()
 
     def searchText(self):
@@ -114,7 +125,8 @@ class Pysed(object):
                     if text is not None:
                         self.text += text.group(self.count)
                 except (re.error, IndexError, AttributeError) as e:
-                    sys.exit("{0}: error: {1}".format(__prog__, e))
+                    sys.exit("{0}: {1}".format(__prog__, messageError(
+                        000, Err=e)))
         self.selectPrintWrite()
 
     def matchText(self):
@@ -130,7 +142,8 @@ class Pysed(object):
                     if text is not None:
                         self.text += text.group(self.count)
                 except (re.error, IndexError, AttributeError) as e:
-                    sys.exit("{0}: error: {1}".format(__prog__, e))
+                    sys.exit("{0}: {1}".format(__prog__, messageError(
+                        000, Err=e)))
         self.selectPrintWrite()
 
     def findLines(self):
@@ -185,8 +198,8 @@ class Pysed(object):
                 patt_flag += re_patt[i] + "|"
             except KeyError:
                 usage()
-                sys.exit("{0}: error: '{1}' flag doesn't exist".format(
-                    __prog__, self.flag))
+                sys.exit("{0}: {1}".format(__prog__, messageError(
+                    500, Err=self.flag)))
         if self.flag:
             self.flag = int(patt_flag[:-1])
         else:
@@ -207,8 +220,8 @@ class Pysed(object):
             self.color = paint[self.repl]
         except KeyError:
             usage()
-            sys.exit("{0}: error: '{1}' color doesn't exist".format(
-                __prog__, self.repl))
+            sys.exit("{0}: {1}".format(__prog__, messageError(
+                600, Err=self.repl)))
 
     def selectPrintWrite(self):
         """write to file or print"""
@@ -223,6 +236,19 @@ class Pysed(object):
             for line in newtext.splitlines():
                 fo.write(line + "\n")
             fo.close()
+
+
+def messageError(code, Err):
+    msg = {
+        000: "error: {0}".format(Err),
+        100: "error: Too few arguments",
+        200: "error: Too many arguments",
+        300: "error: '{0}' argument does not recognized".format(Err),
+        400: "error: No such file or directory",
+        500: "error: '{0}' flag doesn't exist".format(Err),
+        600: "error: '{0}' color doesn't exist".format(Err)
+    }
+    return msg[code]
 
 
 def executeArguments(args, data, filename, isWrite):
@@ -251,14 +277,13 @@ def checkArguments(args):
         version()
     elif len(args) == 0:
         usage()
-        sys.exit("{0}: error: Too few arguments".format(__prog__))
+        sys.exit("{0}: {1}".format(__prog__, messageError(100, Err="")))
     elif args and args[0] not in ["-r", "--replace", "-f", "--findall",
                                   "-s", "--search", "-m", "--match",
                                   "-l", "--lines", "-g", "--highlight",
                                   "-t", "--stat"]:
         usage()
-        sys.exit("{0}: error: '{1}' argument does not recognized".format(
-            __prog__, args[0]))
+        sys.exit("{0}: {1}".format(__prog__, messageError(300, Err=args[0])))
 
 
 def main():
@@ -270,15 +295,14 @@ def main():
     checkArguments(args)
     if len(args) > 6:
         usage()
-        sys.exit("{0}: error: Too many arguments".format(__prog__))
+        sys.exit("{0}: {1}".format(__prog__, messageError(200, Err="")))
 
     if args[-1] in ["-w", "--write"]:
         isWrite = True
         del args[-1]
     elif len(args) == 6 and args[-1] not in ["-w", "--write"]:
         usage()
-        sys.exit("{0}: error: '{1}' argument does not recognized".format(
-            __prog__, args[-1]))
+        sys.exit("{0}: {1}".format(__prog__, messageError(300, Err=args[-1])))
 
     filename = "{0}.log".format(__prog__)
     not_piping = sys.stdin.isatty()
@@ -289,8 +313,8 @@ def main():
             data = f.read()
         except IOError:
             usage()
-            sys.exit("{0}: error: No such file or directory '{1}'".format(
-                __prog__, args[len(args) - 1]))
+            sys.exit("{0}: {1} '{2}'".format(
+                __prog__, messageError(400, Err=""), args[len(args) - 1]))
     else:
         args.append("last")
         try:
