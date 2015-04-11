@@ -42,27 +42,34 @@ class Pysed(object):
         self.write = write
         self.filename = filename
         self.data = data.rstrip()
+        self.color = ""
+        self.color_def = "\x1b[0m"
+        self.text = ""
         self.numlines = range(1, len(self.data.splitlines()) + 1)
+
         if len(self.args) >= 2:     # pattern
             self.pattern = self.args[1]
         if len(self.args) > 3:      # replace
             self.repl = self.args[2]
-        if len(self.args) >= 4:     # lines
-            self.numlines = map(int, re.findall("\d+", self.args[3]))
-            if self.numlines == [] or self.numlines == [0]:
-                self.numlines = range(1, len(self.data.splitlines()) + 1)
-        if len(self.args) >= 5:     # max depth
-            try:
-                self.count = int(self.args[4])
-            except ValueError:
-                self.count = 0
-        if len(self.args) > 6:      # flags
-            self.flag = self.args[5]
+
+        if len(self.args) > 4:
+            adv = self.args[3].split("/")
+            if len(adv) > 3:
+                usage()
+                sys.exit("{0}: error: Too many arguments".format(__prog__))
+            if len(adv) < 3:
+                adv += [''] * (3 - len(adv))
+            if adv[0]:
+                self.numlines = map(int, re.findall("\d+", adv[0]))
+                if self.numlines == [] or self.numlines == [0]:
+                    self.numlines = range(1, len(self.data.splitlines()) + 1)
+            if adv[1]:
+                self.count = int(adv[1])
+            if adv[2]:
+                self.flag = adv[2]
+
         if len(self.args) > 7:      # write
             self.write = self.args[7]
-        self.color = ""
-        self.color_def = "\x1b[0m"
-        self.text = ""
 
     def replaceText(self):
         """replace text with new"""
@@ -218,13 +225,8 @@ class Pysed(object):
             fo.close()
 
 
-def execute(args, data, filename, isWrite):
+def executeArguments(args, data, filename, isWrite):
     """execute available arguments"""
-    if len(args) == 8 and args[7] not in ["-w", "--write"]:
-        usage()
-        sys.exit("{0}: error: {1} argument does not recognized".format(
-            __prog__, args[6]))
-
     pysed = Pysed(args, data, filename, isWrite)
     if args[0] in ["-r", "--replace"]:
         pysed.replaceText()
@@ -242,12 +244,7 @@ def execute(args, data, filename, isWrite):
         pysed.textStat()
 
 
-def main():
-    args = sys.argv
-    args.pop(0)
-    data = ""
-    isWrite = False
-
+def checkArguments(args):
     if len(args) == 1 and args[0] in ["-h", "--help"]:
         helps()
     elif len(args) == 1 and args[0] in ["-v", "--version"]:
@@ -263,9 +260,25 @@ def main():
         sys.exit("{0}: error: '{1}' argument does not recognized".format(
             __prog__, args[0]))
 
-    if args[-1] in ["-w", "write"]:
+
+def main():
+    args = sys.argv
+    args.pop(0)
+    data = ""
+    isWrite = False
+
+    checkArguments(args)
+    if len(args) > 6:
+        usage()
+        sys.exit("{0}: error: Too many arguments".format(__prog__))
+
+    if args[-1] in ["-w", "--write"]:
         isWrite = True
         del args[-1]
+    elif len(args) == 6 and args[-1] not in ["-w", "--write"]:
+        usage()
+        sys.exit("{0}: error: '{1}' argument does not recognized".format(
+            __prog__, args[-1]))
 
     filename = "{0}.log".format(__prog__)
     not_piping = sys.stdin.isatty()
@@ -286,10 +299,7 @@ def main():
             print("")
             sys.exit()
 
-    if len(args) > 8:
-        usage()
-        sys.exit("{0}: error: Too many arguments".format(__prog__))
-    execute(args, data, filename, isWrite)
+    executeArguments(args, data, filename, isWrite)
 
 if __name__ == "__main__":
     main()
