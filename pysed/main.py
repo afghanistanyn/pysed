@@ -245,7 +245,7 @@ def messageError(code, Err):
         100: "error: Too few arguments",
         200: "error: Too many arguments",
         300: "error: '{0}' argument does not recognized".format(Err),
-        400: "error: No such file or directory",
+        400: "error: No such file or directory {0}".format(Err),
         500: "error: '{0}' flag doesn't exist".format(Err),
         600: "error: '{0}' color doesn't exist".format(Err)
     }
@@ -314,8 +314,8 @@ def main():
             data = f.read()
         except IOError:
             usage()
-            sys.exit("{0}: {1} '{2}'".format(
-                __prog__, messageError(400, Err=""), args[len(args) - 1]))
+            sys.exit("{0}: {1}".format(
+                __prog__, messageError(400, Err=args[len(args) - 1])))
     else:
         args.append("last")
         try:
