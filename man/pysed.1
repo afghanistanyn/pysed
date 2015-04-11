@@ -27,7 +27,7 @@ from a file. It reads text, line by line, from a file and replace, insert or
 print all text or specific area. Actually pysed is a passage of Python module 're'
 in terminal.
 .SH EXAMPLES
-Usage: pysed [OPTION] {pattern} {repl} {max} {flag} [input-file]
+Usage: pysed [OPTION] {pattern} {repl} {lines} {max} {flag} [input-file]
 
 Options:
   -h, --help                   display this help and exit
@@ -58,7 +58,7 @@ Options:
 Print the version of program and exit.
 
 .SS -r, --replace, search and replace text
-\fBpysed\fP \fB-r\fP \fB"pattern"\fP \fB"replace"\fP \fBmax\fP \fBflag\fP \fBinput-file\fP
+\fBpysed\fP \fB-r\fP \fB"pattern"\fP \fB"replace"\fP \fBlines\fP \fBmax\fP \fBflag\fP \fBinput-file\fP
 .PP
 Return the string obtained by replacing the leftmost non-overlapping 
 occurrences of pattern in string by the replacement repl. If the pattern 

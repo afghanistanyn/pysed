@@ -54,7 +54,7 @@ Command Line Tool Usage
 
     pysed is utility that parses and transforms text
 
-    Usage: pysed [OPTION] {pattern} {repl} {max} {flag} [input-file]
+    Usage: pysed [OPTION] {pattern} {repl} {lines} {max} {flag} [input-file]
 
     Options:
       -h, --help                   display this help and exit
@@ -118,9 +118,9 @@ Usage Examples
     This is my goat,
      whose surname is Adam.
 
-    Maximum replace text:
+    Replace text in specific lines:
     
-    $ pysed -r "name" "surname" 2 text.txt
+    $ pysed -r "name" "surname" 2,4 text.txt
     This is my cat,
      whose surname is Betty.
     This is my dog,
@@ -130,9 +130,21 @@ Usage Examples
     This is my goat,
      whose name is Adam.
      
+    Replace text in specific lines and max:
+    
+    $ pysed -r "is" "IS" 1,7 1 text.txt
+    ThIS is my cat,
+     whose surname is Betty.
+    This is my dog,
+     whose surname is Frank.
+    This is my fish,
+     whose name is George.
+    ThIS is my goat,
+     whose name is Adam.
+
     Add character to the beginning of each line:
 
-    $ pysed -r "^" "# " 0 M text.txt
+    $ pysed -r "^" "# " text.txt
     # This is my cat,
     #  whose name is Betty.
     # This is my dog,
@@ -144,7 +156,7 @@ Usage Examples
     
     Add character to the end of each line:
     
-    $ pysed -r "$" " # " 0 M text.txt
+    $ pysed -r "$" " #" text.txt
     This is my cat, #
      whose name is Betty. #
     This is my dog, #
@@ -156,16 +168,21 @@ Usage Examples
     
     Find all matching pattern: 
 
-    $ pysed -f "name" text.txt
+    $ pysed -f "name " text.txt
     name name name name
+    
+    Find all matching pattern in specific lines: 
+
+    $ pysed -f "name " "" 2,4 text.txt
+    name name
     
     Search and print lines:
     
     $ pysed -l "name" text.txt
-     whose name is Betty.
-     whose name is Frank.
-     whose name is George.
-     whose name is Adam.
+    2 whose name is Betty.
+    4 whose name is Frank.
+    6 whose name is George.
+    8 whose name is Adam.
 
     Highlight text:
 
@@ -201,7 +218,7 @@ Usage Examples
     $ echo "This is my cat, whose name is Betty" | pysed -r "[^\W]+" "-"
     - - - -, - - - -
     
-    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 1
+    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 0 1
     ThIS is my cat, whose name is Betty
 
     $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -r "[^\d+]"
@@ -213,10 +230,10 @@ Usage Examples
     $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "\d+"
     910
     
-    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 1
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 0 1
     910
     
-    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 2
+    $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -s "(\d+)(\w+)" "" 0 2
     a13de57dfbdf6f06675db975f8407
 
     $ echo "/usr/local/bin" | pysed -r "/local" ""
