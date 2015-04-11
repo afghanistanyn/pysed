@@ -239,6 +239,7 @@ class Pysed(object):
 
 
 def messageError(code, Err):
+    """error messages dict"""
     msg = {
         000: "error: {0}".format(Err),
         100: "error: Too few arguments",
