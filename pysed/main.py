@@ -71,7 +71,10 @@ class Pysed(object):
                 if self.numlines == [] or self.numlines == [0]:
                     self.numlines = range(1, len(self.data.splitlines()) + 1)
             if adv[1]:
-                self.count = int(adv[1])
+                try:
+                    self.count = int(adv[1])
+                except ValueError:
+                    self.count = 0
             if adv[2]:
                 self.flag = adv[2]
 
