@@ -91,7 +91,7 @@ if "install" in sys.argv:
         os.makedirs(man_path)
     man_page = "man/pysed.1"
     gzip_man = "man/pysed.1.gz"
-    print("Installing '{0}' man pages".format(gzip_man.split('/')[1]))
+    print("Installing '{0}' man page".format(gzip_man.split('/')[1]))
     f_in = open(man_page, "rb")
     f_out = gzip.open(gzip_man, 'wb')
     f_out.writelines(f_in)

@@ -179,11 +179,15 @@ Usage Examples
     Search and print lines:
     
     $ pysed -l "name" text.txt
-    2 whose name is Betty.
-    4 whose name is Frank.
-    6 whose name is George.
-    8 whose name is Adam.
-
+    - This is my cat,
+    2  whose name is Betty.
+    - This is my dog,
+    4  whose name is Frank.
+    - This is my fish,
+    6  whose name is George.
+    - This is my goat,
+    8  whose name is Adam.
+    
     Highlight text:
 
     $ pysed -g "name" "red" text.txt
