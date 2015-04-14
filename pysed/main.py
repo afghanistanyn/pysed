@@ -156,6 +156,9 @@ class Pysed(object):
             count += 1
             if self.pattern in line:
                 self.text += "{0} {1}".format(count, line + "\n")
+            else:
+                self.text += "{0} {1}".format("-" * len(str(count)),
+                                              line + "\n")
         self.selectPrintWrite()
 
     def highLight(self):
