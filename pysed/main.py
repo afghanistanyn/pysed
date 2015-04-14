@@ -52,7 +52,7 @@ class Pysed(object):
 
     def _patternInit(self):
         """pattern initialization"""
-        if len(self.args) >= 2:     # pattern
+        if len(self.args) > 2:      # pattern
             self.pattern = self.args[1]
         if len(self.args) > 3:      # replace
             self.repl = self.args[2]
