@@ -85,7 +85,7 @@ setup(
     long_description=open("README.rst").read()
 )
 
-if "install" in sys.argv:
+if "install" in sys.argv and sys.platform == "linux2":
     man_path = "/usr/man/man1/"
     if not os.path.exists(man_path):
         os.makedirs(man_path)
