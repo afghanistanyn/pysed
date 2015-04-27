@@ -45,17 +45,17 @@ def helps():
         "{0} is utility that parses and transforms text\n".format(__prog__),
         "Usage: %s [OPTION] {pattern} {repl} {lines/max/flag} "
         "[input-file]\n" % (__prog__),
-        "Options:",
-        "  -h, --help                   display this help and exit",
-        "  -v, --version                print program version and exit",
-        "  -r, --replace                search and replace text",
-        "  -f, --findall                find all from pattern in text",
-        "  -s, --search                 search for the first matching",
-        "  -m, --match                  pattern matching in the beginning",
-        "  -l, --lines                  search pattern and print lines",
-        "  -g, --highlight              highlight and print text",
-        "  -t, --stat                   print text statistics",
-        "      --write                  write changes to file\n"
+        "optional arguments:",
+        "  -h, --help       display this help and exit",
+        "  -v, --version    print program version and exit",
+        "  -r, --replace    search and replace text",
+        "  -f, --findall    find all from pattern in text",
+        "  -s, --search     search for the first matching",
+        "  -m, --match      pattern matching in the beginning",
+        "  -l, --lines      search pattern and print lines",
+        "  -g, --highlight  highlight and print text",
+        "  -t, --stat       print text statistics",
+        "      --write      write changes to file\n"
     ]
     for arg in arguments:
         print("{0}".format(arg))
