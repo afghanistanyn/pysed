@@ -56,17 +56,17 @@ Command Line Tool Usage
 
     Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
 
-    Options:
-      -h, --help                   display this help and exit
-      -v, --version                print program version and exit
-      -r, --replace                search and replace text
-      -f, --findall                find all from pattern in text
-      -s, --search                 search for the first matching
-      -m, --match                  pattern matching in the beginning
-      -l, --lines                  search pattern and print lines
-      -g, --highlight              highlight and print text
-      -s, --stat                   print text statistics
-          --write                  write changes to file
+    optional arguments:
+      -h, --help       display this help and exit
+      -v, --version    print program version and exit
+      -r, --replace    search and replace text
+      -f, --findall    find all from pattern in text
+      -s, --search     search for the first matching
+      -m, --match      pattern matching in the beginning
+      -l, --lines      search pattern and print lines
+      -g, --highlight  highlight and print text
+      -t, --stat       print text statistics
+          --write      write changes to file
 
 Python regex flags
 ------------------
