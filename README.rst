@@ -249,13 +249,10 @@ Usage Examples
     $ echo "/usr/local/bin" | pysed -r "/LoCal" "" //IGNORECASE
     /usr/bin
 
-Use with command find:
-You can use find and pysed commands in combination to find and replace text in 
-multiple files. For example:
+    Use with command find. You can use find and pysed commands in combination to find 
+    and replace text in multiple files. For example:
 
-.. code-block::
-
-    $ find . -name \*.py -exec pysed -r "lefttext" "righttext" {} -w \;
+    $ find . -name *.py -exec pysed -r "lefttext" "righttext" {} -w \;
     
     this command finds 'lefttext' string in all python files and replace it with 'righttext'.
 
