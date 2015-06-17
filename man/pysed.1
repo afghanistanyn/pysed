@@ -18,43 +18,26 @@ pysed is utility that parses and transforms text
 Usage: pysed [-h] [-v]
              [[-r] [-f] [-s] [-m] [-l] [-g] [-s] --write]
 .SH DESCRIPTION
-\fBpysed\fP is utility that parses and transforms text
-.PP
-CLI utility that parses and transforms text written in Python.
-
-Pysed is a Python stream editor, is used to perform basic text transformations 
-from a file. It reads text, line by line, from a file and replace, insert or 
-print all text or specific area. Actually pysed is a passage of Python module 're'
-in terminal.
-Read more for Regular Expression Syntax in https://docs.python.org/2/library/re.html
+Pysed is a stream editor, is used to perform basic text transformations 
+from a file or from pipeline. It reads text, line by line, from a file 
+and replace, insert or print all text or specific area.
 
 .SH EXAMPLES
-pysed is utility that parses and transforms text
-
 Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
 
-optional arguments:
-  -h, --help       display this help and exit
-  -v, --version    print program version and exit
-  -r, --replace    search and replace text
-  -f, --findall    find all from pattern in text
-  -s, --search     search for the first matching
-  -m, --match      pattern matching in the beginning
-  -l, --lines      search pattern and print lines
-  -g, --highlight  highlight and print text
-  -t, --stat       print text statistics
-      --write      write changes to file
+pysed is utility that parses and transforms text
 
-.SH COLORS
- black, red, green, yellow, blue, magenta, cyan
-.PP
-.SH FLAGS
- I or IGNORECASE
- M or MULTILINE
- S or DOTALL
- U or UNICODE
- L or LOCALE
- X or VERBOSE
+optional arguments:
+  -h, --help       Print this help message and exit
+  -v, --version    Print program version and exit
+  -r, --replace    Search and replace text
+  -f, --findall    Find all from pattern in text
+  -s, --search     Search for the first matching
+  -m, --match      Pattern matching in the beginning
+  -l, --lines      Search pattern and print lines
+  -g, --highlight  Highlight and print text
+  -t, --stat       Print text statistics
+      --write      Write changes to file
 
 .SH GLOBAL OPTIONS
 .SS
@@ -66,61 +49,54 @@ Print the version of program and exit.
 .PP
 Replace part text throughout the text or the text in specific lines and quantities and 
 if necessary use a flag.
-
 Example:
 $ printf "This is my cat,\\n whose name is Betty.\\nThis is my dog,\\n whose name is Frank.\\n" | pysed -r "nAme" "surname" 4/0/I
-
 This will replace the word 'name' in 'surname' in line 4 and ignore uppercase.
 
-.SS -f , --findall, find all from pattern in text
+.SS -f, --findall, find all from pattern in text
 \fBpysed\fP \fB-f\fP \fB"pattern"\fP \fB""\fP \fBlines/0/flags\fP \fBinput-file\fP
 .PP
 Scan through string looking for the all location where the regular expression 
 pattern produces a match, and print text. 
-
 Example:
 $ printf "This is my cat,\\n whose name is Betty.\\nThis is my dog,\\n whose name is Frank.\\n" | pysed -f "is" "" 3
-
 This should print two words 'is is' from line 3.
 
-.SS -s , --search, search for the first matching
+.SS -s, --search, search for the first matching
 \fBpysed\fP \fB-s\fP \fB"pattern"\fP \fB""\fP \fBlines/group/flag\fP \fBinput-file\fP
 .PP
 Scan through string looking for the first location where the regular expression 
 pattern produces a match, and print text. 
-
 Example:
 $ printf "This is my cat,\\n whose name is Betty.\\nThis is my dog,\\n whose name is Frank.\\n" | pysed -s "is" "" 3
-
 This should print word 'is' from line 3.
 
-.SS -m , --match, pattern matching in the beginning
+.SS -m, --match, pattern matching in the beginning
 \fBpysed\fP \fB-m\fP \fB"pattern"\fP \fB""\fP \fBlines/group/flag\fP \fBinput-file\fP
 .PP
 Match text at the beginning of the string.
-
 Example:
 $ printf "This is my cat,\\n whose name is Betty.\\nThis is my dog,\\n whose name is Frank.\\n" | pysed -m "This" "" 3
 
 This should print word 'This' from line 3.
 
-.SS -l , --lines, search pattern and print lines
+.SS -l, --lines, search pattern and print lines
 \fBpysed\fP \fB-l\fP \fB"pattern"\fP \fBinput-file\fP
 .PP
 Same argument as the '--search' except that facing the file line by line and prints
 the line found in pattern.
 
-.SS -g , --highlight, highlight and print text
+.SS -g, --highlight, highlight and print text
 \fBpysed\fP \fB-g\fP \fB"pattern"\fP \fB"color"\fP \fBinput-file\fP 
 .PP
 Print a file with an highlight on the pattern.
 
-.SS -s , --stat, print text statistics
+.SS -s, --stat, print text statistics
 \fBpysed\fP \fB-s\fP \fBinput-file\fP
 .PP
 Print text statistics split in lines, words, chars, blanks.
 
-.SS -w , --write, write changes to file
+.SS --write, write changes to file
 .PP
 Add this argument last to write the changes to the file.
 
@@ -130,6 +106,17 @@ command.
 .br
 For example:
   \fBpysed \-\-help\fP - display help for pysed
+
+.SH COLORS
+ black, red, green, yellow, blue, magenta, cyan
+.PP
+.SH REGEX FLAGS
+ I or IGNORECASE
+ M or MULTILINE
+ S or DOTALL
+ U or UNICODE
+ L or LOCALE
+ X or VERBOSE
 
 .SH AUTHOR
 Dimitris Zlatanidis <d.zlatanidis@gmail.com>
