@@ -20,9 +20,6 @@
 .. contents:: Table of Contents:
 
 
-`[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
-
-
 About
 =====
 
