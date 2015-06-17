@@ -23,8 +23,8 @@
 
 import re
 import sys
-from pysed.__metadata__ import __prog__
-from pysed.options import (
+from __metadata__ import __prog__
+from options import (
     usage,
     helps,
     version
@@ -32,7 +32,11 @@ from pysed.options import (
 
 
 class Pysed(object):
-
+    """Pysed is a stream editor, is used to perform basic text
+    transformations from a file or from pipeline. It reads text,
+    line by line, from a file and replace, insert or print all
+    text or specific area.
+    """
     def __init__(self, args, data, filename, write):
         self.args = args
         self.pattern = ""
@@ -51,14 +55,16 @@ class Pysed(object):
         self._writeInit()
 
     def _patternInit(self):
-        """pattern initialization"""
+        """Pattern initialization
+        """
         if len(self.args) > 2:      # pattern
             self.pattern = self.args[1]
         if len(self.args) > 3:      # replace
             self.repl = self.args[2]
 
     def _extraInit(self):
-        """extra initialization"""
+        """Extra initialization
+        """
         if len(self.args) > 4:      # extra
             adv = self.args[3].split("/")
             if len(adv) > 3:
@@ -79,12 +85,14 @@ class Pysed(object):
                 self.flag = adv[2]
 
     def _writeInit(self):
-        """write initilization"""
+        """Write initilization
+        """
         if len(self.args) > 7:      # write
             self.write = self.args[7]
 
     def replaceText(self):
-        """replace text with new"""
+        """Replace text with new
+        """
         self.regexFlags()
         count = 0
         for line in self.data.splitlines():
@@ -101,7 +109,8 @@ class Pysed(object):
         self.selectPrintWrite()
 
     def findallText(self):
-        """find all from pattern in text"""
+        """Find all from pattern in text
+        """
         self.regexFlags()
         count = 0
         for line in self.data.splitlines():
@@ -116,7 +125,8 @@ class Pysed(object):
         self.selectPrintWrite()
 
     def searchText(self):
-        """search for the first matching"""
+        """Search for the first matching
+        """
         self.regexFlags()
         text = ""
         count = 0
@@ -133,7 +143,8 @@ class Pysed(object):
         self.selectPrintWrite()
 
     def matchText(self):
-        """matching pattern into text"""
+        """Matching pattern into text
+        """
         self.regexFlags()
         text = ""
         count = 0
@@ -150,7 +161,8 @@ class Pysed(object):
         self.selectPrintWrite()
 
     def findLines(self):
-        """find text and print line"""
+        """Find text and print line
+        """
         count = 0
         for line in self.data.splitlines():
             count += 1
@@ -162,14 +174,16 @@ class Pysed(object):
         self.selectPrintWrite()
 
     def highLight(self):
-        """highlight text and print"""
+        """Highlight text and print
+        """
         self.colors()
         self.text = (self.data.replace(
             self.pattern, self.color + self.pattern + self.color_def))
         self.selectPrintWrite()
 
     def textStat(self):
-        """print text statics"""
+        """Print text statics
+        """
         lines, words = 0, 0
         chars = len(self.data.replace(" ", ""))
         blanks = len(self.data) - chars
@@ -181,7 +195,8 @@ class Pysed(object):
         self.selectPrintWrite()
 
     def regexFlags(self):
-        """python regex flags"""
+        """Python regex flags
+        """
         patt_flag = ""
         for i in self.flag.split("|"):
             re_patt = {
@@ -212,7 +227,8 @@ class Pysed(object):
             self.flag = 0
 
     def colors(self):
-        """colors dict"""
+        """Colors dictionary
+        """
         paint = {
             'black': '\x1b[30m',
             'red': '\x1b[31m',
@@ -230,14 +246,16 @@ class Pysed(object):
                 600, Err=self.repl)))
 
     def selectPrintWrite(self):
-        """write to file or print"""
+        """Write to file or print
+        """
         if self.write:
             self.writeFile(self.text)
         else:
             print(self.text.rstrip())
 
     def writeFile(self, newtext):
-        """write data to file"""
+        """Write data to file
+        """
         with open(self.filename, "w") as fo:
             for line in newtext.splitlines():
                 fo.write(line + "\n")
@@ -245,7 +263,8 @@ class Pysed(object):
 
 
 def messageError(code, Err):
-    """error messages dict"""
+    """Error messages dictionary
+    """
     msg = {
         000: "error: {0}".format(Err),
         100: "error: Too few arguments",
@@ -259,7 +278,8 @@ def messageError(code, Err):
 
 
 def executeArguments(args, data, filename, isWrite):
-    """execute available arguments"""
+    """Execute available arguments
+    """
     pysed = Pysed(args, data, filename, isWrite)
     if args[0] in ["-r", "--replace"]:
         pysed.replaceText()
@@ -278,6 +298,8 @@ def executeArguments(args, data, filename, isWrite):
 
 
 def checkArguments(args):
+    """Execute arguments
+    """
     if len(args) == 1 and args[0] in ["-h", "--help"]:
         helps()
     elif len(args) == 1 and args[0] in ["-v", "--version"]:
@@ -304,10 +326,10 @@ def main():
         usage()
         sys.exit("{0}: {1}".format(__prog__, messageError(200, Err="")))
 
-    if args[-1] in ["-w", "--write"]:
+    if args[-1] == "--write":
         isWrite = True
         del args[-1]
-    elif len(args) == 6 and args[-1] not in ["-w", "--write"]:
+    elif len(args) == 6 and args[-1] is not "--write":
         usage()
         sys.exit("{0}: {1}".format(__prog__, messageError(300, Err=args[-1])))
 
@@ -328,7 +350,7 @@ def main():
             data = sys.stdin.read()
         except KeyboardInterrupt:
             print("")
-            sys.exit()
+            sys.exit(0)
 
     executeArguments(args, data, filename, isWrite)
 

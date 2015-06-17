@@ -22,7 +22,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from pysed.__metadata__ import (
+from __metadata__ import (
     __prog__,
     __email__,
     __version__,
@@ -31,6 +31,8 @@ from pysed.__metadata__ import (
 
 
 def usage():
+    """Print usage and exit
+    """
     arguments = [
         "Usage: {0} [-h] [-v]".format(__prog__),
         "             [[-r] [-f] [-s] [-m] [-l] [-g] [-s] --write]"
@@ -40,22 +42,23 @@ def usage():
 
 
 def helps():
-    """print help"""
+    """Print help message and exit
+    """
     arguments = [
-        "{0} is utility that parses and transforms text\n".format(__prog__),
         "Usage: %s [OPTION] {pattern} {repl} {lines/max/flag} "
         "[input-file]\n" % (__prog__),
+        "{0} is utility that parses and transforms text\n".format(__prog__),
         "optional arguments:",
-        "  -h, --help       display this help and exit",
-        "  -v, --version    print program version and exit",
-        "  -r, --replace    search and replace text",
-        "  -f, --findall    find all from pattern in text",
-        "  -s, --search     search for the first matching",
-        "  -m, --match      pattern matching in the beginning",
-        "  -l, --lines      search pattern and print lines",
-        "  -g, --highlight  highlight and print text",
-        "  -t, --stat       print text statistics",
-        "      --write      write changes to file\n"
+        "  -h, --help       Print this help message and exit",
+        "  -v, --version    Print program version and exit",
+        "  -r, --replace    Search and replace text",
+        "  -f, --findall    Find all from pattern in text",
+        "  -s, --search     Search for the first matching",
+        "  -m, --match      Pattern matching in the beginning",
+        "  -l, --lines      Search pattern and print lines",
+        "  -g, --highlight  Highlight and print text",
+        "  -t, --stat       Print text statistics",
+        "      --write      Write changes to file\n"
     ]
     for arg in arguments:
         print("{0}".format(arg))
@@ -63,6 +66,8 @@ def helps():
 
 
 def version():
+    """Print version and exit
+    """
     print('version : {0}'.format(__version__))
     print('License : {0}'.format(__license__))
     print('Email   : {0}'.format(__email__))
