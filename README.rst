@@ -20,18 +20,15 @@
 .. contents:: Table of Contents:
 
 
+`[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
+
+
 About
 =====
 
-CLI utility that parses and transforms text written in Python.
-
-Pysed is a Python stream editor, is used to perform basic text transformations
-from a file. It reads text, line by line, from a file and replace, insert or print
-all text or specific area. Actually pysed is a passage of Python module 're' in terminal.
-
-Read more for `Regular Expression Syntax <https://docs.python.org/2/library/re.html>`_
-
-`[CHANGELOG] <https://github.com/dslackw/pysed/blob/master/CHANGELOG>`_
+Pysed is a stream editor, is used to perform basic text transformations
+from a file or from pipeline. It reads text, line by line, from a file 
+and replace, insert or print all text or specific area.
 
 
 Installation
@@ -46,29 +43,29 @@ Installation
     $ pip uninstall pysed
         
 
-
 Command Line Tool Usage
 -----------------------
 
 .. code-block:: bash
 
-    pysed is utility that parses and transforms text
-
     Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
 
-    optional arguments:
-      -h, --help       display this help and exit
-      -v, --version    print program version and exit
-      -r, --replace    search and replace text
-      -f, --findall    find all from pattern in text
-      -s, --search     search for the first matching
-      -m, --match      pattern matching in the beginning
-      -l, --lines      search pattern and print lines
-      -g, --highlight  highlight and print text
-      -t, --stat       print text statistics
-          --write      write changes to file
+    pysed is utility that parses and transforms text
 
-Python regex flags
+    optional arguments:
+      -h, --help       Print this help message and exit
+      -v, --version    Print program version and exit
+      -r, --replace    Search and replace text
+      -f, --findall    Find all from pattern in text
+      -s, --search     Search for the first matching
+      -m, --match      Pattern matching in the beginning
+      -l, --lines      Search pattern and print lines
+      -g, --highlight  Highlight and print text
+      -t, --stat       Print text statistics
+          --write      Write changes to file
+
+
+Regex flags
 ------------------
 
 .. list-table::
@@ -252,7 +249,7 @@ Usage Examples
     Use with command find. You can use find and pysed commands in combination to find 
     and replace text in multiple files. For example:
 
-    $ find . -name *.py -exec pysed -r "lefttext" "righttext" {} -w \;
+    $ find . -name *.py -exec pysed -r "lefttext" "righttext" {} --write \;
     
     this command finds 'lefttext' string in all python files and replace it with 'righttext'.
 
