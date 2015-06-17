@@ -246,7 +246,7 @@ Usage Examples
     $ echo "/usr/local/bin" | pysed -r "/LoCal" "" //IGNORECASE
     /usr/bin
 
-    Use with command find. You can use find and pysed commands in combination to find 
+    Use with command "find". You can use "find" and "pysed" commands in combination to find 
     and replace text in multiple files. For example:
 
     $ find . -name *.py -exec pysed -r "lefttext" "righttext" {} --write \;
