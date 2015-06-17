@@ -216,7 +216,7 @@ Usage Examples
     $ echo "This is my cat, whose name is Betty" | pysed -r "[^\W]+" "-"
     - - - -, - - - -
     
-    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 0/1
+    $ echo "This is my cat, whose name is Betty" | pysed -r "is" "IS" 1/1
     ThIS is my cat, whose name is Betty
 
     $ echo "910a13de57dfbdf6f06675db975f8407" | pysed -r "[^\d+]"
