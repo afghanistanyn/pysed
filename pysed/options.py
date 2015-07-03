@@ -36,22 +36,24 @@ def usage():
 
 
 def helps():
-    """Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
+    """Usage: pysed [OPTION] {patt} {repl} {lines/max/flag} [[input-file], --write]
 
 pysed is utility that parses and transforms text
 
 Optional arguments:
-  -h, --help        Print this help message and exit
-  -v, --version     Print program version and exit
-  -r, --replace     Search and replace text
-  -f, --findall     Find all from pattern in text
-  -s, --search      Search for the first matching
-  -m, --match       Pattern matching in the beginning
-  -l, --lines       Search pattern and print lines
-  -g, --highlight   Highlight and print text
-  -t, --stat        Print text statistics
-  --write           Write changes to file
-    """
+  -h, --help            Print this help message and exit
+  -v, --version         Print program version and exit
+  -r, --replace         Search and replace text
+  -f, --findall         Find all from pattern in text
+  -s, --search          Search for the first matching
+  -m, --match           Pattern matching in the beginning
+  -l, --lines           Search pattern and print lines
+  -g, --highlight       Highlight and print text
+  -t, --stat            Print text statistics
+      --write           Write changes to file
+
+You can read more about pysed from manpage or see examples
+from readme file. Homepage: https://github.com/dslackw/pysed"""
     print(helps.__doc__)
     sys.exit(0)
 
