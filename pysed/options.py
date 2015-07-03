@@ -22,7 +22,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from __metadata__ import (
+from pysed.__metadata__ import (
     __email__,
     __version__,
     __license__,
