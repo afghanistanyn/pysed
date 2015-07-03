@@ -23,8 +23,8 @@
 
 import re
 import sys
-from pysed.__metadata__ import __prog__
-from pysed.options import (
+from __metadata__ import __prog__
+from options import (
     usage,
     helps,
     version

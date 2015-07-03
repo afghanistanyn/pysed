@@ -22,8 +22,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from pysed.__metadata__ import (
-    __prog__,
+from __metadata__ import (
     __email__,
     __version__,
     __license__,
@@ -31,38 +30,30 @@ from pysed.__metadata__ import (
 
 
 def usage():
-    """Print usage and exit
-    """
-    arguments = [
-        "Usage: {0} [-h] [-v]".format(__prog__),
-        "             [[-r] [-f] [-s] [-m] [-l] [-g] [-s] --write]"
-    ]
-    for arg in arguments:
-        print("{0}".format(arg))
+    """Usage: pysed [-h] [-v]
+             [[-r] [-f] [-s] [-m] [-l] [-g] [-s] --write]"""
+    print(usage.__doc__)
 
 
 def helps():
-    """Print help message and exit
+    """Usage: pysed [OPTION] {pattern} {repl} {lines/max/flag} [input-file]
+
+pysed is utility that parses and transforms text
+
+Optional arguments:
+  -h, --help        Print this help message and exit
+  -v, --version     Print program version and exit
+  -r, --replace     Search and replace text
+  -f, --findall     Find all from pattern in text
+  -s, --search      Search for the first matching
+  -m, --match       Pattern matching in the beginning
+  -l, --lines       Search pattern and print lines
+  -g, --highlight   Highlight and print text
+  -t, --stat        Print text statistics
+  --write           Write changes to file
     """
-    arguments = [
-        "Usage: %s [OPTION] {pattern} {repl} {lines/max/flag} "
-        "[input-file]\n" % (__prog__),
-        "{0} is utility that parses and transforms text\n".format(__prog__),
-        "optional arguments:",
-        "  -h, --help       Print this help message and exit",
-        "  -v, --version    Print program version and exit",
-        "  -r, --replace    Search and replace text",
-        "  -f, --findall    Find all from pattern in text",
-        "  -s, --search     Search for the first matching",
-        "  -m, --match      Pattern matching in the beginning",
-        "  -l, --lines      Search pattern and print lines",
-        "  -g, --highlight  Highlight and print text",
-        "  -t, --stat       Print text statistics",
-        "      --write      Write changes to file\n"
-    ]
-    for arg in arguments:
-        print("{0}".format(arg))
-    sys.exit()
+    print(helps.__doc__)
+    sys.exit(0)
 
 
 def version():
@@ -71,4 +62,4 @@ def version():
     print('version : {0}'.format(__version__))
     print('License : {0}'.format(__license__))
     print('Email   : {0}'.format(__email__))
-    sys.exit()
+    sys.exit(0)
