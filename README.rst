@@ -31,6 +31,8 @@ and replace, insert or print all text or specific area.
 Installation
 ------------
 
+pysed supports python 2.7 and 3.0+
+
 .. code-block:: bash
 
     $ pip install pysed --upgrade
